@@ -30,6 +30,8 @@ VITE_SUBSCRIBE_URL=https://kgbuquggwvnclqnyvbsl.supabase.co/functions/v1/subscri
 
 The form then `POST`s JSON — `{ "email": "...", "locale": "sq" | "en", "source": "coming-soon" }` — and treats a 2xx response as success; anything else (or a network error) shows the error state with "Provo përsëri". When the variable is **unset** the form runs in simulated prototype mode: 900 ms delay, success for every valid address, failure for addresses containing "gabim", and the on-page label "Prototip UI/UX — asnjë email nuk regjistrohet." is shown. No email is stored anywhere.
 
+`.env.production` (committed — the URL is public in the built page anyway) carries the live endpoint, so every production build, Vercel's included, posts to it; without it the live site silently runs the simulated mode and no email is ever sent (that was the case until 2026-10-16). `.env` (gitignored) does the same for `npm run dev`.
+
 The live endpoint (2026-10-16) is the Supabase project **"Nyja Coming Soon"** (`kgbuquggwvnclqnyvbsl`, eu-north-1):
 
 - `public.subscribers` — one row per address (lower-cased, unique), `locale`, `source`, `resend_contact_id`, `confirmation_sent_at` / `confirmation_email_id`, `unsubscribed_at`, `created_at`; RLS on with no policies, so only the service role writes. Migrations in `supabase/migrations/`.
