@@ -16,7 +16,10 @@ export interface Copy {
   cue: string; cueAria: string; knotAria: string;
   badgesAria: string; appleAria: string; googleAria: string; applePill: string; googlePill: string;
   formTitle: string; formText: string; emailLabel: string; emailPlaceholder: string; cta: string; ctaBusy: string; emailError: string;
-  done: [string, string]; fail: [string, string]; retry: string;
+  done: [string, string];
+  /** The address was already on the list (the endpoint's 409). */
+  exists: [string, string];
+  fail: [string, string]; retry: string;
   /** The privacy line (ends with a space — the simulation note follows it when no endpoint is configured). */
   privacy: string; simNote: string;
   copyright: string; replay: string; privacyLink: string;
@@ -34,7 +37,7 @@ export const COPY: Record<Lang, Copy> = {
     cue: 'Lëviz për të lidhur', cueAria: 'Lëviz poshtë për të lidhur', knotAria: 'NYJA — lidhja është formuar. Shtyp për ta hapur përsëri.',
     badgesAria: 'Aplikacioni NYJA', appleAria: 'Download on the App Store — së shpejti', googleAria: 'Get it on Google Play — së shpejti', applePill: 'App Store — së shpejti', googlePill: 'Google Play — së shpejti',
     formTitle: 'Bëhu i pari që lidhet.', formText: 'Regjistro emailin dhe mëso i pari kur NYJA të jetë gati.', emailLabel: 'Email adresa', emailPlaceholder: 'emri@domain.com', cta: 'Më njofto', ctaBusy: 'Po dërgohet…', emailError: 'Shkruaj një email të vlefshëm, p.sh. emri@domain.com',
-    done: ['U regjistrove me sukses.', 'Do të të njoftojmë kur NYJA të lansohet.'], fail: ['Nuk arritëm ta regjistrojmë emailin.', 'Provo përsëri.'], retry: 'Provo përsëri',
+    done: ['U regjistrove me sukses.', 'Do të të njoftojmë kur NYJA të lansohet.'], exists: ['Ky email është regjistruar tashmë.', 'Do të të njoftojmë kur NYJA të lansohet.'], fail: ['Nuk arritëm ta regjistrojmë emailin.', 'Provo përsëri.'], retry: 'Provo përsëri',
     privacy: 'Emaili përdoret vetëm për njoftimin e lansimit. ', simNote: 'Prototip UI/UX — asnjë email nuk regjistrohet.',
     copyright: '© 2026 NYJA', replay: 'Luaje hyrjen përsëri', privacyLink: 'Privatësia',
     selected: ' — e zgjedhur',
@@ -47,7 +50,7 @@ export const COPY: Record<Lang, Copy> = {
     cue: 'Scroll to connect', cueAria: 'Scroll down to connect', knotAria: 'NYJA — the connection is made. Press to open it again.',
     badgesAria: 'The NYJA app', appleAria: 'Download on the App Store — coming soon', googleAria: 'Get it on Google Play — coming soon', applePill: 'App Store — coming soon', googlePill: 'Google Play — coming soon',
     formTitle: 'Be the first to connect.', formText: 'Leave your email and be the first to know when NYJA is ready.', emailLabel: 'Email address', emailPlaceholder: 'name@domain.com', cta: 'Notify me', ctaBusy: 'Sending…', emailError: 'Enter a valid email address, e.g. name@domain.com',
-    done: ['You are on the list.', 'We will let you know when NYJA launches.'], fail: ['We could not register your email.', 'Please try again.'], retry: 'Try again',
+    done: ['You are on the list.', 'We will let you know when NYJA launches.'], exists: ['This email is already registered.', 'We will let you know when NYJA launches.'], fail: ['We could not register your email.', 'Please try again.'], retry: 'Try again',
     privacy: 'Your email is used only for the launch notification. ', simNote: 'UI/UX prototype — no email is registered.',
     copyright: '© 2026 NYJA', replay: 'Replay the intro', privacyLink: 'Privacy',
     selected: ' — selected',

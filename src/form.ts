@@ -1,6 +1,7 @@
 // The launch-notification form — the design-system Input + Button markup built by hand (bundle: Field/Input lines 372–412, Button lines 30–49)
 // with the eight states of the approved design (NYJA-ComingSoon-Desktop-v1.1.dc.html lines 57–67 desktop · 100–101 mobile, logic lines 290–295):
-// default · hover · focus · typing (CSS / native) · invalid · submitting · success · error.
+// default · hover · focus · typing (CSS / native) · invalid · submitting · success · error — plus `exists` (2026-10-16, Blend: an address already on the
+// list is told so instead of a second success; the endpoint answers 409), shown like success, since the address is on the list.
 import { EMAIL_RE } from './config';
 import type { Copy, Lang } from './i18n';
 
@@ -29,7 +30,7 @@ export interface FormOptions {
 }
 export interface FormApi { destroy(): void }
 
-type Status = 'idle' | 'busy' | 'done' | 'fail';
+type Status = 'idle' | 'busy' | 'done' | 'exists' | 'fail';
 /** Simulated round trip when no endpoint is configured (prototype line 294). */
 const SIM_MS = 900;
 
@@ -64,7 +65,7 @@ export function mountForm(host: HTMLElement, opts: FormOptions): FormApi {
     const mine = ++seq;
     if (endpoint) {
       fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, locale: lang, source: 'coming-soon' }) })
-        .then(res => finish(res.ok ? 'done' : 'fail', mine), () => finish('fail', mine));
+        .then(res => finish(res.ok ? 'done' : res.status === 409 ? 'exists' : 'fail', mine), () => finish('fail', mine));
     } else {
       timer = window.setTimeout(() => finish(/gabim/i.test(email) ? 'fail' : 'done', mine), SIM_MS);
     }
@@ -88,10 +89,10 @@ export function mountForm(host: HTMLElement, opts: FormOptions): FormApi {
     if (error) setError(error);
     setBusy(status === 'busy');
   };
-  // success (line 64): 8px material node + the confirmation, announced politely.
-  const doneView = () => h('div', { class: 'cs-form-status', role: 'status', 'aria-live': 'polite' },
+  // success (line 64): 8px material node + the confirmation, announced politely. `exists` reuses it with its own first line.
+  const doneView = (lines: [string, string]) => h('div', { class: 'cs-form-status', role: 'status', 'aria-live': 'polite' },
     h('span', { class: 'cs-form-node', 'aria-hidden': 'true' }),
-    h('span', { class: 'cs-form-msg' }, copy.done[0], h('br'), copy.done[1]));
+    h('span', { class: 'cs-form-msg' }, lines[0], h('br'), lines[1]));
   // error (line 65): hollow danger node + the message + the outline retry button → back to idle, keeping the address.
   const failView = () => {
     const retry = h('button', { type: 'button', class: 'ny-btn ny-btn--outline ny-btn--sm' }, copy.retry);
@@ -102,7 +103,7 @@ export function mountForm(host: HTMLElement, opts: FormOptions): FormApi {
       h('div', { class: 'cs-form-retry' }, retry));
   };
   const render = () => {
-    if (status === 'done' || status === 'fail') { input = null; button = null; field = null; errEl = null; host.replaceChildren(status === 'done' ? doneView() : failView()); }
+    if (status === 'done' || status === 'exists' || status === 'fail') { input = null; button = null; field = null; errEl = null; host.replaceChildren(status === 'fail' ? failView() : doneView(status === 'done' ? copy.done : copy.exists)); }
     else renderIdle();
   };
   render();

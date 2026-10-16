@@ -22,7 +22,7 @@ Before finishing any change: `npm run build && npm test` green. Tests drive the 
 - Comments explain non-obvious numbers and cite the prototype line / review number, like the existing code. Keep that density.
 - Logos and the icon are the approved assets, never redrawn or recoloured. Store badges are the stores' own artwork (fallback pills when they fail to load).
 - Fonts are licensed and not committed: `public/fonts/CriteriaCF-Regular.otf`, `Gotham-Book.otf` (gitignored). The Criteria CF DEMO cut lacks Ë/Ç; the `unicode-range` workaround in `styles.css` goes when the licensed cut arrives.
-- `VITE_SUBSCRIBE_URL` set → the form POSTs JSON (production: the Supabase Edge Function `subscribe`, see README); unset → simulated prototype mode with the on-page note. Never pretend an email was registered. `.env.production` (committed) sets it for every production build — Vercel builds from it, no dashboard variable needed; with `.env` set locally the form tests skip their simulated paths by design.
+- `VITE_SUBSCRIBE_URL` set → the form POSTs JSON (production: the Supabase Edge Function `subscribe`, see README); unset → simulated prototype mode with the on-page note. Never pretend an email was registered. A 409 from the endpoint = the address is already on the list, and the form says so (`copy.exists`). `.env.production` (committed) sets it for every production build — Vercel builds from it, no dashboard variable needed; with `.env` set locally the form tests skip their simulated paths by design.
 
 ## Decisions already taken (don't re-litigate without the designer)
 - Flow pulses are hidden during the van tour (client request, reviews 11–12) even though the prototype's `place()` overwrote that gate.

@@ -2,9 +2,10 @@
 // POST { email, locale: 'sq' | 'en', source } → the signup goes into public.subscribers (service role — the table has no public access); when
 // RESEND_API_KEY is set, the address becomes a contact in the Resend segment "Coming soon" (properties locale + source) and receives the
 // designer's confirmation email "Je lidhur — NYJA" (email-sq.html → email_sq.ts) once, from RESEND_FROM, with the unsubscribe link of the
-// `unsubscribe` function (token = the row id). 2xx = registered (an address that was already there is a 2xx too: nothing reveals whether an
-// email is on the list; a repeat signup only completes what is missing — contact, confirmation — and re-subscribes an unsubscribed address);
-// 400 = invalid address; 5xx = our failure (the page shows "Provo përsëri" / "Please try again"). Deployed with verify_jwt off: the page calls it anonymously.
+// `unsubscribe` function (token = the row id). 2xx = registered; 409 { error: 'exists' } = the address is already on the list (the page says so —
+// the owner's choice, 2026-10-16, over hiding whether an email is on the list; the repeat still completes a missing contact / confirmation);
+// an unsubscribed address that signs up again is a new signup (2xx, re-subscribed); 400 = invalid address; 5xx = our failure (the page shows
+// "Provo përsëri" / "Please try again"). Deployed with verify_jwt off: the page calls it anonymously.
 // Secrets (Supabase → Edge Functions → Secrets, or Vault for the key — see resendKey()): RESEND_API_KEY (needed for Resend; without it signups are only stored), RESEND_FROM (default
 // "NYJA <njoftime@nyja-ks.com>" — the domain must be verified in Resend before anything leaves), RESEND_SEGMENT_ID, UNSUBSCRIBE_URL,
 // ALLOWED_ORIGINS (optional, comma-separated; default * — the endpoint is public anyway, CORS only decides which browsers may read the answer).
@@ -57,14 +58,14 @@ Deno.serve(async (req: Request) => {
   const source = typeof body.source === 'string' && body.source.length > 0 && body.source.length <= 64 ? body.source : 'coming-soon';
 
   const db = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!, { auth: { persistSession: false } });
-  // One row per address: a repeat signup keeps the first row (and its language).
-  let row: Row;
+  // One row per address: a repeat signup keeps the first row (and its language). `exists` = it was already on the list and still subscribed.
+  let row: Row, exists = false;
   const ins = await db.from('subscribers').insert({ email, locale, source }).select(COLS).single<Row>();
   if (!ins.error) row = ins.data;
   else if (ins.error.code === '23505') {
     const got = await db.from('subscribers').select(COLS).eq('email', email).single<Row>();
     if (got.error) { console.error('subscribers select', got.error); return json(500, { ok: false, error: 'db' }, h); }
-    row = got.data;
+    row = got.data; exists = !row.unsubscribed_at;
   }
   else { console.error('subscribers insert', ins.error); return json(500, { ok: false, error: 'db' }, h); }
   const unsub = UNSUB_URL + '?t=' + row.id;
@@ -99,5 +100,5 @@ Deno.serve(async (req: Request) => {
       }
     } catch (e) { console.error('resend', e); }
   }
-  return json(200, { ok: true }, h);
+  return exists ? json(409, { ok: false, error: 'exists' }, h) : json(200, { ok: true }, h);
 });
