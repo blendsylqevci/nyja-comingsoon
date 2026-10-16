@@ -1,0 +1,169 @@
+/* NYJA Coming Soon — the frame's own CSS: the design-system tokens, the frame tokens (prototype line 39 / 82), the frame rules of line 19
+   and every inline style of the templates (lines 36–104) as a class. Values are the approved design's, px for px. */
+
+/* ---- Fonts (DS tokens/fonts.css, served from /fonts) ---- */
+@font-face{font-family:"Criteria CF";src:url("/fonts/CriteriaCF-Regular.otf") format("opentype");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Gotham";src:url("/fonts/Gotham-Book.otf") format("opentype");font-weight:400;font-style:normal;font-display:swap}
+/* TEMPORARY — delete when licensed Criteria CF with Latin Extended arrives.
+   The Criteria CF DEMO cut ships Fontspring watermark outlines for these code points
+   (digits incl. 4, % & ( ) + - / etc.), so normal CSS fallback can never trigger. This
+   routes only those code points to Gotham; the design system stays the font source of truth. */
+@font-face{font-family:"Criteria CF";src:url("/fonts/Gotham-Book.otf") format("opentype");font-weight:400;font-style:normal;unicode-range:U+0021-002B,U+002D,U+002F,U+0034,U+003B-0040,U+005B-0060,U+007B-007E}
+
+/* ---- Design-system tokens (tokens/colors.css · typography.css · spacing.css, copied) — the frame below re-points the dark values ---- */
+:root{
+/* Core brand */
+--neon:#D5FF00;--ink:#000000;--paper:#FFFFFF;
+/* Neutrals (pure, cool-free) */
+--gray-50:#F6F7F4;--gray-100:#ECEEE8;--gray-200:#DDE0D6;--gray-300:#C4C8BB;--gray-400:#9CA096;--gray-500:#73776D;--gray-600:#54584F;--gray-700:#3A3D36;--gray-800:#232520;--gray-900:#121310;
+/* Semantic aliases */
+--text-primary:var(--ink);--text-secondary:var(--gray-600);--text-tertiary:var(--gray-400);--text-inverse:var(--paper);--text-on-neon:var(--ink);
+--surface-page:var(--paper);--surface-card:var(--paper);--surface-subtle:var(--gray-50);--surface-inverse:var(--ink);
+--accent:var(--neon);--accent-hover:#C2E900;--accent-press:#AFD200;
+--border:var(--ink);--border-subtle:var(--gray-200);--divider:var(--gray-100);
+--focus-ring:var(--ink);--focus-ring-inverse:var(--neon);
+/* Status (intentional additions — not in brand sources) */
+--success:oklch(0.72 0.19 141);--warning:oklch(0.82 0.16 84);--danger:oklch(0.6 0.23 28);
+--success-subtle:oklch(0.95 0.05 141);--warning-subtle:oklch(0.96 0.05 84);--danger-subtle:oklch(0.95 0.04 28);
+/* Typography */
+--font-display:"Criteria CF","Gotham",Futura,"Century Gothic",sans-serif;/* DEMO cut has no accented glyphs — Ë/Ç fall back to Gotham */
+--font-body:"Gotham",Montserrat,"Helvetica Neue",sans-serif;
+--text-xs:12px;--text-sm:13px;--text-base:15px;--text-md:17px;--text-lg:20px;--text-xl:26px;--text-2xl:34px;--text-3xl:46px;--text-4xl:64px;
+--leading-tight:1.1;--leading-snug:1.25;--leading-normal:1.5;--leading-relaxed:1.65;
+--tracking-tag:0.32em;--tracking-caps:0.14em;--tracking-display:0.02em;--tracking-body:0.01em;
+/* Spacing · radii · borders · motion */
+--space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:20px;--space-6:24px;--space-8:32px;--space-10:40px;--space-12:48px;--space-16:64px;--space-20:80px;
+--radius-sm:8px;--radius-md:14px;--radius-lg:22px;--radius-tile:25%;--radius-pill:999px;
+--border-w:1.5px;--border-w-heavy:2.5px;
+--shadow-card:0 1px 2px rgb(0 0 0/0.05),0 6px 20px rgb(0 0 0/0.06);--shadow-pop:0 12px 32px rgb(0 0 0/0.16);
+--ease-out:cubic-bezier(0.2,0.8,0.2,1);--dur-fast:120ms;--dur-base:200ms;
+}
+
+/* ---- Document: the frame is the scroll container, the document never scrolls ---- */
+html,body{margin:0;background:#000;overflow:hidden}
+body{color:#fff;font-family:"Gotham",sans-serif;letter-spacing:.01em}
+/* no-JS: the logo and the statement, centred on black */
+.cs-noscript{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding:24px;box-sizing:border-box;background:#000;color:#fff;text-align:center}
+.cs-noscript img{display:block;height:34px}
+.cs-noscript h1{margin:0;font-family:'Criteria CF','Gotham',sans-serif;font-weight:400;text-transform:uppercase;letter-spacing:.01em;font-size:58px;line-height:.92}
+.cs-noscript p{margin:0;font-family:'Criteria CF','Gotham',sans-serif;text-transform:uppercase;letter-spacing:.32em;font-size:11px}
+
+/* ---- Keyframes (prototype line 19, verbatim) ---- */
+@keyframes cs-breathe{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes cs-scroll{0%{transform:translateY(0);opacity:0}18%{opacity:1}78%{opacity:1}100%{transform:translateY(-20px);opacity:0}}
+@keyframes cs-flow{0%{stroke-dashoffset:100}100%{stroke-dashoffset:0}}
+@keyframes cs-ident{0%{stroke-dashoffset:100;opacity:.6}30%{stroke-dashoffset:0;opacity:.6}70%{opacity:.6}100%{stroke-dashoffset:0;opacity:0}}
+
+/* ---- The frame (line 39 / 82): dark DS tokens + the material, fixed to the viewport, scrolls with a hidden scrollbar ---- */
+.cs-frame{--mat:#D5FF00;--focus-ring:#D5FF00;--ink:#fff;--paper:#000;--text-primary:#fff;--text-secondary:#C4C8BB;--text-tertiary:#9CA096;--border:#fff;--gray-50:#121310;--gray-100:#232520;--gray-200:#3A3D36;--gray-300:#54584F;--gray-400:#73776D;--gray-500:#9CA096;--gray-600:#C4C8BB;--gray-700:#DDE0D6;--gray-800:#ECEEE8;--gray-900:#F6F7F4;--danger:oklch(0.74 0.17 28);color-scheme:dark;
+  position:fixed;inset:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;background:#000;color:#fff;font-family:'Gotham',sans-serif;letter-spacing:.01em}
+.cs-frame::-webkit-scrollbar{display:none}
+.cs-frame a{color:inherit;text-decoration:none}
+/* frame rules of line 19 — the hover rule outranks .ny-input:disabled (0,3,0 vs 0,2,0), so the busy field hovers too, as in the prototype */
+.cs-frame a:focus-visible,.cs-frame button:focus-visible{outline:2px solid #D5FF00;outline-offset:4px}
+/* the capital hit buttons carry the prototype's inline `outline:{{ s.ring }}` (line 48) = none in the live player (line 470: c.focus is never set), which beats the frame ring above —
+   keyboard focus on a capital is shown by the lit state (focus → setHot: ring .45, node ×1.5, label #fff), not by the neon outline */
+.cs-frame .cs-cap-btn:focus-visible{outline:none}
+.cs-frame .ny-input:hover{border-color:#C4C8BB}
+
+/* ---- Scale-to-fit: track → sticky viewport box → the W×H stage scaled by s (spec "Runtime architecture") ---- */
+.cs-track{position:relative}
+.cs-fit{position:sticky;top:0;width:100%;height:100vh;height:100dvh;overflow:hidden}
+.cs-scaled{position:absolute;left:0;top:0;transform-origin:0 0}
+.cs-ground{position:absolute;inset:0;overflow:visible;pointer-events:none}
+.cs-stage{position:absolute;inset:0;overflow:hidden}
+/* mobile: the form section + footer in flow below the track, scaled like the stage (its box is sized to the scaled height) */
+.cs-below-box{position:relative;overflow:hidden}
+.cs-below{position:absolute;left:0;top:0;width:390px;transform-origin:0 0}
+
+/* ---- Stage children (desktop line 43–72 · mobile 86–94) ---- */
+/* the official icon, masked by the Stage */
+.cs-yimg{position:absolute;height:auto;display:block;opacity:0;pointer-events:none;-webkit-mask-size:100% 100%;mask-size:100% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat}
+.cs-logo{position:absolute;display:block}
+.cs-logo img{display:block}
+.cs-frame--d .cs-logo{left:72px;top:48px}.cs-frame--d .cs-logo img{height:44px}
+.cs-frame--m .cs-logo{left:24px;top:28px}.cs-frame--m .cs-logo img{height:30px}
+/* Kalo hyrjen → (line 45) */
+.cs-skip{all:unset;position:absolute;right:72px;top:98px;display:inline-flex;align-items:center;gap:10px;cursor:pointer;font-family:'Criteria CF','Gotham',sans-serif;text-transform:uppercase;letter-spacing:.14em;font-size:11px;color:#9CA096}
+.cs-skip:hover{color:#fff}
+/* COMING SOON (line 46 / 88) */
+.cs-soon{position:absolute;display:flex;align-items:center;font-family:'Criteria CF','Gotham',sans-serif;text-transform:uppercase;letter-spacing:.32em;color:#fff}
+.cs-frame--d .cs-soon{right:72px;top:56px;gap:12px;font-size:11px}
+.cs-frame--m .cs-soon{right:24px;top:36px;gap:10px;font-size:10px}
+.cs-beacon{width:8px;height:8px;border-radius:50%;background:var(--mat);display:inline-block;flex:none}
+/* country names (line 47): 0×0 anchor, centred 10px label */
+.cs-cl{position:absolute;width:0;height:0;pointer-events:none}
+.cs-cl-t{position:absolute;left:0;top:0;transform:translate(-50%,-50%);white-space:nowrap;font-family:'Criteria CF','Gotham',sans-serif;text-transform:uppercase;letter-spacing:.14em;font-size:10px;color:#73776D}
+/* capitals (line 48 / 89): 44×44 block, 22px ring, 8px node, 44px hit button, label + coordinates */
+.cs-cap{position:absolute;width:44px;height:44px}
+.cs-cap-in{position:absolute;left:0;top:0;width:44px;height:44px}
+.cs-cap-ring{position:absolute;left:11px;top:11px;width:22px;height:22px;border-radius:50%;border:1px solid var(--mat);box-sizing:border-box;transition:opacity 240ms linear}
+.cs-cap-node{position:absolute;left:18px;top:18px;width:8px;height:8px;border-radius:50%;border:1.5px solid var(--mat);box-sizing:border-box;transition:transform 240ms cubic-bezier(.2,0,0,1),background-color 200ms linear}
+.cs-cap-btn{all:unset;box-sizing:border-box;position:absolute;left:0;top:0;width:44px;height:44px;border-radius:50%;cursor:pointer}
+.cs-cap-lab{position:absolute;white-space:nowrap;font-family:'Criteria CF','Gotham',sans-serif;text-transform:uppercase;letter-spacing:.14em;transition:color 240ms linear;pointer-events:none}
+.cs-frame--d .cs-cap-lab{top:15px;font-size:11px;line-height:14px}
+.cs-frame--m .cs-cap-lab{top:16px;font-size:10px;line-height:12px}
+.cs-cap-coord{position:absolute;top:30px;white-space:nowrap;font-size:9px;line-height:12px;letter-spacing:.04em;transition:color 240ms linear;pointer-events:none}
+/* towns (line 49 / 90): 0×0 wrapper, 5px dot, Criteria 8 label — the Stage reveals and lights them with the tour */
+.cs-town{position:absolute;width:0;height:0;pointer-events:none;opacity:0}
+.cs-town-dot{position:absolute;left:-2.5px;top:-2.5px;width:5px;height:5px;border-radius:50%;background:var(--mat);transition:transform 240ms cubic-bezier(.2,0,0,1)}
+.cs-town-t{position:absolute;white-space:nowrap;font-family:'Criteria CF','Gotham',sans-serif;text-transform:uppercase;letter-spacing:.14em;font-size:8px;line-height:12px;color:#9CA096;transition:color 240ms linear,transform 240ms cubic-bezier(.2,0,0,1)}
+/* scroll cue (line 50 / 94, cueNode 516–517): bottom-centre; the 26×44 pill with the 6px rising node */
+.cs-cue-wrap{position:absolute;transform:translateX(-50%)}
+.cs-frame--d .cs-cue-wrap{left:720px;top:768px}
+.cs-frame--m .cs-cue-wrap{left:50%;top:728px}
+.cs-cue{all:unset;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;gap:12px;min-width:44px;padding:4px 8px;cursor:pointer;white-space:nowrap;font-family:'Criteria CF','Gotham',sans-serif;text-transform:uppercase;letter-spacing:.14em;font-size:10px;color:#9CA096}
+.cs-cue:hover{color:#fff}
+.cs-cue-pill{position:relative;display:block;width:26px;height:44px;border-radius:13px;border:1.5px solid #54584F;box-sizing:border-box;flex:none;transition:border-color 240ms linear}
+.cs-cue:hover>.cs-cue-pill{border-color:#73776D}
+.cs-cue-node{position:absolute;left:8.5px;width:6px;height:6px;border-radius:50%;background:var(--mat)}
+/* the knot button (line 51 / 91) — shown by the Stage from 90% */
+.cs-knot{all:unset;box-sizing:border-box;position:absolute;width:44px;height:44px;border-radius:50%;cursor:pointer;visibility:hidden}
+/* the statement (line 52 / 92) */
+.cs-h1{position:absolute;margin:0;font-family:'Criteria CF','Gotham',sans-serif;font-weight:400;text-transform:uppercase;letter-spacing:.01em;line-height:.92;color:#fff}
+.cs-frame--d .cs-h1{left:66px;top:540px;font-size:128px}
+.cs-frame--m .cs-h1{left:21px;top:392px;font-size:58px}
+.cs-h1-dot{transition:color 400ms linear}
+/* store badges (line 53 / 93): the stores' own artwork, equal visible height; fallback pills when either fails to load */
+.cs-badges{position:absolute;display:flex;gap:16px;align-items:center}
+.cs-frame--d .cs-badges{left:72px;top:804px}
+.cs-frame--m .cs-badges{left:24px;top:524px}
+.cs-badge{display:block;flex:none}
+.cs-badge--apple{height:32px}.cs-badge--apple img{display:block;height:32px;width:auto}
+.cs-badge--google{height:48px;margin:0 -8px}.cs-badge--google img{display:block;height:48px;width:auto}
+.cs-pill{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 16px;box-sizing:border-box;border:1.5px solid #3A3D36;border-radius:999px;color:#fff;font-family:'Criteria CF','Gotham',sans-serif;text-transform:uppercase;letter-spacing:.14em;font-size:11px;cursor:pointer;white-space:nowrap}
+.cs-pill:hover{border-color:#fff}
+.cs-pill-ph{width:16px;height:16px;border-radius:4px;border:1px dashed #54584F;box-sizing:border-box;flex:none}
+/* launch notification (line 54–68 desktop · 97–103 mobile) */
+.cs-form{position:absolute;left:968px;bottom:84px;width:400px}
+.cs-form-h2{margin:0;font-family:'Criteria CF','Gotham',sans-serif;font-weight:400;text-transform:uppercase;letter-spacing:.14em;font-size:13px;line-height:1.3;color:#fff}
+.cs-form-p{margin:8px 0 0;font-size:14px;line-height:1.5;color:#C4C8BB}
+.cs-frame--d .cs-form-p{text-wrap:pretty}/* the desktop p (line 56) only — the mobile p (line 99) wraps plainly, so its line break stays the 390 design's */
+.cs-form .cs-form-state{min-height:96px;display:flex;flex-direction:column;justify-content:flex-start}
+.cs-form-privacy{margin:12px 0 0;font-size:12px;line-height:1.5;color:#9CA096;text-wrap:pretty}
+.cs-form-note{color:#73776D}
+.cs-form-row{margin-top:16px;display:flex;gap:12px;align-items:flex-start}
+.cs-form-row__f{flex:1;min-width:0}
+.cs-form-row__b{flex:none;padding-top:26px}
+.cs-form-stack__f{margin-top:12px}
+.cs-form-stack__b{margin-top:10px}
+.cs-form-status{margin-top:20px;display:flex;gap:14px;align-items:flex-start}
+.cs-form-node{flex:none;width:8px;height:8px;margin-top:7px;border-radius:50%;background:var(--mat)}
+.cs-form-node--fail{background:none;box-sizing:border-box;border:1.5px solid var(--danger)}
+.cs-form-msg{font-size:15px;line-height:1.5;color:#fff}
+.cs-form-msg--grow{flex:1;min-width:0}
+.cs-form-retry{flex:none;padding-top:5px}
+.cs-below-form{position:relative;padding:8px 24px 40px}
+.cs-frame--m .cs-form-h2{font-size:12px}
+.cs-frame--m .cs-form-p{margin:6px 0 0;font-size:13px}
+.cs-frame--m .cs-form-privacy{margin:10px 0 0}
+/* footer (line 69–72 desktop · 104 mobile) */
+.cs-footer{position:absolute;left:72px;right:72px;top:860px;display:flex;align-items:center;justify-content:space-between;font-size:12px;color:#9CA096}
+.cs-footer-g{display:flex;gap:24px;align-items:center}
+.cs-footer a{cursor:pointer}
+.cs-footer a:hover{color:#fff}
+.cs-replay{all:unset;cursor:pointer;color:#73776D}
+.cs-replay:hover{color:#fff}
+.cs-lang{display:inline-flex;gap:8px;letter-spacing:.08em}
+.cs-lang-on{color:#fff}
+.cs-below-footer{padding:0 24px 24px;display:flex;justify-content:space-between;font-size:11px;color:#9CA096}

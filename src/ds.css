@@ -1,0 +1,24 @@
+/* NYJA design system — Button and Input/Field rules copied verbatim from
+   _ds/nyja-design-system-b69bcaba-a038-4dfd-9017-1ab508aba10e/_ds_bundle.js (Button.jsx css, lines 13–21 · Input.jsx fieldCss, lines 364–371).
+   They read the DS tokens; the frame (styles.css) re-points --ink / --paper / --gray-* / --focus-ring / --danger to the dark values. */
+
+/* components/buttons/Button.jsx */
+.ny-btn{font-family:var(--font-display);text-transform:uppercase;letter-spacing:var(--tracking-caps);font-weight:400;border-radius:var(--radius-pill);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;border:var(--border-w) solid transparent;transition:background-color var(--dur-fast) var(--ease-out),color var(--dur-fast) var(--ease-out);white-space:nowrap}
+.ny-btn:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+.ny-btn--sm{font-size:11px;padding:7px 16px}.ny-btn--md{font-size:13px;padding:11px 24px}.ny-btn--lg{font-size:15px;padding:15px 32px}
+.ny-btn--primary{background:var(--accent);color:var(--text-on-neon)}.ny-btn--primary:hover{background:var(--accent-hover)}.ny-btn--primary:active{background:var(--accent-press)}
+.ny-btn--secondary{background:var(--ink);color:var(--paper)}.ny-btn--secondary:hover{background:var(--gray-800)}
+.ny-btn--outline{background:transparent;color:var(--ink);border-color:var(--ink)}.ny-btn--outline:hover{background:var(--gray-100)}
+.ny-btn--ghost{background:transparent;color:var(--ink)}.ny-btn--ghost:hover{background:var(--gray-100)}
+.ny-btn--full{width:100%}
+.ny-btn:disabled{background:var(--gray-200);color:var(--gray-400);border-color:transparent;cursor:not-allowed}
+
+/* components/forms/Input.jsx */
+.ny-field{display:flex;flex-direction:column;gap:6px;font-family:var(--font-body)}
+.ny-field__label{font-family:var(--font-display);text-transform:uppercase;letter-spacing:var(--tracking-caps);font-size:11px;color:var(--text-primary)}
+.ny-field__hint{font-size:12px;color:var(--text-tertiary)}.ny-field__error{font-size:12px;color:var(--danger)}
+.ny-input{font-family:var(--font-body);font-size:var(--text-base);color:var(--text-primary);background:var(--paper);border:var(--border-w) solid var(--ink);border-radius:var(--radius-md);padding:11px 14px;transition:outline-color var(--dur-fast)}
+.ny-input::placeholder{color:var(--gray-400)}
+.ny-input:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+.ny-input:disabled{background:var(--gray-100);border-color:var(--gray-300);color:var(--gray-400)}
+.ny-input--error{border-color:var(--danger)}

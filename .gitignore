@@ -1,0 +1,10 @@
+node_modules
+dist
+.env
+.env.local
+# Licensed fonts are not committed — drop CriteriaCF-Regular.otf and Gotham-Book.otf into public/fonts/ (see README).
+public/fonts/*.otf
+public/fonts/*.woff2
+test-results
+playwright-report
+.DS_Store
