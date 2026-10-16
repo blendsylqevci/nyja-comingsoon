@@ -57,6 +57,8 @@ export function mountForm(host: HTMLElement, opts: FormOptions): FormApi {
   };
 
   const finish = (st: Status, mine: number) => { if (!alive || mine !== seq) return; status = st; render(); };
+  // The endpoint refused the address (400: its own rule, or a blocked word — it does not say which): back to the field with the invalid-address line.
+  const refused = (mine: number) => { if (!alive || mine !== seq) return; status = 'idle'; setBusy(false); setError(copy.emailError); input?.focus(); };
   const submit = (e: Event) => {
     e.preventDefault();
     if (status === 'busy') return;
@@ -65,7 +67,7 @@ export function mountForm(host: HTMLElement, opts: FormOptions): FormApi {
     const mine = ++seq;
     if (endpoint) {
       fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, locale: lang, source: 'coming-soon' }) })
-        .then(res => finish(res.ok ? 'done' : res.status === 409 ? 'exists' : 'fail', mine), () => finish('fail', mine));
+        .then(res => res.status === 400 ? refused(mine) : finish(res.ok ? 'done' : res.status === 409 ? 'exists' : 'fail', mine), () => finish('fail', mine));
     } else {
       timer = window.setTimeout(() => finish(/gabim/i.test(email) ? 'fail' : 'done', mine), SIM_MS);
     }

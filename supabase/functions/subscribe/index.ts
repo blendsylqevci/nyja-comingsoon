@@ -4,7 +4,8 @@
 // designer's confirmation email "Je lidhur — NYJA" (email-sq.html → email_sq.ts) once, from RESEND_FROM, with the unsubscribe link of the
 // `unsubscribe` function (token = the row id). 2xx = registered; 409 { error: 'exists' } = the address is already on the list (the page says so —
 // the owner's choice, 2026-10-16, over hiding whether an email is on the list; the repeat still completes a missing contact / confirmation);
-// an unsubscribed address that signs up again is a new signup (2xx, re-subscribed); 400 = invalid address; 5xx = our failure (the page shows
+// an unsubscribed address that signs up again is a new signup (2xx, re-subscribed); 400 = invalid address — also an address carrying one of the
+// owner's blocked words (BLOCKED below; same answer, nothing to tell); 5xx = our failure (the page shows
 // "Provo përsëri" / "Please try again"). Deployed with verify_jwt off: the page calls it anonymously.
 // Secrets (Supabase → Edge Functions → Secrets, or Vault for the key — see resendKey()): RESEND_API_KEY (needed for Resend; without it signups are only stored), RESEND_FROM (default
 // "NYJA <njoftime@nyja-ks.com>" — the domain must be verified in Resend before anything leaves), RESEND_SEGMENT_ID, UNSUBSCRIBE_URL,
@@ -15,6 +16,15 @@ import { EMAIL_SQ } from './email_sq.ts';
 
 /** The page's own rule (src/config.ts EMAIL_RE). */
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+/**
+ * Words the owner will not have in an address (Blend, 2026-10-16). Matched against the address's letter-only tokens with diacritics folded
+ * (ç → c, ë → e), as whole tokens — so shqipe, Karuçi, digital, Karim pass — and, for the long compounds (6+ letters), as a token's prefix,
+ * so a suffix glued on (karipidhiks) does not get through. Such an address is simply "invalid" to the page.
+ */
+const BLOCKED = ['karipidhi', 'pidhikari', 'kari', 'pidhi', 'piqkakari', 'karipiqka', 'piqka', 'pidhnone', 'taqinonen', 'qi', 'mut', 'hamakarin', 'karuc', 'dig'];
+const BLOCKED_LONG = BLOCKED.filter((w) => w.length >= 6);
+const fold = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+const blocked = (email: string) => fold(email).split(/[^a-z]+/).some((t) => t.length > 0 && (BLOCKED.includes(t) || BLOCKED_LONG.some((w) => t.startsWith(w))));
 /** Resend segment "Coming soon" (created 2026-10-16). */
 const SEGMENT_ID = Deno.env.get('RESEND_SEGMENT_ID') ?? '8d999461-daf0-4714-bd43-bdd961e97c96';
 const ORIGINS = (Deno.env.get('ALLOWED_ORIGINS') ?? '*').split(',').map((s) => s.trim()).filter(Boolean);
@@ -53,7 +63,7 @@ Deno.serve(async (req: Request) => {
   let body: { email?: unknown; locale?: unknown; source?: unknown };
   try { body = await req.json(); } catch { return json(400, { ok: false, error: 'json' }, h); }
   const email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : '';
-  if (email.length > 254 || !EMAIL_RE.test(email)) return json(400, { ok: false, error: 'email' }, h);
+  if (email.length > 254 || !EMAIL_RE.test(email) || blocked(email)) return json(400, { ok: false, error: 'email' }, h);
   const locale = body.locale === 'en' ? 'en' : 'sq';
   const source = typeof body.source === 'string' && body.source.length > 0 && body.source.length <= 64 ? body.source : 'coming-soon';
 

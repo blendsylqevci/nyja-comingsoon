@@ -10,7 +10,7 @@ type W = Window & { __nyja?: NyjaDebug };
 
 /** Console errors + page errors are collected for every test and must be empty. This sandbox cannot reach Apple's / Google's badge hosts, so those two image failures — and any other net::ERR resource failure — are expected and ignored; so is a missing licensed font (public/fonts is gitignored — the page falls back). */
 // The mocked 409 / 500 answers of the subscribe endpoint are logged by Chromium as resource errors — they are the point of that test, not a page error.
-const EXPECTED = /net::ERR|applemediaservices\.com|play\.google\.com|\/fonts\/|status of (409|500) \([^)]*\) @ \S*\/functions\/v1\/subscribe/;
+const EXPECTED = /net::ERR|applemediaservices\.com|play\.google\.com|\/fonts\/|status of (400|409|500) \([^)]*\) @ \S*\/functions\/v1\/subscribe/;
 const test = base.extend<{ cleanConsole: void }>({
   cleanConsole: [async ({ page }, use) => {
     const errors: string[] = [];
@@ -240,7 +240,7 @@ test.describe('desktop 1440 × 900', () => {
     expect(await page.evaluate(() => localStorage.getItem('nyja-cs-lang'))).toBe('sq');
   });
 
-  test('live endpoint (mocked): 200 → confirmed, 409 → already registered, 500 → error with retry; English copy too', async ({ page }) => {
+  test('live endpoint (mocked): 200 → confirmed, 409 → already registered, 500 → error with retry, 400 → back to the field; English copy too', async ({ page }) => {
     await boot(page, 'motion=static&canvas=d');
     const sim = await page.getByText('Prototip UI/UX — asnjë email nuk regjistrohet.').count();
     test.skip(sim > 0, 'VITE_SUBSCRIBE_URL is unset — the form simulates; nothing to mock');
@@ -249,7 +249,7 @@ test.describe('desktop 1440 × 900', () => {
     let status = 200;
     await page.route('**/functions/v1/subscribe', (route) => route.request().method() === 'OPTIONS'
       ? route.fulfill({ status: 204, headers: cors })
-      : route.fulfill({ status, headers: { ...cors, 'Content-Type': 'application/json' }, body: JSON.stringify(status === 200 ? { ok: true } : { ok: false, error: status === 409 ? 'exists' : 'db' }) }));
+      : route.fulfill({ status, headers: { ...cors, 'Content-Type': 'application/json' }, body: JSON.stringify(status === 200 ? { ok: true } : { ok: false, error: status === 409 ? 'exists' : status === 400 ? 'email' : 'db' }) }));
     const submit = async (address: string, cta: string) => { await page.locator('input[name="email"]').fill(address); await page.getByRole('button', { name: cta }).click(); };
     await submit('emri@domain.com', 'Më njofto');
     await expect(page.getByRole('status')).toContainText('U regjistrove me sukses.');
@@ -265,6 +265,13 @@ test.describe('desktop 1440 × 900', () => {
     await expect(page.getByRole('alert')).toContainText('Nuk arritëm ta regjistrojmë emailin.');
     await page.getByRole('button', { name: 'Provo përsëri' }).click();
     await expect(page.locator('input[name="email"]')).toHaveValue('emri@domain.com');
+    // the endpoint's own refusal (400 — its rule or a blocked word): the field stays, with the invalid-address line, no status
+    await boot(page, 'motion=static&canvas=d'); status = 400;
+    await submit('emri@domain.com', 'Më njofto');
+    await expect(page.getByText('Shkruaj një email të vlefshëm, p.sh. emri@domain.com')).toBeVisible();
+    await expect(page.locator('input[name="email"]')).toHaveAttribute('aria-invalid', 'true');
+    await expect(page.locator('input[name="email"]')).toBeEnabled();
+    await expect(page.getByRole('status')).toHaveCount(0);
     // the English copy of the 409
     await boot(page, 'motion=static&canvas=d&lang=en'); status = 409;
     await submit('name@domain.com', 'Notify me');
