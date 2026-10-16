@@ -34,13 +34,13 @@ const icon = (page: Page) => page.locator('.cs-stage img[src$="nyja-icon-neon.sv
 const maskOf = (page: Page) => icon(page).evaluate((el) => { const s = getComputedStyle(el); return s.maskImage || s.webkitMaskImage || el.style.maskImage || el.style.webkitMaskImage; });
 /** Horizontal overflow: the document and the scroll container itself (overflow-x hidden still reports a wider scrollWidth). */
 const overflow = (page: Page) => page.evaluate(() => { const f = document.querySelector<HTMLElement>('.cs-frame')!; return { doc: document.documentElement.scrollWidth - innerWidth, frame: f.scrollWidth - f.clientWidth }; });
-/** A native touch event on the stage at a design-px position (client = the stage's rect + p × its scale) — the finger lamp listens to these, not to pointer events. */
-const touch = (page: Page, type: 'touchstart' | 'touchmove' | 'touchend', x: number, y: number) => page.evaluate(([type, x, y, W]) => {
-  const el = document.querySelector<HTMLElement>('.cs-stage')!, r = el.getBoundingClientRect(), sc = r.width / W;
+/** A native touch event at a stage design-px position (client = the stage's rect + p × its scale), dispatched on `on` (the stage, or the frame — where the lamp listens; the letterbox is outside the stage). */
+const touch = (page: Page, type: 'touchstart' | 'touchmove' | 'touchend', x: number, y: number, on = '.cs-stage') => page.evaluate(([type, x, y, W, on]) => {
+  const st = document.querySelector<HTMLElement>('.cs-stage')!, el = document.querySelector<HTMLElement>(on)!, r = st.getBoundingClientRect(), sc = r.width / W;
   const t = new Touch({ identifier: 1, target: el, clientX: r.left + x * sc, clientY: r.top + y * sc });
   const touches = type === 'touchend' ? [] : [t];
   el.dispatchEvent(new TouchEvent(type, { touches, changedTouches: [t], targetTouches: touches, bubbles: true, cancelable: true }));
-}, [type, x, y, MOB.W] as const);
+}, [type, x, y, MOB.W, on] as const);
 /** The lamp: the lit copies of the page ground (inline opacity '0' / '1', faded by CSS) and the torch mask's centre in design px. */
 const lamp = (page: Page) => page.evaluate(() => { const g = document.querySelector<SVGGElement>('.cs-ground svg > g')!, c = document.querySelector<SVGCircleElement>('.cs-stage svg mask#tm circle')!; return { on: g.style.opacity, x: parseFloat(c.getAttribute('cx')!), y: parseFloat(c.getAttribute('cy')!), fill: g.firstElementChild!.getAttribute('fill') }; });
 /** Screenshots for human review: test-results/shots/<name>.png */
@@ -114,11 +114,32 @@ test.describe('mobile 390 × 844', () => {
     await expect.poll(async () => { const l = await lamp(page); return Math.hypot(l.x - 260, l.y - 500); }, { timeout: 1_000 }).toBeLessThan(1); // glued: no spring lag
     await touch(page, 'touchmove', 60, 700);
     await expect.poll(async () => { const l = await lamp(page); return Math.hypot(l.x - 60, l.y - 700); }, { timeout: 1_000 }).toBeLessThan(1);
-    await touch(page, 'touchend', 60, 700);
+    // the letterbox: a finger beside the stage (x < 0) lights the ground there too — the listener is the frame's, the ground is padded
+    await touch(page, 'touchmove', -40, 300, '.cs-frame');
+    await expect.poll(async () => { const l = await lamp(page); return Math.hypot(l.x + 40, l.y - 300); }, { timeout: 1_000 }).toBeLessThan(1);
+    await touch(page, 'touchend', -40, 300, '.cs-frame');
     await page.waitForTimeout(500);
     expect(await lamp(page)).toMatchObject({ on: '1', fill: 'url(#dotsbglt)' }); // the 1200 ms hold after lift
     await expect.poll(async () => (await lamp(page)).on, { timeout: 3_000 }).toBe('0');
     expect((await lamp(page)).fill).toBe('url(#dotsbgl)');
+  });
+
+  test('a finger during a scroll: the lamp follows the drag through the scroll even with no touchmove at all', async ({ page }) => {
+    await boot(page, 'motion=full&canvas=m&tourms=1500');
+    await expect.poll(() => phase(page), { timeout: 10_000 }).toBe('links');
+    await touch(page, 'touchstart', 200, 600, '.cs-frame');
+    await expect.poll(async () => (await lamp(page)).on).toBe('1');
+    await expect.poll(async () => { const l = await lamp(page); return Math.hypot(l.x - 200, l.y - 600); }, { timeout: 1_000 }).toBeLessThan(1);
+    // the frame scrolls 100 design px under the finger without a single touchmove (a browser that withholds them while it scrolls): the content moves with the finger, so finger y = 600 − 100
+    await scrollTrack(page, .25);
+    await expect.poll(async () => { const l = await lamp(page); return Math.hypot(l.x - 200, l.y - 500); }, { timeout: 1_000 }).toBeLessThan(1);
+    expect((await lamp(page)).on).toBe('1');
+    // a real sample resets the reference: the next scroll is measured from it
+    await touch(page, 'touchmove', 220, 450, '.cs-frame');
+    await scrollTrack(page, .5);
+    await expect.poll(async () => { const l = await lamp(page); return Math.hypot(l.x - 220, l.y - 350); }, { timeout: 1_000 }).toBeLessThan(1);
+    await touch(page, 'touchend', 220, 450, '.cs-frame');
+    await expect.poll(async () => (await lamp(page)).on, { timeout: 3_000 }).toBe('0');
   });
 
   test('English on mobile: ?lang=en — the cue, the capitals, the statement, the form; the footer switch keeps the scroll', async ({ page }) => {

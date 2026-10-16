@@ -33,8 +33,8 @@ interface Reg {
   // SVG, built by net()
   bg: SVGSVGElement | null; plane: HTMLDivElement | null; ov: SVGSVGElement | null;
   bgRects: SVGRectElement[]; tm: SVGMaskElement | null; tmc: SVGMaskElement | null;
-  /** The lamp's two copies of the ground (lit, core) — their fill switches to the brighter patterns under a finger. */
-  litRect: SVGRectElement | null; coreRect: SVGRectElement | null;
+  /** The lamp's two copies of the ground (lit, core): circles of the lamp's radius through the torch masks — their fill switches to the brighter patterns under a finger. */
+  litC: SVGCircleElement | null; coreC: SVGCircleElement | null;
   edges: SVGPathElement[]; pulses: SVGPathElement[]; borders: SVGPathElement[]; dots: SVGPathElement[]; traces: SVGPathElement[];
   grads: SVGLinearGradientElement[]; gstops: SVGStopElement[][]; halos: SVGCircleElement[];
   trail: SVGPathElement | null; haloG: SVGGElement | null; torch: SVGCircleElement | null; torchC: SVGCircleElement | null; torchG: SVGGElement | null;
@@ -48,6 +48,10 @@ interface Reg {
   touch: boolean; lift: ReturnType<typeof setTimeout> | undefined;
   /** Which lamp patterns are applied: true = the brighter touch copies (null = not yet written). */
   touchLit: boolean | null;
+  /** The lamp's radius of the last frame (breathing, speed), so a touch sample between frames is drawn at the current size. */
+  rr: number;
+  /** Scroll fallback for the finger: the last touch sample's y and the frame's scroll (design px) when it arrived; scrollPx = the frame's scroll now (setScroll). */
+  touchY: number; touchScroll: number; scrollPx: number;
   maskKey: string | null; identOn: boolean; lastFk: number; lastTour: number; dirty: boolean; hot: number | null; sel: number | null; scr: Pt[] | null;
 }
 
@@ -71,17 +75,17 @@ export class Stage implements StageApi {
     this.G = o.G; this.g = o.g; this.m = o.motion; this.mobile = o.mobile; this.hooks = o.hooks; this.tourMs = o.tourMs ?? TOUR_MS;
     this.snap = this.m !== 'full';
     this.n = {
-      bg: null, plane: null, ov: null, bgRects: [], tm: null, tmc: null, litRect: null, coreRect: null,
+      bg: null, plane: null, ov: null, bgRects: [], tm: null, tmc: null, litC: null, coreC: null,
       edges: [], pulses: [], borders: [], dots: [], traces: [], grads: [], gstops: [], halos: [],
       trail: null, haloG: null, torch: null, torchC: null, torchG: null, van: null, ident: null,
       caps: [], towns: [], clabels: [], yimg: null, cue: null, knot: null, dot: null,
       // Desktop: 'dark' until play(). Mobile: no timers — with full motion the tour simply starts (phase 'tour'); otherwise the finished state ('links', tour 1) from the first frame.
       ph: this.mobile ? (this.m === 'full' ? 'tour' : 'links') : 'dark', fk: 0, form: 0, tour: this.mobile && this.m !== 'full' ? 1 : 0, tourT0: null, tourEnd: false, cut: false,
-      px: 0, py: 0, tx: 0, ty: 0, ptr: null, lx: null, ly: null, vx: 0, vy: 0, torchOn: null, vanDir: 0, touch: false, lift: undefined, touchLit: null,
+      px: 0, py: 0, tx: 0, ty: 0, ptr: null, lx: null, ly: null, vx: 0, vy: 0, torchOn: null, vanDir: 0, touch: false, lift: undefined, touchLit: null, rr: o.G.torch, touchY: 0, touchScroll: 0, scrollPx: 0,
       maskKey: null, identOn: false, lastFk: -1, lastTour: -1, dirty: true, hot: null, sel: null, scr: null,
     };
     this.net(o.stage, o.ground);
-    this.touchLamp(o.stage);
+    this.touchLamp(o.touchHost ?? o.stage, o.stage);
     this.applyPhase();
     this.raf = requestAnimationFrame(this.tick);
   }
@@ -118,7 +122,15 @@ export class Stage implements StageApi {
     this.setPh('ready'); try { localStorage.setItem(INTRO_KEY, 'seen'); } catch { /* storage unavailable */ }
   }
   ready(): boolean { return ge(this.n.ph, this.mobile ? 'links' : 'ready'); }
-  setScroll(topDesignPx: number) { this.n.form = clamp(topDesignPx / this.G.track); }
+  /**
+   * The frame scrolled to `topDesignPx` (unclamped design px; the track clamps the progress). While a finger is down the lamp follows the scroll as well: during a drag the
+   * content moves 1:1 with the finger, so finger y = the last touch sample's y − the scroll since it. The light keeps moving where a browser throttles or withholds
+   * touchmove while it scrolls (2026-10-16, after a phone test: the light froze for seconds under a dragging finger). A real sample resets the reference (finger()).
+   */
+  setScroll(topDesignPx: number) {
+    const n = this.n; n.form = clamp(topDesignPx / this.G.track); n.scrollPx = topDesignPx;
+    if (n.touch && n.ptr) { const y = n.touchY - (topDesignPx - n.touchScroll); if (y !== n.ptr.y) this.finger({ x: n.ptr.x, y }, false); }
+  }
 
   // Current positions of the three capitals for the network at progress fk.
   private capPos(): Pt[] { const g = this.g, e = geoE(this.n.fk); return g.caps.map((c, i) => ({ x: c.x + (g.yEnd[i].x - c.x) * e, y: c.y + (g.yEnd[i].y - c.y) * e })); }
@@ -228,15 +240,14 @@ export class Stage implements StageApi {
       // the spring's lag of ≈10× the finger's speed read as the light stopping; the prototype still springs), and the ground copies switch to the brighter touch patterns.
       if (n.ptr) {
         if (n.lx == null || n.ly == null) { n.lx = n.ptr.x; n.ly = n.ptr.y; n.vx = 0; n.vy = 0; }
-        if (n.touch) { n.vx = n.ptr.x - n.lx; n.vy = n.ptr.y - n.ly; n.lx = n.ptr.x; n.ly = n.ptr.y; }
+        if (n.touch) { n.lx = n.ptr.x; n.ly = n.ptr.y; n.vx = 0; n.vy = 0; } // finger() already drew it there the moment the sample came; the frame keeps the radius alive
         else { const k = .06, c = .62; n.vx = (n.vx + (n.ptr.x - n.lx) * k) * c; n.vy = (n.vy + (n.ptr.y - n.ly) * k) * c; n.lx += n.vx; n.ly += n.vy; }
-        const sp = Math.hypot(n.vx, n.vy), br = 1 + Math.min(.35, sp * .02), rr = this.G.torch * (1 + .025 * Math.sin(now / 1100)) * br, ex = n.lx.toFixed(1), ey = n.ly.toFixed(1);
-        n.torch.setAttribute('cx', ex); n.torch.setAttribute('cy', ey); n.torch.setAttribute('r', rr.toFixed(1)); if (n.torchC) { n.torchC.setAttribute('cx', ex); n.torchC.setAttribute('cy', ey); n.torchC.setAttribute('r', (rr * .38).toFixed(1)); }
-        if (n.torchC) n.torchC.setAttribute('r', (rr * .42).toFixed(1)); // the prototype's second write wins: the core is .42 × the lamp
+        const sp = Math.hypot(n.vx, n.vy), br = 1 + Math.min(.35, sp * .02); n.rr = this.G.torch * (1 + .025 * Math.sin(now / 1100)) * br;
+        this.lamp();
       }
       else { n.lx = null; }
       const lit = n.touch && n.ptr !== null;
-      if (lit !== n.touchLit) { n.touchLit = lit; if (n.litRect) n.litRect.setAttribute('fill', 'url(#' + (lit ? 'dotsbglt' : 'dotsbgl') + ')'); if (n.coreRect) n.coreRect.setAttribute('fill', 'url(#' + (lit ? 'dotsbgct' : 'dotsbgc') + ')'); }
+      if (lit !== n.touchLit) { n.touchLit = lit; if (n.litC) n.litC.setAttribute('fill', 'url(#' + (lit ? 'dotsbglt' : 'dotsbgl') + ')'); if (n.coreC) n.coreC.setAttribute('fill', 'url(#' + (lit ? 'dotsbgct' : 'dotsbgc') + ')'); }
       // Lamp fade: in 500ms / out 900ms on the one easing.
       if (n.torchG) { const want = n.ptr ? 1 : 0; if (want !== n.torchOn) { n.torchOn = want; n.torchG.style.transition = want ? 'opacity 500ms ' + EASE : 'opacity 900ms ' + EASE; n.torchG.style.opacity = String(want); } }
     }
@@ -267,7 +278,7 @@ export class Stage implements StageApi {
         d.map(dd => sv('path', { d: dd, 'vector-effect': 'non-scaling-stroke' })))));
     const kids: Element[] = [], ovKids: Element[] = [];
     n.torch = sv('circle', { cx: -1000, cy: -1000, r: G.torch, fill: 'url(#torch)' });
-    n.torchC = sv('circle', { cx: -1000, cy: -1000, r: G.torch * .38, fill: 'url(#torchc)' });
+    n.torchC = sv('circle', { cx: -1000, cy: -1000, r: G.torch * .42, fill: 'url(#torchc)' }); // the core is .42 × the lamp (the prototype's second write wins over its .38)
     n.tm = sv('mask', { id: 'tm', maskUnits: 'userSpaceOnUse', x: 0, y: 0, width: G.W, height: G.H }, null, [n.torch]);
     n.tmc = sv('mask', { id: 'tmc', maskUnits: 'userSpaceOnUse', x: 0, y: 0, width: G.W, height: G.H }, null, [n.torchC]);
     n.halos = CAPS.map((_c, i) => sv('circle', { cx: g.caps[i].x, cy: g.caps[i].y, r: G.halo, fill: 'url(#halo)' }));
@@ -317,10 +328,13 @@ export class Stage implements StageApi {
     // The connections live in a stage-space overlay (not in the tilted plane): their points are projected per frame with the plane's tilt and their own elevation.
     n.ov = sv('svg', { 'aria-hidden': 'true', width: G.W, height: G.H, viewBox: '0 0 ' + G.W + ' ' + G.H }, svgStyle, ovKids);
     // Page ground: the device matrix over the whole stage, almost invisible — it only reads up close (review 15: a very slight blur); the lamp = two brighter copies through the torch masks.
+    // The copies are circles of the lamp's own radius, not full-stage rects (the prototype's): what the browser rasterizes per frame is then the lamp, not the screen — on a
+    // phone the full-screen masks froze the light for seconds under a moving finger (2026-10-16). The patterns are userSpaceOnUse, so the copies' tiles align with the ground's.
     const bgRect = sv('rect', { x: 0, y: 0, width: G.W, height: G.H, fill: 'url(#dotsbg)' });
-    const litRect = sv('rect', { x: 0, y: 0, width: G.W, height: G.H, fill: 'url(#dotsbgl)', mask: 'url(#tm)' }), coreRect = sv('rect', { x: 0, y: 0, width: G.W, height: G.H, fill: 'url(#dotsbgc)', mask: 'url(#tmc)' });
-    n.torchG = sv('g', null, { opacity: '0', transition: 'opacity 500ms ' + EASE }, [litRect, coreRect]);
-    n.bgRects = [bgRect, litRect, coreRect]; n.litRect = litRect; n.coreRect = coreRect;
+    n.litC = sv('circle', { cx: -1000, cy: -1000, r: G.torch, fill: 'url(#dotsbgl)', mask: 'url(#tm)' });
+    n.coreC = sv('circle', { cx: -1000, cy: -1000, r: G.torch * .42, fill: 'url(#dotsbgc)', mask: 'url(#tmc)' });
+    n.torchG = sv('g', null, { opacity: '0', transition: 'opacity 500ms ' + EASE }, [n.litC, n.coreC]);
+    n.bgRects = [bgRect];
     n.bg = sv('svg', { 'aria-hidden': 'true', width: G.W, height: G.H, viewBox: '0 0 ' + G.W + ' ' + G.H }, { position: 'absolute', left: '0', top: '0', pointerEvents: 'none', display: 'block', filter: 'blur(.6px)', opacity: on('map') ? '1' : '0', transition: tr(m, 'opacity 1200ms linear', 'opacity 200ms linear') }, [bgRect, n.torchG]);
     // The plane: rotateX · rotateY about the map centre, answered by the browser's perspective set on the stage.
     n.plane = document.createElement('div');
@@ -363,23 +377,40 @@ export class Stage implements StageApi {
   togglePick(i: number) { const n = this.n; n.sel = n.sel === i ? null : i; n.dirty = true; this.hooks.onSel(n.sel); }
 
   /**
-   * The finger lamp (prototype touchLamp, lines 301–310 — both canvases, review of 2026-10-16): native passive touch listeners on the stage. Unlike pointer
-   * events they keep firing while the frame scrolls (a pan fires pointercancel the moment it starts, which would put the light out — so the page ignores
-   * touch pointers altogether). The light follows the finger, holds 1200ms after it lifts, then fades (900ms, in the rAF loop); on the desktop canvas the
-   * finger also drives the plane tilt. Full motion only in effect: tick() renders the lamp and the parallax only then. Two departures from the prototype
-   * (review of 2026-10-16, Blend, after testing on a phone): the light is glued to the finger (no spring) and a touch brighter under it — see tick().
+   * The finger lamp (prototype touchLamp, lines 301–310 — both canvases, review of 2026-10-16): native passive touch listeners. Unlike pointer events they keep
+   * firing while the frame scrolls (a pan fires pointercancel the moment it starts, which would put the light out — so the page ignores touch pointers altogether).
+   * The light follows the finger, holds 1200ms after it lifts, then fades (900ms, in the rAF loop); on the desktop canvas the finger also drives the plane tilt.
+   * Full motion only in effect: tick() renders the lamp and the parallax only then. Departures from the prototype (Blend, 2026-10-16, after phone tests):
+   * the listeners sit on the FRAME (`host`, the whole viewport — letterbox included — in the stage's coordinates), so the effect appears wherever a finger lands;
+   * each sample is drawn at once by finger() instead of waiting for the next frame; the light is glued to the finger (no spring) and a touch brighter under it;
+   * and the scroll fallback of setScroll() keeps it on the finger even where touchmove stops while the frame scrolls.
    */
-  private touchLamp(el: HTMLElement) {
-    const n = this.n, G = this.G, tilt = !this.mobile;
-    const at = (t: Touch): Pt => { const r = el.getBoundingClientRect(), sc = r.width / G.W || 1; return { x: (t.clientX - r.left) / sc, y: (t.clientY - r.top) / sc }; };
-    const on = (e: TouchEvent) => { const t = e.touches[0]; if (!t) return; clearTimeout(n.lift); const p = at(t); n.ptr = p; n.touch = true; if (tilt) { n.tx = clamp(p.x / G.W) * 2 - 1; n.ty = clamp(p.y / G.H) * 2 - 1; } };
-    const off = (e: TouchEvent) => { if (e.touches.length) return; clearTimeout(n.lift); n.lift = setTimeout(() => { n.ptr = null; n.touch = false; if (tilt) { n.tx = 0; n.ty = 0; } }, 1200); };
+  private touchLamp(host: HTMLElement, stage: HTMLElement) {
+    const n = this.n, G = this.G;
+    const at = (t: Touch): Pt => { const r = stage.getBoundingClientRect(), sc = r.width / G.W || 1; return { x: (t.clientX - r.left) / sc, y: (t.clientY - r.top) / sc }; };
+    const on = (e: TouchEvent) => { const t = e.touches[0]; if (!t) return; clearTimeout(n.lift); this.finger(at(t), true); };
+    const off = (e: TouchEvent) => { if (e.touches.length) return; clearTimeout(n.lift); n.lift = setTimeout(() => { n.ptr = null; n.touch = false; if (!this.mobile) { n.tx = 0; n.ty = 0; } }, 1200); };
     const opts: AddEventListenerOptions = { passive: true };
-    el.addEventListener('touchstart', on, opts); el.addEventListener('touchmove', on, opts); el.addEventListener('touchend', off, opts); el.addEventListener('touchcancel', off, opts);
-    this.untouch = () => { el.removeEventListener('touchstart', on); el.removeEventListener('touchmove', on); el.removeEventListener('touchend', off); el.removeEventListener('touchcancel', off); };
+    host.addEventListener('touchstart', on, opts); host.addEventListener('touchmove', on, opts); host.addEventListener('touchend', off, opts); host.addEventListener('touchcancel', off, opts);
+    this.untouch = () => { host.removeEventListener('touchstart', on); host.removeEventListener('touchmove', on); host.removeEventListener('touchend', off); host.removeEventListener('touchcancel', off); };
+  }
+  /** The finger is at p (stage design px): the lamp is drawn there now — not on the next frame — and the desktop canvas tilts toward it. `sample` = a touch event (the scroll fallback's reference), false = derived from the scroll. */
+  private finger(p: Pt, sample: boolean) {
+    const n = this.n, G = this.G;
+    n.ptr = p; n.touch = true; n.lx = p.x; n.ly = p.y; n.vx = 0; n.vy = 0;
+    if (sample) { n.touchY = p.y; n.touchScroll = n.scrollPx; }
+    if (!this.mobile) { n.tx = clamp(p.x / G.W) * 2 - 1; n.ty = clamp(p.y / G.H) * 2 - 1; }
+    this.lamp();
+  }
+  /** Writes the lamp — the two masks and the two lit copies — at (lx, ly) with the radius rr: every frame the pointer is set (tick) and the moment a finger sample arrives (finger). */
+  private lamp() {
+    const n = this.n; if (n.lx == null || n.ly == null) return;
+    const ex = n.lx.toFixed(1), ey = n.ly.toFixed(1), r1 = n.rr.toFixed(1), r2 = (n.rr * .42).toFixed(1);
+    for (const c of [n.torch, n.litC]) if (c) { c.setAttribute('cx', ex); c.setAttribute('cy', ey); c.setAttribute('r', r1); }
+    for (const c of [n.torchC, n.coreC]) if (c) { c.setAttribute('cx', ex); c.setAttribute('cy', ey); c.setAttribute('r', r2); }
   }
 
-  /** Extend the page ground by (padX, padY) design px so the texture continues under the letterbox: the SVG, its rects and the two lamp masks grow around the same origin (the patterns are userSpaceOnUse, so the matrix tiles on without a seam). */
+  /** Extend the page ground by (padX, padY) design px so the texture continues under the letterbox: the SVG, its rect and the two lamp masks' regions grow around the same origin (the patterns are userSpaceOnUse, so the matrix tiles on without a seam; a finger in the letterbox lights it too). */
   setPad(padX: number, padY: number) {
     const n = this.n, G = this.G; if (!n.bg) return;
     const W = G.W + 2 * padX, H = G.H + 2 * padY;

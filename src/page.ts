@@ -179,7 +179,7 @@ export function mountPage(root: HTMLElement, G: Canvas, g: Geometry | null, opts
 
   // ---- The Stage: appends the page-ground SVG to .cs-ground and the plane + overlay SVGs to .cs-stage in its constructor ----
   const hooks: StageHooks = { onPhase: ph => applyPhase(ph), onHot: i => { hot = i; applyHotSel(); }, onSel: i => { sel = i; applyHotSel(); }, scrollTo };
-  const stage: StageApi = g ? new Stage({ G, g, stage: stageEl, ground, motion, mobile, hooks, tourMs: opts.tourMs }) : new NullStage();
+  const stage: StageApi = g ? new Stage({ G, g, stage: stageEl, ground, touchHost: frame, motion, mobile, hooks, tourMs: opts.tourMs }) : new NullStage();
   applyPhase(stage.phase); applyHotSel();
   // template order (line 43–72 / 86–94); without geometry the brand composition at rest — the icon whole, logo, statement, badges, form, footer; no capitals, towns, cue or knot
   const children: (HTMLElement | null)[] = mobile

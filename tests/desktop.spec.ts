@@ -37,13 +37,13 @@ const icon = (page: Page) => page.locator('.cs-stage img[src$="nyja-icon-neon.sv
 const maskOf = (page: Page) => icon(page).evaluate((el) => { const s = getComputedStyle(el); return s.maskImage || s.webkitMaskImage || el.style.maskImage || el.style.webkitMaskImage; });
 const cue = (page: Page) => page.getByRole('button', { name: 'Lëviz poshtë për të lidhur' });
 const knot = (page: Page) => page.getByRole('button', { name: /^NYJA — lidhja është formuar/ });
-/** A native touch event on the stage at a design-px position (client = the stage's rect + p × its scale) — the finger lamp listens to these, not to pointer events. */
-const touch = (page: Page, type: 'touchstart' | 'touchmove' | 'touchend', x: number, y: number) => page.evaluate(([type, x, y, W]) => {
-  const el = document.querySelector<HTMLElement>('.cs-stage')!, r = el.getBoundingClientRect(), sc = r.width / W;
+/** A native touch event at a stage design-px position (client = the stage's rect + p × its scale), dispatched on `on` (the stage, or the frame — where the lamp listens; the letterbox is outside the stage). */
+const touch = (page: Page, type: 'touchstart' | 'touchmove' | 'touchend', x: number, y: number, on = '.cs-stage') => page.evaluate(([type, x, y, W, on]) => {
+  const st = document.querySelector<HTMLElement>('.cs-stage')!, el = document.querySelector<HTMLElement>(on)!, r = st.getBoundingClientRect(), sc = r.width / W;
   const t = new Touch({ identifier: 1, target: el, clientX: r.left + x * sc, clientY: r.top + y * sc });
   const touches = type === 'touchend' ? [] : [t];
   el.dispatchEvent(new TouchEvent(type, { touches, changedTouches: [t], targetTouches: touches, bubbles: true, cancelable: true }));
-}, [type, x, y, DESK.W] as const);
+}, [type, x, y, DESK.W, on] as const);
 /** The lamp: the lit copies of the page ground (inline opacity '0' / '1', faded by CSS) and the torch mask's centre in design px. */
 const lamp = (page: Page) => page.evaluate(() => { const g = document.querySelector<SVGGElement>('.cs-ground svg > g')!, c = document.querySelector<SVGCircleElement>('.cs-stage svg mask#tm circle')!; return { on: g.style.opacity, x: parseFloat(c.getAttribute('cx')!), y: parseFloat(c.getAttribute('cy')!), fill: g.firstElementChild!.getAttribute('fill') }; });
 /** The map plane's tilt (rotateX · rotateY, written by the stage every frame it changes). */
@@ -186,7 +186,7 @@ test.describe('desktop 1440 × 900', () => {
     await expect.poll(() => phase(page), { timeout: 10_000 }).toBe('ready');
     expect(await lamp(page)).toMatchObject({ on: '0', fill: 'url(#dotsbgl)' });
     expect((await tilt(page)).ay).toBeCloseTo(0, 1);
-    await touch(page, 'touchstart', 200, 700); // bottom-left: tx −0.72 → rotateY −4.3° (px eases 8 % per frame), ty +0.56 → rotateX 52° + 1.7°
+    await touch(page, 'touchstart', 200, 700, '.cs-frame'); // on the frame (where the lamp listens); bottom-left: tx −0.72 → rotateY −4.3° (px eases 8 % per frame), ty +0.56 → rotateX 52° + 1.7°
     await expect.poll(async () => (await lamp(page)).on).toBe('1');
     await expect.poll(async () => { const l = await lamp(page); return Math.hypot(l.x - 200, l.y - 700); }, { timeout: 1_000 }).toBeLessThan(1);
     expect((await lamp(page)).fill).toBe('url(#dotsbglt)'); // the brighter copies under a finger

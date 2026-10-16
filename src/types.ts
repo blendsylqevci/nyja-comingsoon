@@ -60,6 +60,8 @@ export interface StageOptions {
   stage: HTMLElement;
   /** Unclipped sibling box the page-ground SVG goes in (same coordinate origin as `stage`). */
   ground: HTMLElement;
+  /** Where the finger lamp listens for touch (the frame: the whole viewport, letterbox included); coordinates are still the stage's. Defaults to `stage`. */
+  touchHost?: HTMLElement;
   motion: Motion; mobile: boolean; hooks: StageHooks;
   /** Test hook only — overrides TOUR_MS. */
   tourMs?: number;

@@ -28,7 +28,7 @@ Before finishing any change: `npm run build && npm test` green. Tests drive the 
 - Reduced / static motion show the knot-to-wordmark connection at rest at opacity .6 (design prose), not hidden.
 - If the geo data fails to load, the page renders the final brand composition (icon whole, neon period) without the map.
 - Capital buttons rely on the lit state as their focus indication (prototype live player: `outline: none`).
-- Touch (Blend, 2026-10-16, after a phone test): the lamp is glued to the finger — no spring — and a touch brighter under it (`DOT_BG_LIT_TOUCH` / `DOT_BG_CORE_TOUCH`). The prototype still springs under a finger; carry the change back to Claude Design.
+- Touch (Blend, 2026-10-16, after phone tests): the lamp is glued to the finger — no spring — and a touch brighter under it (`DOT_BG_LIT_TOUCH` / `DOT_BG_CORE_TOUCH`); the touch listeners sit on the frame (letterbox included), every sample is drawn at once, and while the frame scrolls under a finger the lamp follows the scroll (`setScroll`) even if `touchmove` stops; the lamp's lit copies are circles of its radius, not full-screen masked rects (the full-screen masks froze the light on a phone). The prototype still has the stage-only spring and the rects; carry the change back to Claude Design.
 
 ## Pending for launch
 Licensed fonts · real store links and final badge files (Apple's minimum is 40 px, design shows 32) · `VITE_SUBSCRIBE_URL` · Privatësia page (links are `#`) · the designer's review of the English copy in `src/i18n.ts` (the statement "Everything / Connects." above all).
