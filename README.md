@@ -25,10 +25,16 @@ npm test           # builds, then runs Playwright against the preview
 Set `VITE_SUBSCRIBE_URL` at build time (`.env` is gitignored; see `.env.example`):
 
 ```sh
-VITE_SUBSCRIBE_URL=https://api.example.com/subscribe
+VITE_SUBSCRIBE_URL=https://kgbuquggwvnclqnyvbsl.supabase.co/functions/v1/subscribe
 ```
 
-The form then `POST`s JSON — `{ "email": "...", "locale": "sq", "source": "coming-soon" }` — and treats a 2xx response as success; anything else (or a network error) shows the error state with "Provo përsëri". When the variable is **unset** the form runs in simulated prototype mode: 900 ms delay, success for every valid address, failure for addresses containing "gabim", and the on-page label "Prototip UI/UX — asnjë email nuk regjistrohet." is shown. No email is stored anywhere.
+The form then `POST`s JSON — `{ "email": "...", "locale": "sq" | "en", "source": "coming-soon" }` — and treats a 2xx response as success; anything else (or a network error) shows the error state with "Provo përsëri". When the variable is **unset** the form runs in simulated prototype mode: 900 ms delay, success for every valid address, failure for addresses containing "gabim", and the on-page label "Prototip UI/UX — asnjë email nuk regjistrohet." is shown. No email is stored anywhere.
+
+The live endpoint (2026-10-16) is the Supabase project **"Nyja Coming Soon"** (`kgbuquggwvnclqnyvbsl`, eu-north-1):
+
+- `public.subscribers` — one row per address (lower-cased, unique), `locale`, `source`, `resend_contact_id`, `created_at`; RLS on with no policies, so only the service role writes. Migration: `supabase/migrations/20261016120000_create_subscribers.sql`.
+- Edge Function `subscribe` — source `supabase/functions/subscribe/index.ts`, deployed with `verify_jwt` off (the page calls it anonymously). It validates the address with the page's own rule, stores it (a repeat signup is a 2xx too and keeps the first row), and, when the secret `RESEND_API_KEY` is set, creates the contact in the Resend segment **"Coming soon"** with the contact properties `locale` and `source`, remembering its id. Optional secrets: `RESEND_SEGMENT_ID` (override), `ALLOWED_ORIGINS` (comma-separated; default `*`). Secrets live in Supabase → Edge Functions → Secrets, never in the repo.
+- Resend (free plan: 3 000 emails / month, 100 / day, 1 000 contacts): the launch mail is a Broadcast to that segment; sending needs a verified domain first.
 
 ## Store badges
 
