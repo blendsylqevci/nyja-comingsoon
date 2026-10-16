@@ -2,6 +2,7 @@
 // with the eight states of the approved design (NYJA-ComingSoon-Desktop-v1.1.dc.html lines 57–67 desktop · 100–101 mobile, logic lines 290–295):
 // default · hover · focus · typing (CSS / native) · invalid · submitting · success · error.
 import { EMAIL_RE } from './config';
+import type { Copy, Lang } from './i18n';
 
 type Child = Node | string | null | undefined | false;
 type Attrs = Record<string, string | number | boolean | null | undefined>;
@@ -23,16 +24,17 @@ export interface FormOptions {
   endpoint: string | undefined;
   /** id of the privacy line → the input's aria-describedby. */
   privacyId: string;
+  /** The UI copy (i18n.ts) and the language sent as `locale`. */
+  copy: Copy; lang: Lang;
 }
 export interface FormApi { destroy(): void }
 
 type Status = 'idle' | 'busy' | 'done' | 'fail';
-const ERROR_MSG = 'Shkruaj një email të vlefshëm, p.sh. emri@domain.com';
 /** Simulated round trip when no endpoint is configured (prototype line 294). */
 const SIM_MS = 900;
 
 export function mountForm(host: HTMLElement, opts: FormOptions): FormApi {
-  const { id, layout, endpoint, privacyId } = opts;
+  const { id, layout, endpoint, privacyId, copy, lang } = opts;
   const row = layout === 'row';
   let status: Status = 'idle', email = '', error: string | null = null;
   let timer: number | undefined, alive = true, seq = 0;
@@ -50,18 +52,18 @@ export function mountForm(host: HTMLElement, opts: FormOptions): FormApi {
   // submitting: input + button disabled, the CTA reads "Po dërgohet…" (line 493).
   const setBusy = (busy: boolean) => {
     if (input) input.disabled = busy;
-    if (button) { button.disabled = busy; button.textContent = busy ? 'Po dërgohet…' : 'Më njofto'; }
+    if (button) { button.disabled = busy; button.textContent = busy ? copy.ctaBusy : copy.cta; }
   };
 
   const finish = (st: Status, mine: number) => { if (!alive || mine !== seq) return; status = st; render(); };
   const submit = (e: Event) => {
     e.preventDefault();
     if (status === 'busy') return;
-    if (!EMAIL_RE.test(email)) { setError(ERROR_MSG); return; }
+    if (!EMAIL_RE.test(email)) { setError(copy.emailError); return; }
     setError(null); status = 'busy'; setBusy(true);
     const mine = ++seq;
     if (endpoint) {
-      fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, locale: 'sq', source: 'coming-soon' }) })
+      fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, locale: lang, source: 'coming-soon' }) })
         .then(res => finish(res.ok ? 'done' : 'fail', mine), () => finish('fail', mine));
     } else {
       timer = window.setTimeout(() => finish(/gabim/i.test(email) ? 'fail' : 'done', mine), SIM_MS);
@@ -71,12 +73,12 @@ export function mountForm(host: HTMLElement, opts: FormOptions): FormApi {
   // idle / busy: the form (lines 59–62 desktop · 100–101 mobile) — the same elements stay while the status changes, so focus is kept.
   const renderIdle = () => {
     errEl = null;
-    const inp = h('input', { id, class: 'ny-input', type: 'email', name: 'email', placeholder: 'emri@domain.com', autocomplete: 'email', 'aria-invalid': 'false', 'aria-describedby': privacyId });
+    const inp = h('input', { id, class: 'ny-input', type: 'email', name: 'email', placeholder: copy.emailPlaceholder, autocomplete: 'email', 'aria-invalid': 'false', 'aria-describedby': privacyId });
     inp.value = email;
     inp.addEventListener('input', () => { email = inp.value; if (error) setError(null); });
     input = inp;
-    field = h('div', { class: 'ny-field' }, h('label', { class: 'ny-field__label', for: id }, 'Email adresa'), inp);
-    button = h('button', { type: 'submit', class: row ? 'ny-btn ny-btn--secondary ny-btn--md' : 'ny-btn ny-btn--secondary ny-btn--lg ny-btn--full' }, 'Më njofto');
+    field = h('div', { class: 'ny-field' }, h('label', { class: 'ny-field__label', for: id }, copy.emailLabel), inp);
+    button = h('button', { type: 'submit', class: row ? 'ny-btn ny-btn--secondary ny-btn--md' : 'ny-btn ny-btn--secondary ny-btn--lg ny-btn--full' }, copy.cta);
     const form = row
       ? h('form', { class: 'cs-form-row' }, h('div', { class: 'cs-form-row__f' }, field), h('div', { class: 'cs-form-row__b' }, button))
       : h('form', { class: 'cs-form-stack' }, h('div', { class: 'cs-form-stack__f' }, field), h('div', { class: 'cs-form-stack__b' }, button));
@@ -89,14 +91,14 @@ export function mountForm(host: HTMLElement, opts: FormOptions): FormApi {
   // success (line 64): 8px material node + the confirmation, announced politely.
   const doneView = () => h('div', { class: 'cs-form-status', role: 'status', 'aria-live': 'polite' },
     h('span', { class: 'cs-form-node', 'aria-hidden': 'true' }),
-    h('span', { class: 'cs-form-msg' }, 'U regjistrove me sukses.', h('br'), 'Do të të njoftojmë kur NYJA të lansohet.'));
+    h('span', { class: 'cs-form-msg' }, copy.done[0], h('br'), copy.done[1]));
   // error (line 65): hollow danger node + the message + the outline retry button → back to idle, keeping the address.
   const failView = () => {
-    const retry = h('button', { type: 'button', class: 'ny-btn ny-btn--outline ny-btn--sm' }, 'Provo përsëri');
+    const retry = h('button', { type: 'button', class: 'ny-btn ny-btn--outline ny-btn--sm' }, copy.retry);
     retry.addEventListener('click', () => { status = 'idle'; render(); input?.focus(); });
     return h('div', { class: 'cs-form-status', role: 'alert' },
       h('span', { class: 'cs-form-node cs-form-node--fail', 'aria-hidden': 'true' }),
-      h('span', { class: 'cs-form-msg cs-form-msg--grow' }, 'Nuk arritëm ta regjistrojmë emailin.', h('br'), 'Provo përsëri.'),
+      h('span', { class: 'cs-form-msg cs-form-msg--grow' }, copy.fail[0], h('br'), copy.fail[1]),
       h('div', { class: 'cs-form-retry' }, retry));
   };
   const render = () => {

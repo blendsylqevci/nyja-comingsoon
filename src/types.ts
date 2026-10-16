@@ -1,5 +1,6 @@
 // Shared contracts between geo.ts (pure geometry), stage.ts (the animated network) and page.ts (the HTML composition).
 import type { Canvas, Motion, Phase, Pt, TownSide, Visit } from './config';
+import type { Lang } from './i18n';
 
 /** public/geo/west-balkans-ne10m.json — WGS 84 [lon, lat] rings, Natural Earth 1:10m. */
 export interface GeoCountry { code: string; name: string; rings: [number, number][][] }
@@ -85,5 +86,11 @@ export interface StageApi {
   destroy(): void;
 }
 
-export interface MountOptions { motion: Motion; visit: Visit; mobile: boolean; tourMs?: number }
+export interface MountOptions {
+  motion: Motion; visit: Visit; mobile: boolean; lang: Lang; tourMs?: number;
+  /** Scroll position to restore, in design px — the language switch re-mounts the page and keeps the reader where they were. */
+  scrollTop?: number;
+  /** The footer's SQ · EN switch was used. */
+  onLang?: (lang: Lang) => void;
+}
 export interface PageApi { stage: StageApi; frame: HTMLElement; scale: number; destroy(): void }

@@ -8,3 +8,6 @@ public/fonts/*.woff2
 test-results
 playwright-report
 .DS_Store
+
+# App-local launch config for the desktop app's browser pane (dev server) — not part of the project
+.claude/launch.json

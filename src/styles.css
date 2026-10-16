@@ -123,6 +123,10 @@ body{color:#fff;font-family:"Gotham",sans-serif;letter-spacing:.01em}
 .cs-h1{position:absolute;margin:0;font-family:'Criteria CF','Gotham',sans-serif;font-weight:400;text-transform:uppercase;letter-spacing:.01em;line-height:.92;color:#fff}
 .cs-frame--d .cs-h1{left:66px;top:540px;font-size:128px}
 .cs-frame--m .cs-h1{left:21px;top:392px;font-size:58px}
+/* the English statement (i18n.ts, 2026-10-16): EVERYTHING runs 921px at 128 — into the form at 968 — and 417px at 58 on the 390 canvas, so it is sized to keep
+   the Albanian line's footprint (right edge ≈ 870 desktop / 366 mobile instead of GJITHÇKA's ≈ 805 / 355). Pending the designer's review of the English copy. */
+.cs-frame--d.cs-frame--en .cs-h1{font-size:112px}
+.cs-frame--m.cs-frame--en .cs-h1{font-size:48px}
 .cs-h1-dot{transition:color 400ms linear}
 /* store badges (line 53 / 93): the stores' own artwork, equal visible height; fallback pills when either fails to load */
 .cs-badges{position:absolute;display:flex;gap:16px;align-items:center}
@@ -167,3 +171,6 @@ body{color:#fff;font-family:"Gotham",sans-serif;letter-spacing:.01em}
 .cs-lang{display:inline-flex;gap:8px;letter-spacing:.08em}
 .cs-lang-on{color:#fff}
 .cs-below-footer{padding:0 24px 24px;display:flex;justify-content:space-between;font-size:11px;color:#9CA096}
+/* the mobile footer's "Privatësia · SQ · EN" (line 104) as the live switch: the same words, plain tracking, the gaps of the original spaces */
+.cs-below-footer .cs-lang--m{letter-spacing:0;gap:5px}
+.cs-below-footer a{cursor:pointer}.cs-below-footer a:hover{color:#fff}

@@ -5,7 +5,7 @@ import { DESK } from '../src/config';
 
 type Visit = 'first' | 'returning';
 interface StageDebug { phase: string; progress: number; target: number; hot: number | null; sel: number | null; cut: boolean; tour: number; ready(): boolean; skip(): void; play(visit: Visit): void; setScroll(topDesignPx: number): void }
-interface NyjaDebug { page: { scale: number }; stage: StageDebug; canvas: unknown; motion: string; visit: string }
+interface NyjaDebug { page: { scale: number }; stage: StageDebug; canvas: unknown; motion: string; visit: string; lang: string }
 type W = Window & { __nyja?: NyjaDebug };
 
 /** Console errors + page errors are collected for every test and must be empty. This sandbox cannot reach Apple's / Google's badge hosts, so those two image failures — and any other net::ERR resource failure — are expected and ignored; so is a missing licensed font (public/fonts is gitignored — the page falls back). */
@@ -45,7 +45,7 @@ const touch = (page: Page, type: 'touchstart' | 'touchmove' | 'touchend', x: num
   el.dispatchEvent(new TouchEvent(type, { touches, changedTouches: [t], targetTouches: touches, bubbles: true, cancelable: true }));
 }, [type, x, y, DESK.W] as const);
 /** The lamp: the lit copies of the page ground (inline opacity '0' / '1', faded by CSS) and the torch mask's centre in design px. */
-const lamp = (page: Page) => page.evaluate(() => { const g = document.querySelector<SVGGElement>('.cs-ground svg > g')!, c = document.querySelector<SVGCircleElement>('.cs-stage svg mask#tm circle')!; return { on: g.style.opacity, x: parseFloat(c.getAttribute('cx')!), y: parseFloat(c.getAttribute('cy')!) }; });
+const lamp = (page: Page) => page.evaluate(() => { const g = document.querySelector<SVGGElement>('.cs-ground svg > g')!, c = document.querySelector<SVGCircleElement>('.cs-stage svg mask#tm circle')!; return { on: g.style.opacity, x: parseFloat(c.getAttribute('cx')!), y: parseFloat(c.getAttribute('cy')!), fill: g.firstElementChild!.getAttribute('fill') }; });
 /** The map plane's tilt (rotateX · rotateY, written by the stage every frame it changes). */
 const tilt = (page: Page) => page.evaluate(() => { const m = /rotateX\(([-\d.]+)deg\) rotateY\(([-\d.]+)deg\)/.exec(document.querySelector<HTMLElement>('.cs-stage > div')!.style.transform); return { ax: m ? parseFloat(m[1]) : NaN, ay: m ? parseFloat(m[2]) : NaN }; });
 /** Screenshots for human review: test-results/shots/<name>.png */
@@ -181,21 +181,62 @@ test.describe('desktop 1440 × 900', () => {
     await expect(btn).toHaveAttribute('aria-label', 'Prishtinë, Kosovë');
   });
 
-  test('touch on the desktop canvas: the finger drives the lamp and the plane tilt, holds 1200 ms after lift, then both settle', async ({ page }) => {
+  test('touch on the desktop canvas: the lamp is glued to the finger and brighter under it, the finger tilts the plane; 1200 ms hold after lift, then both settle', async ({ page }) => {
     await boot(page, 'motion=full&visit=returning&canvas=d');
     await expect.poll(() => phase(page), { timeout: 10_000 }).toBe('ready');
-    expect((await lamp(page)).on).toBe('0');
+    expect(await lamp(page)).toMatchObject({ on: '0', fill: 'url(#dotsbgl)' });
     expect((await tilt(page)).ay).toBeCloseTo(0, 1);
     await touch(page, 'touchstart', 200, 700); // bottom-left: tx −0.72 → rotateY −4.3° (px eases 8 % per frame), ty +0.56 → rotateX 52° + 1.7°
     await expect.poll(async () => (await lamp(page)).on).toBe('1');
-    await expect.poll(async () => { const l = await lamp(page); return Math.hypot(l.x - 200, l.y - 700); }, { timeout: 5_000 }).toBeLessThan(2);
+    await expect.poll(async () => { const l = await lamp(page); return Math.hypot(l.x - 200, l.y - 700); }, { timeout: 1_000 }).toBeLessThan(1);
+    expect((await lamp(page)).fill).toBe('url(#dotsbglt)'); // the brighter copies under a finger
     await expect.poll(async () => (await tilt(page)).ay, { timeout: 5_000 }).toBeLessThan(-3);
     expect((await tilt(page)).ax).toBeGreaterThan(52.5);
-    await touch(page, 'touchend', 200, 700);
+    // glued: a move lands the light on the finger at once — no spring lag (the mouse keeps its spring)
+    await touch(page, 'touchmove', 900, 300);
+    await expect.poll(async () => { const l = await lamp(page); return Math.hypot(l.x - 900, l.y - 300); }, { timeout: 1_000 }).toBeLessThan(1);
+    await touch(page, 'touchend', 900, 300);
     await page.waitForTimeout(500);
-    expect((await lamp(page)).on).toBe('1'); // the 1200 ms hold after lift
+    expect(await lamp(page)).toMatchObject({ on: '1', fill: 'url(#dotsbglt)' }); // the 1200 ms hold after lift
     await expect.poll(async () => (await lamp(page)).on, { timeout: 3_000 }).toBe('0');
-    await expect.poll(async () => (await tilt(page)).ay, { timeout: 5_000 }).toBeGreaterThan(-.5); // the plane levels again
+    expect((await lamp(page)).fill).toBe('url(#dotsbgl)'); // back to the mouse brightness
+    await expect.poll(async () => Math.abs((await tilt(page)).ay), { timeout: 5_000 }).toBeLessThan(.5); // the plane levels again
+  });
+
+  test('English: ?lang=en renders the English copy; the footer switch persists the choice, keeps the scroll and switches back', async ({ page }) => {
+    await boot(page, 'motion=full&visit=returning&canvas=d&lang=en');
+    await expect.poll(() => phase(page), { timeout: 10_000 }).toBe('ready');
+    expect(await page.evaluate(() => [document.documentElement.lang, document.title, (window as W).__nyja!.lang])).toEqual(['en', 'NYJA — Coming soon', 'en']);
+    await expect(page.locator('.cs-stage h1')).toContainText('Everything');
+    await expect(page.locator('.cs-stage h1')).toContainText('Connects');
+    await expect(page.getByRole('button', { name: 'Skip intro' })).toBeHidden(); // ready: the skip is gone, but it was the English one
+    await expect(page.getByRole('button', { name: 'Scroll down to connect' })).toBeVisible();
+    await expect(page.getByRole('button', { name: /^Pristina, Kosovo/ })).toHaveCount(1);
+    await expect(page.locator('.cs-stage').getByText('PRISTINA', { exact: true })).toBeVisible();
+    await expect(page.locator('.cs-stage').getByText('NORTH MACEDONIA', { exact: true })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Notify me' })).toBeVisible();
+    await expect(page.locator('input[name="email"]')).toHaveAttribute('placeholder', 'name@domain.com');
+    await expect(page.getByText('Your email is used only for the launch notification.')).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Replay the intro' })).toBeVisible();
+    // Albanian by default; EN in the footer re-mounts in English, remembers it (localStorage) and keeps the scroll position
+    await boot(page, 'motion=full&visit=returning&canvas=d');
+    await expect.poll(() => phase(page), { timeout: 10_000 }).toBe('ready');
+    await expect(page.locator('.cs-stage h1')).toContainText('Gjithçka');
+    await scrollTrack(page, .5);
+    await expect.poll(async () => (await snap(page)).target).toBeCloseTo(.5, 3);
+    await page.getByRole('link', { name: 'English' }).click();
+    await page.waitForFunction(() => (window as W).__nyja?.lang === 'en');
+    await expect(page.locator('.cs-stage h1')).toContainText('Everything');
+    expect(await page.evaluate(() => [localStorage.getItem('nyja-cs-lang'), document.documentElement.lang])).toEqual(['en', 'en']);
+    expect((await snap(page)).target).toBeCloseTo(.5, 2);
+    await expect(page.locator('.cs-footer .cs-lang-on')).toHaveText('EN');
+    // the choice survives a reload without ?lang=, and SQ switches back
+    await boot(page, 'motion=full&visit=returning&canvas=d');
+    await expect(page.locator('.cs-stage h1')).toContainText('Everything');
+    await page.getByRole('link', { name: 'Shqip' }).click();
+    await page.waitForFunction(() => (window as W).__nyja?.lang === 'sq');
+    await expect(page.locator('.cs-stage h1')).toContainText('Gjithçka');
+    expect(await page.evaluate(() => localStorage.getItem('nyja-cs-lang'))).toBe('sq');
   });
 
   test('form: an invalid address is refused, typing clears the error', async ({ page }) => {
