@@ -16,6 +16,9 @@ export const DOT_LIT = '#6E7268';
 export const DOT_BG = '#17191A';
 export const DOT_BG_LIT = '#2E312B';
 export const DOT_BG_CORE = '#4A4E46';
+/** Under a finger the lamp is a touch brighter (review of 2026-10-16, Blend: "raise the brightness a little when it is touched"): the lit / core copies +8 per channel. Not in the prototype. */
+export const DOT_BG_LIT_TOUCH = '#363A33';
+export const DOT_BG_CORE_TOUCH = '#575C53';
 
 export type Pt = { x: number; y: number };
 export type Frac = [number, number];

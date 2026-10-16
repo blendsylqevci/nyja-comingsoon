@@ -4,7 +4,7 @@
 // One registry object (`n`, the prototype's `reg`) holds every DOM ref and all per-frame state; what React re-rendered on a
 // phase change is re-applied by applyPhase(). Animation time is the rAF timestamp, as in the prototype — never Date.now().
 import {
-  ARC_END, CAPS, DEVICES, DOT, DOT_BG, DOT_BG_CORE, DOT_BG_LIT, DOT_LIT, EASE, EDGE, EDGE_LIT, EDGES, EMF, INTRO_KEY, KNOT_D, LAND, LAND_LIT, MAT, N, PH, RAD, STRAND, TIMES, TOUR_MS, TRACE, VAN_BODY,
+  ARC_END, CAPS, DEVICES, DOT, DOT_BG, DOT_BG_CORE, DOT_BG_CORE_TOUCH, DOT_BG_LIT, DOT_BG_LIT_TOUCH, DOT_LIT, EASE, EDGE, EDGE_LIT, EDGES, EMF, INTRO_KEY, KNOT_D, LAND, LAND_LIT, MAT, N, PH, RAD, STRAND, TIMES, TOUR_MS, TRACE, VAN_BODY,
   type Canvas, type Motion, type Phase, type Pt, type Visit,
 } from './config';
 import { clamp, dOf, geoE, lerpPts, smooth, tr } from './math';
@@ -33,6 +33,8 @@ interface Reg {
   // SVG, built by net()
   bg: SVGSVGElement | null; plane: HTMLDivElement | null; ov: SVGSVGElement | null;
   bgRects: SVGRectElement[]; tm: SVGMaskElement | null; tmc: SVGMaskElement | null;
+  /** The lamp's two copies of the ground (lit, core) — their fill switches to the brighter patterns under a finger. */
+  litRect: SVGRectElement | null; coreRect: SVGRectElement | null;
   edges: SVGPathElement[]; pulses: SVGPathElement[]; borders: SVGPathElement[]; dots: SVGPathElement[]; traces: SVGPathElement[];
   grads: SVGLinearGradientElement[]; gstops: SVGStopElement[][]; halos: SVGCircleElement[];
   trail: SVGPathElement | null; haloG: SVGGElement | null; torch: SVGCircleElement | null; torchC: SVGCircleElement | null; torchG: SVGGElement | null;
@@ -44,6 +46,8 @@ interface Reg {
   px: number; py: number; tx: number; ty: number; ptr: Pt | null; lx: number | null; ly: number | null; vx: number; vy: number; torchOn: number | null; vanDir: number;
   /** A finger is on the stage (touchLamp): a pointer leave must not put the lamp out; lift = the 1200ms hold after the finger lifts. */
   touch: boolean; lift: ReturnType<typeof setTimeout> | undefined;
+  /** Which lamp patterns are applied: true = the brighter touch copies (null = not yet written). */
+  touchLit: boolean | null;
   maskKey: string | null; identOn: boolean; lastFk: number; lastTour: number; dirty: boolean; hot: number | null; sel: number | null; scr: Pt[] | null;
 }
 
@@ -67,13 +71,13 @@ export class Stage implements StageApi {
     this.G = o.G; this.g = o.g; this.m = o.motion; this.mobile = o.mobile; this.hooks = o.hooks; this.tourMs = o.tourMs ?? TOUR_MS;
     this.snap = this.m !== 'full';
     this.n = {
-      bg: null, plane: null, ov: null, bgRects: [], tm: null, tmc: null,
+      bg: null, plane: null, ov: null, bgRects: [], tm: null, tmc: null, litRect: null, coreRect: null,
       edges: [], pulses: [], borders: [], dots: [], traces: [], grads: [], gstops: [], halos: [],
       trail: null, haloG: null, torch: null, torchC: null, torchG: null, van: null, ident: null,
       caps: [], towns: [], clabels: [], yimg: null, cue: null, knot: null, dot: null,
       // Desktop: 'dark' until play(). Mobile: no timers — with full motion the tour simply starts (phase 'tour'); otherwise the finished state ('links', tour 1) from the first frame.
       ph: this.mobile ? (this.m === 'full' ? 'tour' : 'links') : 'dark', fk: 0, form: 0, tour: this.mobile && this.m !== 'full' ? 1 : 0, tourT0: null, tourEnd: false, cut: false,
-      px: 0, py: 0, tx: 0, ty: 0, ptr: null, lx: null, ly: null, vx: 0, vy: 0, torchOn: null, vanDir: 0, touch: false, lift: undefined,
+      px: 0, py: 0, tx: 0, ty: 0, ptr: null, lx: null, ly: null, vx: 0, vy: 0, torchOn: null, vanDir: 0, touch: false, lift: undefined, touchLit: null,
       maskKey: null, identOn: false, lastFk: -1, lastTour: -1, dirty: true, hot: null, sel: null, scr: null,
     };
     this.net(o.stage, o.ground);
@@ -219,15 +223,20 @@ export class Stage implements StageApi {
     // Eased follow of the scroll target (22% per frame); reduced snaps at 50% of the track, static is fixed at 1.
     if (this.snap) n.fk = m === 'static' ? 1 : (n.form >= .5 ? 1 : 0); else { n.fk += (n.form - n.fk) * .22; if (Math.abs(n.form - n.fk) < .0015) n.fk = n.form; }
     if (n.torch && m === 'full') {
-      // The pointer lamp: a soft spring (k .06, damping .62) toward the pointer; the radius breathes ±2.5% (≈7s) and grows up to 35% with the pointer's speed (reviews 16–18).
+      // The pointer lamp: a soft spring (k .06, damping .62) toward the mouse; the radius breathes ±2.5% (≈7s) and grows up to 35% with the pointer's speed (reviews 16–18).
+      // Under a finger there is no spring: the light sits exactly where the finger is, every frame (review of 2026-10-16, Blend: "it must follow the finger wherever it goes" —
+      // the spring's lag of ≈10× the finger's speed read as the light stopping; the prototype still springs), and the ground copies switch to the brighter touch patterns.
       if (n.ptr) {
         if (n.lx == null || n.ly == null) { n.lx = n.ptr.x; n.ly = n.ptr.y; n.vx = 0; n.vy = 0; }
-        const k = .06, c = .62; n.vx = (n.vx + (n.ptr.x - n.lx) * k) * c; n.vy = (n.vy + (n.ptr.y - n.ly) * k) * c; n.lx += n.vx; n.ly += n.vy;
+        if (n.touch) { n.vx = n.ptr.x - n.lx; n.vy = n.ptr.y - n.ly; n.lx = n.ptr.x; n.ly = n.ptr.y; }
+        else { const k = .06, c = .62; n.vx = (n.vx + (n.ptr.x - n.lx) * k) * c; n.vy = (n.vy + (n.ptr.y - n.ly) * k) * c; n.lx += n.vx; n.ly += n.vy; }
         const sp = Math.hypot(n.vx, n.vy), br = 1 + Math.min(.35, sp * .02), rr = this.G.torch * (1 + .025 * Math.sin(now / 1100)) * br, ex = n.lx.toFixed(1), ey = n.ly.toFixed(1);
         n.torch.setAttribute('cx', ex); n.torch.setAttribute('cy', ey); n.torch.setAttribute('r', rr.toFixed(1)); if (n.torchC) { n.torchC.setAttribute('cx', ex); n.torchC.setAttribute('cy', ey); n.torchC.setAttribute('r', (rr * .38).toFixed(1)); }
         if (n.torchC) n.torchC.setAttribute('r', (rr * .42).toFixed(1)); // the prototype's second write wins: the core is .42 × the lamp
       }
       else { n.lx = null; }
+      const lit = n.touch && n.ptr !== null;
+      if (lit !== n.touchLit) { n.touchLit = lit; if (n.litRect) n.litRect.setAttribute('fill', 'url(#' + (lit ? 'dotsbglt' : 'dotsbgl') + ')'); if (n.coreRect) n.coreRect.setAttribute('fill', 'url(#' + (lit ? 'dotsbgct' : 'dotsbgc') + ')'); }
       // Lamp fade: in 500ms / out 900ms on the one easing.
       if (n.torchG) { const want = n.ptr ? 1 : 0; if (want !== n.torchOn) { n.torchOn = want; n.torchG.style.transition = want ? 'opacity 500ms ' + EASE : 'opacity 900ms ' + EASE; n.torchG.style.opacity = String(want); } }
     }
@@ -262,7 +271,7 @@ export class Stage implements StageApi {
     n.tm = sv('mask', { id: 'tm', maskUnits: 'userSpaceOnUse', x: 0, y: 0, width: G.W, height: G.H }, null, [n.torch]);
     n.tmc = sv('mask', { id: 'tmc', maskUnits: 'userSpaceOnUse', x: 0, y: 0, width: G.W, height: G.H }, null, [n.torchC]);
     n.halos = CAPS.map((_c, i) => sv('circle', { cx: g.caps[i].x, cy: g.caps[i].y, r: G.halo, fill: 'url(#halo)' }));
-    kids.push(sv('defs', null, null, [pat('dots', DOT), pat('dotsl', DOT_LIT), pat('dotsbg', DOT_BG), pat('dotsbgl', DOT_BG_LIT), pat('dotsbgc', DOT_BG_CORE),
+    kids.push(sv('defs', null, null, [pat('dots', DOT), pat('dotsl', DOT_LIT), pat('dotsbg', DOT_BG), pat('dotsbgl', DOT_BG_LIT), pat('dotsbgc', DOT_BG_CORE), pat('dotsbglt', DOT_BG_LIT_TOUCH), pat('dotsbgct', DOT_BG_CORE_TOUCH),
       // lamp falloff (inverse-square-ish: 1 → .55 → .22 → .06 → 0) and a tight core
       sv('radialGradient', { id: 'torch' }, null, [1, .82, .62, .44, .29, .18, .1, .05, .02, 0].map((o, k) => sv('stop', { offset: (k / 9).toFixed(3), 'stop-color': '#fff', 'stop-opacity': o }))),
       sv('radialGradient', { id: 'torchc' }, null, [1, .78, .52, .3, .14, .05, 0].map((o, k) => sv('stop', { offset: (k / 6).toFixed(3), 'stop-color': '#fff', 'stop-opacity': o }))),
@@ -311,7 +320,7 @@ export class Stage implements StageApi {
     const bgRect = sv('rect', { x: 0, y: 0, width: G.W, height: G.H, fill: 'url(#dotsbg)' });
     const litRect = sv('rect', { x: 0, y: 0, width: G.W, height: G.H, fill: 'url(#dotsbgl)', mask: 'url(#tm)' }), coreRect = sv('rect', { x: 0, y: 0, width: G.W, height: G.H, fill: 'url(#dotsbgc)', mask: 'url(#tmc)' });
     n.torchG = sv('g', null, { opacity: '0', transition: 'opacity 500ms ' + EASE }, [litRect, coreRect]);
-    n.bgRects = [bgRect, litRect, coreRect];
+    n.bgRects = [bgRect, litRect, coreRect]; n.litRect = litRect; n.coreRect = coreRect;
     n.bg = sv('svg', { 'aria-hidden': 'true', width: G.W, height: G.H, viewBox: '0 0 ' + G.W + ' ' + G.H }, { position: 'absolute', left: '0', top: '0', pointerEvents: 'none', display: 'block', filter: 'blur(.6px)', opacity: on('map') ? '1' : '0', transition: tr(m, 'opacity 1200ms linear', 'opacity 200ms linear') }, [bgRect, n.torchG]);
     // The plane: rotateX · rotateY about the map centre, answered by the browser's perspective set on the stage.
     n.plane = document.createElement('div');
@@ -357,7 +366,8 @@ export class Stage implements StageApi {
    * The finger lamp (prototype touchLamp, lines 301–310 — both canvases, review of 2026-10-16): native passive touch listeners on the stage. Unlike pointer
    * events they keep firing while the frame scrolls (a pan fires pointercancel the moment it starts, which would put the light out — so the page ignores
    * touch pointers altogether). The light follows the finger, holds 1200ms after it lifts, then fades (900ms, in the rAF loop); on the desktop canvas the
-   * finger also drives the plane tilt. Full motion only in effect: tick() renders the lamp and the parallax only then.
+   * finger also drives the plane tilt. Full motion only in effect: tick() renders the lamp and the parallax only then. Two departures from the prototype
+   * (review of 2026-10-16, Blend, after testing on a phone): the light is glued to the finger (no spring) and a touch brighter under it — see tick().
    */
   private touchLamp(el: HTMLElement) {
     const n = this.n, G = this.G, tilt = !this.mobile;
