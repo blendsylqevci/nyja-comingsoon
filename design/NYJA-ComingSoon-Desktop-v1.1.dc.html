@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="_ds/nyja-design-system-b69bcaba-a038-4dfd-9017-1ab508aba10e/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/nyja-design-system-b69bcaba-a038-4dfd-9017-1ab508aba10e/tokens/colors.css">
+<link rel="stylesheet" href="_ds/nyja-design-system-b69bcaba-a038-4dfd-9017-1ab508aba10e/tokens/typography.css">
+<link rel="stylesheet" href="_ds/nyja-design-system-b69bcaba-a038-4dfd-9017-1ab508aba10e/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/nyja-design-system-b69bcaba-a038-4dfd-9017-1ab508aba10e/styles.css">
+<link rel="stylesheet" href="nyja-theme.css">
+<script src="_ds/nyja-design-system-b69bcaba-a038-4dfd-9017-1ab508aba10e/_ds_bundle.js"></script>
+<style>body{margin:0;background:#ECEEE8;font-family:"Gotham",sans-serif;color:#000}a{color:inherit;text-decoration:none}a:hover{color:#54584F}[data-cs-frame] a:focus-visible,[data-cs-frame] button:focus-visible{outline:2px solid #D5FF00;outline-offset:4px}[data-cs-frame] .ny-input:hover{border-color:#C4C8BB}[data-cs-frame][data-force="hover"] .ny-input{border-color:#C4C8BB}[data-cs-frame][data-force="focus"] .ny-input{outline:2px solid #D5FF00;outline-offset:2px}[data-cs-frame]::-webkit-scrollbar{display:none}@keyframes cs-breathe{0%,100%{opacity:1}50%{opacity:.4}}@keyframes cs-scroll{0%{transform:translateY(0);opacity:0}18%{opacity:1}78%{opacity:1}100%{transform:translateY(-20px);opacity:0}}@keyframes cs-flow{0%{stroke-dashoffset:100}100%{stroke-dashoffset:0}}[data-cs-frame] [data-screen-label="Scroll cue"]:hover>span:first-child{border-color:#73776D}@keyframes cs-ident{0%{stroke-dashoffset:100;opacity:.6}30%{stroke-dashoffset:0;opacity:.6}70%{opacity:.6}100%{stroke-dashoffset:0;opacity:0}}.dv-turn{padding:40px 44px 32px;border-bottom:1px solid rgba(0,0,0,.08);scroll-margin-top:16px}.dv-thd{display:flex;align-items:baseline;gap:10px;margin:0 0 20px}.dv-tid{font:600 10px ui-monospace,Menlo,monospace;padding:3px 7px;background:#1a1a1a;color:#fff;border-radius:4px;text-decoration:none}.dv-tname{font:600 13px/1.2 system-ui,sans-serif;color:#1a1a1a}.dv-opts{display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start}.dv-opt{flex:none;display:flex;flex-direction:column;gap:9px;scroll-margin-top:16px}.dv-oid{font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(0,0,0,.08);color:#1a1a1a;border-radius:5px;text-decoration:none}.dv-olabel{display:flex;align-items:baseline;gap:8px;font:400 11px/1.3 system-ui,sans-serif;color:rgba(0,0,0,.55);max-width:1440px}.dv-card{max-width:100%;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.06);overflow:hidden}.dv-opt:target .dv-oid{background:#2a78d6;color:#fff}.dv-next{margin:22px 0 0;font:12px/1.5 system-ui,sans-serif;color:rgba(0,0,0,.5)}.dv-brk{flex-basis:100%;height:0}</style>
+</helmet>
+<section class="dv-turn" id="t29">
+<div class="dv-thd"><a class="dv-tid" href="#t29">29</a><span class="dv-tname">NYJA · Coming Soon · V1.1 — THE FIRST CONNECTION, geographic · three countries, three capitals, one connection · boards A–J · refinement of V1 (turn 28)</span></div>
+<div style="width:1440px;box-sizing:border-box;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:8px;padding:24px 28px;margin-bottom:24px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;font-size:13px;line-height:1.5;color:#1a1a1a">
+  <div><div style="font-family:'Criteria CF','Gotham',sans-serif;text-transform:uppercase;letter-spacing:.14em;font-size:11px;margin-bottom:10px">What changed</div>The opening network is now geography: Kosovo, Albania and North Macedonia drawn from Natural Earth 1:10m data in a Mercator projection, with Prishtinë, Tiranë and Shkup at their GeoNames coordinates. The three capitals connect; scrolling turns those three connections into the Y of the logo — a continuous point-for-point morph (geography → pinched network → knot) that ends on the official NYJA ICON — the knot alone, no tile, rendered from the approved vector (uploads/NYJA_Logo_Icon-12.svg), revealed outward from the connections, no crossfade; knot in the same neon #D5FF00 as the logo on the page. Statement, form, footer, CTA, motion modes and accessibility states are V1.</div>
+  <div><div style="font-family:'Criteria CF','Gotham',sans-serif;text-transform:uppercase;letter-spacing:.14em;font-size:11px;margin-bottom:10px">Behaviour</div>Intro (≈27s, skippable): borders draw → capitals → the NYJA van leaves Prishtinë and tours 23 cities in 24s (Kosovo → Albania → North Macedonia), each name lighting as it arrives, its trail staying on the map as the network → the three capital connections → the cue. Returning visitors get the 600ms short entry with the trail already laid. The stage is pinned on desktop and mobile; the first 600px of scroll (400 on mobile) drive the transformation: land and labels fade, the triangle pinches into one junction, the knot forms, the asset fades over the schematic; at the end the period of LIDHET. takes the material and one connection runs to the wordmark. Hovering a capital lifts its country. <a class="dv-oid" href="#29a">29a</a> and <a class="dv-oid" href="#29h1">29h1</a> are live. Tweaks: motion, visit, formState.</div>
+  <div><div style="font-family:'Criteria CF','Gotham',sans-serif;text-transform:uppercase;letter-spacing:.14em;font-size:11px;margin-bottom:10px">Verification</div>Geography: <a class="dv-oid" href="#29j">29j</a> (source, projection, coordinates). Logo: <a class="dv-oid" href="#29k">29k</a> — the final frame is the official icon (the knot alone, from the client's vector, no tile), revealed from the connections rather than crossfaded, never redrawn; the intermediate schematic is measured from that asset (loop centre and radius, arm, junction, stem, thread). Material of this canvas = NYJA neon #D5FF00, exactly the Y of the approved logo (review decision) — #99CC00 stays in the Club. No vector master exists in the project: the approved SVG / AI / EPS is requested before any true vector morph. V1 (turn 28) and all other screens untouched.</div>
+</div>
+<div style="width:1440px;display:flex;flex-wrap:wrap;gap:8px;font-family:'Gotham',sans-serif;margin-bottom:20px">
+  <sc-for list="{{ presets }}" as="c" hint-placeholder-count="6"><button type="button" onClick="{{ c.act }}" aria-pressed="{{ c.on }}" style="height:30px;padding:0 12px;border-radius:999px;border:1.5px solid {{ c.border }};background:{{ c.bg }};color:{{ c.color }};font:inherit;font-size:12px;cursor:pointer;white-space:nowrap">{{ c.label }}</button></sc-for>
+</div>
+<div class="dv-opts">
+<sc-for list="{{ items }}" as="f" hint-placeholder-count="4">
+<sc-if value="{{ f.brk }}" hint-placeholder-val="{{ false }}"><div class="dv-brk"></div></sc-if>
+<div class="dv-opt" id="{{ f.id }}"><div class="dv-olabel"><a class="dv-oid" href="#{{ f.id }}">{{ f.id }}</a>{{ f.label }}</div>
+<div class="dv-card" style="width:{{ f.cw }}px">
+
+<sc-if value="{{ f.isFrame }}" hint-placeholder-val="{{ true }}">
+<div style="position:relative;width:{{ f.w }}px;height:{{ f.h }}px;overflow:hidden;background:#000">
+<div data-cs-frame="true" data-force="{{ f.force }}" data-screen-label="{{ f.screenLabel }}" ref="{{ f.setRef }}" onScroll="{{ f.onScroll }}" onKeyDown="{{ f.onKey }}" style="--mat:#D5FF00;--focus-ring:#D5FF00;--ink:#fff;--paper:#000;--text-primary:#fff;--text-secondary:#C4C8BB;--text-tertiary:#9CA096;--border:#fff;--gray-50:#121310;--gray-100:#232520;--gray-200:#3A3D36;--gray-300:#54584F;--gray-400:#73776D;--gray-500:#9CA096;--gray-600:#C4C8BB;--gray-700:#DDE0D6;--gray-800:#ECEEE8;--gray-900:#F6F7F4;--danger:oklch(0.74 0.17 28);color-scheme:dark;position:absolute;left:{{ f.ox }}px;top:{{ f.oy }}px;width:1440px;height:900px;transform:scale({{ f.scale }});transform-origin:0 0;background:#000;color:#fff;font-family:'Gotham',sans-serif;letter-spacing:.01em;overflow-y:{{ f.ovy }};overflow-x:hidden;scrollbar-width:none">
+<div style="position:relative;height:{{ f.trackH }}px">
+<div data-screen-label="Stage" onPointerMove="{{ f.onMove }}" onPointerLeave="{{ f.onLeave }}" style="position:sticky;top:0;height:900px;overflow:hidden;perspective:1400px;perspective-origin:1060px 318px">
+  {{ f.network }}
+  <img src="brand/nyja-icon-neon.svg" alt="" aria-hidden="true" ref="{{ f.setYRef }}" style="position:absolute;left:{{ f.yb.x }}px;top:{{ f.yb.y }}px;width:{{ f.yb.w }}px;height:auto;display:block;opacity:0;pointer-events:none;-webkit-mask-size:100% 100%;mask-size:100% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat">
+  <a href="#" aria-label="NYJA" data-screen-label="Logo" style="position:absolute;left:72px;top:48px;display:block;opacity:{{ f.r0.op }};transition:{{ f.r0.t }}"><img src="brand/logo-dark-ui.png" alt="NYJA" style="display:block;height:44px"></a>
+  <sc-if value="{{ f.showSkip }}" hint-placeholder-val="{{ false }}"><button type="button" onClick="{{ f.skip }}" style="all:unset;position:absolute;right:72px;top:98px;display:inline-flex;align-items:center;gap:10px;cursor:pointer;font-family:'Criteria CF','Gotham',sans-serif;text-transform:uppercase;letter-spacing:.14em;font-size:11px;color:#9CA096" style-hover="color:#fff">Kalo hyrjen<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></button></sc-if>
+  <div data-screen-label="Coming soon" style="position:absolute;right:72px;top:56px;display:flex;align-items:center;gap:12px;font-family:'Criteria CF','Gotham',sans-serif;text-transform:uppercase;letter-spacing:.32em;font-size:11px;color:#fff;opacity:{{ f.r4.op }};transition:{{ f.r4.t }}">{{ f.beacon }}<span>Coming soon</span></div>
+  <sc-for list="{{ f.clabels }}" as="c" hint-placeholder-count="3"><span ref="{{ c.setRef }}" aria-hidden="true" style="position:absolute;left:{{ c.x }}px;top:{{ c.y }}px;width:0;height:0;pointer-events:none"><span style="position:absolute;left:0;top:0;transform:translate(-50%,-50%);white-space:nowrap;font-family:'Criteria CF','Gotham',sans-serif;text-transform:uppercase;letter-spacing:.14em;font-size:10px;color:#73776D;opacity:{{ f.clOp }};transition:{{ f.tCl }}">{{ c.label }}</span></span></sc-for>
+  <sc-for list="{{ f.caps }}" as="s" hint-placeholder-count="3"><div ref="{{ s.setRef }}" data-screen-label="{{ s.name }}" style="position:absolute;left:{{ s.bx }}px;top:{{ s.by }}px;width:44px;height:44px"><div style="position:absolute;left:0;top:0;width:44px;height:44px;opacity:{{ f.netOp }};transition:{{ f.tNet }}"><span aria-hidden="true" style="position:absolute;left:11px;top:11px;width:22px;height:22px;border-radius:50%;border:1px solid var(--mat);box-sizing:border-box;opacity:{{ s.ringOp }};transition:opacity 240ms linear"></span><span aria-hidden="true" style="position:absolute;left:18px;top:18px;width:8px;height:8px;border-radius:50%;border:1.5px solid var(--mat);box-sizing:border-box;background:{{ s.fill }};transform:{{ s.tf }};transition:transform 240ms cubic-bezier(.2,0,0,1),background-color 200ms linear"></span><button type="button" aria-label="{{ s.aria }}" aria-pressed="{{ s.pressed }}" onClick="{{ s.pick }}" onFocus="{{ s.enter }}" onBlur="{{ s.leave }}" style="all:unset;box-sizing:border-box;position:absolute;left:0;top:0;width:44px;height:44px;border-radius:50%;cursor:pointer;outline:{{ s.ring }};outline-offset:4px"></button><span ref="{{ s.setLabel }}" style="position:absolute;top:15px;left:{{ s.lx }};right:{{ s.rx }};text-align:{{ s.ta }};white-space:nowrap;font-family:'Criteria CF','Gotham',sans-serif;text-transform:uppercase;letter-spacing:.14em;font-size:11px;line-height:14px;color:{{ s.labColor }};transition:color 240ms linear;pointer-events:none">{{ s.label }}</span><sc-if value="{{ s.showCoord }}" hint-placeholder-val="{{ true }}"><span ref="{{ s.setCoord }}" style="position:absolute;top:30px;left:{{ s.lx }};right:{{ s.rx }};text-align:{{ s.ta }};white-space:nowrap;font-size:9px;line-height:12px;letter-spacing:.04em;color:{{ s.coordColor }};transition:color 240ms linear;pointer-events:none">{{ s.coord }}</span></sc-if></div></div></sc-for>
+  <sc-for list="{{ f.towns }}" as="w" hint-placeholder-count="20"><span ref="{{ w.setRef }}" aria-hidden="true" data-screen-label="{{ w.label }}" style="position:absolute;left:{{ w.x }}px;top:{{ w.y }}px;width:0;height:0;pointer-events:none;opacity:0"><span ref="{{ w.setDot }}" style="position:absolute;left:-2.5px;top:-2.5px;width:5px;height:5px;border-radius:50%;background:var(--mat);transition:transform 240ms cubic-bezier(.2,0,0,1)"></span><span ref="{{ w.setText }}" style="position:absolute;top:{{ w.ty }};left:{{ w.lx }};right:{{ w.rx }};text-align:{{ w.ta }};transform-origin:{{ w.to }};white-space:nowrap;font-family:'Criteria CF','Gotham',sans-serif;text-transform:uppercase;letter-spacing:.14em;font-size:8px;line-height:12px;color:#9CA096;transition:color 240ms linear,transform 240ms cubic-bezier(.2,0,0,1)">{{ w.label }}</span></span></sc-for>
+  <button type="button" aria-label="Lëviz poshtë për të lidhur" onClick="{{ f.tie }}" ref="{{ f.setCueRef }}" data-screen-label="Scroll cue" style="all:unset;box-sizing:border-box;position:absolute;left:720px;top:768px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:12px;min-width:44px;padding:4px 8px;cursor:pointer;white-space:nowrap;font-family:'Criteria CF','Gotham',sans-serif;text-transform:uppercase;letter-spacing:.14em;font-size:10px;color:#9CA096;opacity:{{ f.r5.op }};transition:{{ f.r5.t }}" style-hover="color:#fff">{{ f.scrollCue }}<span>Lëviz për të lidhur</span></button>
+  <button type="button" aria-label="{{ f.knotAria }}" onClick="{{ f.release }}" ref="{{ f.setKnotRef }}" style="all:unset;box-sizing:border-box;position:absolute;left:{{ f.knot.x }}px;top:{{ f.knot.y }}px;width:44px;height:44px;border-radius:50%;cursor:pointer;visibility:hidden"></button>
+  <h1 data-screen-label="Statement" style="position:absolute;left:66px;top:540px;margin:0;font-family:'Criteria CF','Gotham',sans-serif;font-weight:400;text-transform:uppercase;letter-spacing:.01em;font-size:128px;line-height:.92;color:#fff;opacity:{{ f.r1.op }};transform:{{ f.r1.tf }};transition:{{ f.r1.t }}">Gjithçka<br>Lidhet<span ref="{{ f.setDotRef }}" style="transition:color 400ms linear">.</span></h1>
+  <nav aria-label="Aplikacioni NYJA" data-screen-label="Store badges" style="position:absolute;left:72px;top:804px;display:flex;gap:16px;align-items:center;opacity:{{ f.r3.op }};transform:{{ f.r3.tf }};transition:{{ f.r3.t }}"><sc-if value="{{ f.badgesOk }}" hint-placeholder-val="{{ true }}"><a href="#" aria-label="Download on the App Store — së shpejti" style="display:block;height:32px;flex:none"><img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us" alt="Download on the App Store" onError="{{ f.badgeFail }}" style="display:block;height:32px;width:auto"></a><a href="#" aria-label="Get it on Google Play — së shpejti" style="display:block;height:48px;margin:0 -8px;flex:none"><img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" onError="{{ f.badgeFail }}" style="display:block;height:48px;width:auto"></a></sc-if><sc-if value="{{ f.badgesFallback }}" hint-placeholder-val="{{ false }}"><a href="#" role="link" aria-label="App Store — së shpejti" style="display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 16px;box-sizing:border-box;border:1.5px solid #3A3D36;border-radius:999px;color:#fff;font-family:'Criteria CF','Gotham',sans-serif;text-transform:uppercase;letter-spacing:.14em;font-size:11px;cursor:pointer;white-space:nowrap" style-hover="border-color:#fff"><span aria-hidden="true" style="width:16px;height:16px;border-radius:4px;border:1px dashed #54584F;box-sizing:border-box;flex:none"></span>App Store</a><a href="#" role="link" aria-label="Google Play — së shpejti" style="display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 16px;box-sizing:border-box;border:1.5px solid #3A3D36;border-radius:999px;color:#fff;font-family:'Criteria CF','Gotham',sans-serif;text-transform:uppercase;letter-spacing:.14em;font-size:11px;cursor:pointer;white-space:nowrap" style-hover="border-color:#fff"><span aria-hidden="true" style="width:16px;height:16px;border-radius:4px;border:1px dashed #54584F;box-sizing:border-box;flex:none"></span>Google Play</a></sc-if></nav>
+  <section aria-labelledby="{{ f.formTitleId }}" data-screen-label="Launch notification" style="position:absolute;left:968px;bottom:84px;width:400px;opacity:{{ f.r3.op }};transform:{{ f.r3.tf }};transition:{{ f.r3.t }}">
+    <h2 id="{{ f.formTitleId }}" style="margin:0;font-family:'Criteria CF','Gotham',sans-serif;font-weight:400;text-transform:uppercase;letter-spacing:.14em;font-size:13px;line-height:1.3;color:#fff">Bëhu i pari që lidhet.</h2>
+    <p style="margin:8px 0 0;font-size:14px;line-height:1.5;color:#C4C8BB;text-wrap:pretty">Regjistro emailin dhe mëso i pari kur NYJA të jetë gati.</p>
+    <div style="min-height:96px;display:flex;flex-direction:column;justify-content:flex-start">
+    <sc-if value="{{ f.formIdle }}" hint-placeholder-val="{{ true }}">
+      <form onSubmit="{{ f.submit }}" noValidate="{{ true }}" style="margin-top:16px;display:flex;gap:12px;align-items:flex-start">
+        <div style="flex:1;min-width:0"><x-import component-from-global-scope="NYJADesignSystem_b69bca.Input" id="{{ f.emailId }}" type="email" name="email" label="Email adresa" placeholder="emri@domain.com" autocomplete="email" value="{{ f.email }}" on-change="{{ f.onEmail }}" error="{{ f.emailError }}" disabled="{{ f.busy }}" aria-invalid="{{ f.invalid }}" aria-describedby="{{ f.privacyId }}" hint-size="100%,72px"></x-import></div>
+        <div style="flex:none;padding-top:26px"><x-import component-from-global-scope="NYJADesignSystem_b69bca.Button" variant="secondary" size="md" type="submit" disabled="{{ f.busy }}" hint-size="150px,44px">{{ f.ctaLabel }}</x-import></div>
+      </form>
+    </sc-if>
+    <sc-if value="{{ f.formDone }}" hint-placeholder-val="{{ false }}"><div role="status" aria-live="polite" style="margin-top:20px;display:flex;gap:14px;align-items:flex-start"><span aria-hidden="true" style="flex:none;width:8px;height:8px;margin-top:7px;border-radius:50%;background:var(--mat)"></span><span style="font-size:15px;line-height:1.5;color:#fff">U regjistrove me sukses.<br>Do të të njoftojmë kur NYJA të lansohet.</span></div></sc-if>
+    <sc-if value="{{ f.formFail }}" hint-placeholder-val="{{ false }}"><div role="alert" style="margin-top:20px;display:flex;gap:14px;align-items:flex-start"><span aria-hidden="true" style="flex:none;width:8px;height:8px;margin-top:7px;border-radius:50%;box-sizing:border-box;border:1.5px solid var(--danger)"></span><span style="flex:1;min-width:0;font-size:15px;line-height:1.5;color:#fff">Nuk arritëm ta regjistrojmë emailin.<br>Provo përsëri.</span><div style="flex:none;padding-top:5px"><x-import component-from-global-scope="NYJADesignSystem_b69bca.Button" variant="outline" size="sm" on-click="{{ f.retry }}" hint-size="140px,32px">Provo përsëri</x-import></div></div></sc-if>
+    </div>
+    <p id="{{ f.privacyId }}" style="margin:12px 0 0;font-size:12px;line-height:1.5;color:#9CA096;text-wrap:pretty">Emaili përdoret vetëm për njoftimin e lansimit. <span style="color:#73776D">Prototip UI/UX — asnjë email nuk regjistrohet.</span></p>
+  </section>
+  <footer data-screen-label="Footer" style="position:absolute;left:72px;right:72px;top:860px;display:flex;align-items:center;justify-content:space-between;font-size:12px;color:#9CA096;opacity:{{ f.r3.op }};transition:{{ f.r3.t }}">
+    <div style="display:flex;gap:24px;align-items:center"><span>© 2026 NYJA</span><button type="button" onClick="{{ f.replay }}" style="all:unset;cursor:pointer;color:#73776D" style-hover="color:#fff">Luaje hyrjen përsëri</button></div>
+    <div style="display:flex;gap:24px;align-items:center"><a href="#" style="cursor:pointer" style-hover="color:#fff">Privatësia</a><span style="display:inline-flex;gap:8px;letter-spacing:.08em"><span style="color:#fff">SQ</span><span>·</span><a href="#" style="cursor:pointer" style-hover="color:#fff">EN</a></span></div>
+  </footer>
+</div>
+</div>
+</div>
+</div>
+<sc-if value="{{ f.isPlayer }}" hint-placeholder-val="{{ false }}"><div style="border-top:1px solid rgba(0,0,0,.08);padding:18px 28px;display:flex;align-items:flex-start;gap:24px;background:#fff;font:12px/1.5 system-ui,sans-serif;color:#1a1a1a"><button type="button" onClick="{{ f.replay }}" style="flex:none;height:32px;padding:0 14px;border-radius:999px;border:0;background:#1a1a1a;color:#fff;font:600 12px system-ui,sans-serif;cursor:pointer">Luaje përsëri</button><sc-for list="{{ f.phases }}" as="p" hint-placeholder-count="5"><div style="display:flex;flex-direction:column;gap:3px;flex:1;min-width:0"><span style="font:600 10px ui-monospace,Menlo,monospace;color:{{ p.col }}">{{ p.t }}</span><span style="color:rgba(0,0,0,.6)">{{ p.d }}</span></div></sc-for></div></sc-if>
+<sc-if value="{{ f.hasSpecs }}" hint-placeholder-val="{{ false }}"><div style="border-top:1px solid rgba(0,0,0,.08);padding:16px 20px 18px;display:flex;flex-direction:column;gap:8px;background:#fff;font:12px/1.5 system-ui,sans-serif;color:rgba(0,0,0,.6)"><sc-for list="{{ f.specs }}" as="r" hint-placeholder-count="2"><div style="display:flex;flex-direction:column;gap:3px"><span style="font:600 10.5px/1.3 system-ui,sans-serif;color:#1a1a1a;text-transform:uppercase;letter-spacing:.06em">{{ r.k }}</span><span>{{ r.v }}</span></div></sc-for></div></sc-if>
+</sc-if>
+
+<sc-if value="{{ f.isMobile }}" hint-placeholder-val="{{ false }}">
+<div data-cs-frame="true" data-screen-label="{{ f.screenLabel }}" ref="{{ f.setRef }}" onScroll="{{ f.onScroll }}" style="--mat:#D5FF00;--focus-ring:#D5FF00;--ink:#fff;--paper:#000;--text-primary:#fff;--text-secondary:#C4C8BB;--text-tertiary:#9CA096;--border:#fff;--gray-50:#121310;--gray-100:#232520;--gray-200:#3A3D36;--gray-300:#54584F;--gray-400:#73776D;--gray-500:#9CA096;--gray-600:#C4C8BB;--gray-700:#DDE0D6;--gray-800:#ECEEE8;--gray-900:#F6F7F4;--danger:oklch(0.74 0.17 28);color-scheme:dark;position:relative;width:390px;height:844px;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;background:#000;color:#fff;font-family:'Gotham',sans-serif;letter-spacing:.01em">
+  <div style="position:relative;height:1244px">
+    <div data-screen-label="Mobile stage" onPointerMove="{{ f.onMove }}" onPointerDown="{{ f.onMove }}" onPointerUp="{{ f.onLeave }}" onPointerLeave="{{ f.onLeave }}" onPointerCancel="{{ f.onLeave }}" style="position:sticky;top:0;height:844px;overflow:hidden;perspective:900px;perspective-origin:195px 226px">
+      {{ f.network }}
+      <img src="brand/nyja-icon-neon.svg" alt="" aria-hidden="true" ref="{{ f.setYRef }}" style="position:absolute;left:{{ f.yb.x }}px;top:{{ f.yb.y }}px;width:{{ f.yb.w }}px;height:auto;display:block;opacity:0;pointer-events:none;-webkit-mask-size:100% 100%;mask-size:100% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat">
+      <a href="#" aria-label="NYJA" style="position:absolute;left:24px;top:28px;display:block"><img src="brand/logo-dark-ui.png" alt="NYJA" style="display:block;height:30px"></a>
+      <div style="position:absolute;right:24px;top:36px;display:flex;align-items:center;gap:10px;font-family:'Criteria CF','Gotham',sans-serif;text-transform:uppercase;letter-spacing:.32em;font-size:10px"><span aria-hidden="true" style="width:8px;height:8px;border-radius:50%;background:var(--mat)"></span>Coming soon</div>
+      <sc-for list="{{ f.caps }}" as="s" hint-placeholder-count="3"><div ref="{{ s.setRef }}" data-screen-label="{{ s.name }}" style="position:absolute;left:{{ s.bx }}px;top:{{ s.by }}px;width:44px;height:44px"><span aria-hidden="true" style="position:absolute;left:11px;top:11px;width:22px;height:22px;border-radius:50%;border:1px solid var(--mat);box-sizing:border-box;opacity:{{ s.ringOp }};transition:opacity 240ms linear"></span><span aria-hidden="true" style="position:absolute;left:18px;top:18px;width:8px;height:8px;border-radius:50%;border:1.5px solid var(--mat);box-sizing:border-box;background:{{ s.fill }};transform:{{ s.tf }};transition:transform 240ms cubic-bezier(.2,0,0,1),background-color 200ms linear"></span><button type="button" aria-label="{{ s.aria }}" aria-pressed="{{ s.pressed }}" onClick="{{ s.pick }}" onFocus="{{ s.enter }}" onBlur="{{ s.leave }}" style="all:unset;box-sizing:border-box;position:absolute;left:0;top:0;width:44px;height:44px;border-radius:50%;cursor:pointer"></button><span ref="{{ s.setLabel }}" style="position:absolute;top:16px;left:{{ s.lx }};right:{{ s.rx }};text-align:{{ s.ta }};white-space:nowrap;font-family:'Criteria CF','Gotham',sans-serif;text-transform:uppercase;letter-spacing:.14em;font-size:10px;line-height:12px;color:{{ s.labColor }};transition:color 240ms linear;pointer-events:none">{{ s.label }}</span></div></sc-for>
+      <sc-for list="{{ f.towns }}" as="w" hint-placeholder-count="20"><span ref="{{ w.setRef }}" aria-hidden="true" data-screen-label="{{ w.label }}" style="position:absolute;left:{{ w.x }}px;top:{{ w.y }}px;width:0;height:0;pointer-events:none;opacity:0"><span ref="{{ w.setDot }}" style="position:absolute;left:-2.5px;top:-2.5px;width:5px;height:5px;border-radius:50%;background:var(--mat);transition:transform 240ms cubic-bezier(.2,0,0,1)"></span><span ref="{{ w.setText }}" style="position:absolute;top:{{ w.ty }};left:{{ w.lx }};right:{{ w.rx }};text-align:{{ w.ta }};transform-origin:{{ w.to }};white-space:nowrap;font-family:'Criteria CF','Gotham',sans-serif;text-transform:uppercase;letter-spacing:.14em;font-size:8px;line-height:12px;color:#9CA096;transition:color 240ms linear,transform 240ms cubic-bezier(.2,0,0,1)">{{ w.label }}</span></span></sc-for>
+      <button type="button" aria-label="{{ f.knotAria }}" onClick="{{ f.release }}" ref="{{ f.setKnotRef }}" style="all:unset;box-sizing:border-box;position:absolute;left:{{ f.knot.x }}px;top:{{ f.knot.y }}px;width:44px;height:44px;border-radius:50%;cursor:pointer;visibility:hidden"></button>
+      <h1 data-screen-label="Statement" style="position:absolute;left:21px;top:392px;margin:0;font-family:'Criteria CF','Gotham',sans-serif;font-weight:400;text-transform:uppercase;letter-spacing:.01em;font-size:58px;line-height:.92;color:#fff">Gjithçka<br>Lidhet<span ref="{{ f.setDotRef }}" style="transition:color 400ms linear">.</span></h1>
+      <nav aria-label="Aplikacioni NYJA" data-screen-label="Store badges" style="position:absolute;left:24px;top:524px;display:flex;gap:16px;align-items:center"><sc-if value="{{ f.badgesOk }}" hint-placeholder-val="{{ true }}"><a href="#" aria-label="Download on the App Store — së shpejti" style="display:block;height:32px;flex:none"><img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us" alt="Download on the App Store" onError="{{ f.badgeFail }}" style="display:block;height:32px;width:auto"></a><a href="#" aria-label="Get it on Google Play — së shpejti" style="display:block;height:48px;margin:0 -8px;flex:none"><img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" onError="{{ f.badgeFail }}" style="display:block;height:48px;width:auto"></a></sc-if><sc-if value="{{ f.badgesFallback }}" hint-placeholder-val="{{ false }}"><a href="#" role="link" aria-label="App Store — së shpejti" style="display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 16px;box-sizing:border-box;border:1.5px solid #3A3D36;border-radius:999px;color:#fff;font-family:'Criteria CF','Gotham',sans-serif;text-transform:uppercase;letter-spacing:.14em;font-size:11px;cursor:pointer;white-space:nowrap" style-hover="border-color:#fff"><span aria-hidden="true" style="width:16px;height:16px;border-radius:4px;border:1px dashed #54584F;box-sizing:border-box;flex:none"></span>App Store</a><a href="#" role="link" aria-label="Google Play — së shpejti" style="display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 16px;box-sizing:border-box;border:1.5px solid #3A3D36;border-radius:999px;color:#fff;font-family:'Criteria CF','Gotham',sans-serif;text-transform:uppercase;letter-spacing:.14em;font-size:11px;cursor:pointer;white-space:nowrap" style-hover="border-color:#fff"><span aria-hidden="true" style="width:16px;height:16px;border-radius:4px;border:1px dashed #54584F;box-sizing:border-box;flex:none"></span>Google Play</a></sc-if></nav>
+      <button type="button" aria-label="Lëviz poshtë për të lidhur" onClick="{{ f.tie }}" ref="{{ f.setCueRef }}" data-screen-label="Scroll cue" style="all:unset;box-sizing:border-box;position:absolute;left:50%;top:728px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:12px;min-width:44px;padding:4px 8px;cursor:pointer;white-space:nowrap;font-family:'Criteria CF','Gotham',sans-serif;text-transform:uppercase;letter-spacing:.14em;font-size:10px;color:#9CA096" style-hover="color:#fff">{{ f.scrollCue }}<span>Lëviz për të lidhur</span></button>
+    </div>
+  </div>
+  <section aria-labelledby="{{ f.formTitleId }}" data-screen-label="Launch notification (mobile)" style="position:relative;padding:8px 24px 40px">
+    <h2 id="{{ f.formTitleId }}" style="margin:0;font-family:'Criteria CF','Gotham',sans-serif;font-weight:400;text-transform:uppercase;letter-spacing:.14em;font-size:12px;line-height:1.3;color:#fff">Bëhu i pari që lidhet.</h2>
+    <p style="margin:6px 0 0;font-size:13px;line-height:1.5;color:#C4C8BB">Regjistro emailin dhe mëso i pari kur NYJA të jetë gati.</p>
+    <div style="margin-top:12px"><x-import component-from-global-scope="NYJADesignSystem_b69bca.Input" id="{{ f.emailId }}" type="email" label="Email adresa" placeholder="emri@domain.com" aria-describedby="{{ f.privacyId }}" hint-size="100%,72px"></x-import></div>
+    <div style="margin-top:10px"><x-import component-from-global-scope="NYJADesignSystem_b69bca.Button" variant="secondary" size="lg" full-width="{{ true }}" hint-size="100%,51px">Më njofto</x-import></div>
+    <p id="{{ f.privacyId }}" style="margin:10px 0 0;font-size:12px;line-height:1.5;color:#9CA096;text-wrap:pretty">Emaili përdoret vetëm për njoftimin e lansimit. <span style="color:#73776D">Prototip UI/UX — asnjë email nuk regjistrohet.</span></p>
+  </section>
+  <footer style="padding:0 24px 24px;display:flex;justify-content:space-between;font-size:11px;color:#9CA096"><span>© 2026 NYJA</span><span>Privatësia · SQ · EN</span></footer>
+</div>
+</sc-if>
+
+<sc-if value="{{ f.isText }}" hint-placeholder-val="{{ false }}">
+<div data-theme="light" style="width:{{ f.w }}px;box-sizing:border-box;background:#fff;color:#000;font-family:'Gotham',sans-serif;letter-spacing:.01em;padding:40px 48px 44px;display:flex;flex-direction:column;gap:28px">
+  <div style="display:flex;align-items:baseline;justify-content:space-between;gap:32px;padding-bottom:10px;border-bottom:1.5px solid #000"><div style="font-family:'Criteria CF','Gotham',sans-serif;text-transform:uppercase;letter-spacing:.14em;font-size:13px;flex:none">{{ f.title }}</div><span style="font-size:12px;line-height:1.5;color:#54584F;max-width:820px;text-align:right;text-wrap:pretty">{{ f.intro }}</span></div>
+  <div style="display:grid;grid-template-columns:repeat({{ f.ncol }},minmax(0,1fr));gap:0 44px;align-items:start">
+    <sc-for list="{{ f.cols }}" as="col" hint-placeholder-count="3"><div style="display:flex;flex-direction:column"><div style="font-family:'Criteria CF','Gotham',sans-serif;text-transform:uppercase;letter-spacing:.14em;font-size:11px;color:#73776D;padding-bottom:8px">{{ col.title }}</div>
+      <sc-for list="{{ col.rows }}" as="r" hint-placeholder-count="4"><div style="display:grid;grid-template-columns:{{ col.kw }}px minmax(0,1fr);gap:16px;padding:10px 0;border-top:1.5px solid #ECEEE8;font-size:13px;line-height:1.5"><span style="font-family:'Criteria CF','Gotham',sans-serif;text-transform:uppercase;letter-spacing:.06em;font-size:11px;padding-top:3px">{{ r.k }}</span><span><span style="display:block">{{ r.v }}</span><sc-if value="{{ r.a }}" hint-placeholder-val="{{ false }}"><span style="display:block;color:#54584F;margin-top:2px">{{ r.a }}</span></sc-if></span></div></sc-for>
+    </div></sc-for>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ f.isVerify }}" hint-placeholder-val="{{ false }}">
+<div data-theme="light" style="width:1440px;box-sizing:border-box;background:#fff;color:#000;font-family:'Gotham',sans-serif;letter-spacing:.01em;padding:40px 48px 44px;display:flex;flex-direction:column;gap:28px">
+  <div style="display:flex;align-items:baseline;justify-content:space-between;gap:32px;padding-bottom:10px;border-bottom:1.5px solid #000"><div style="font-family:'Criteria CF','Gotham',sans-serif;text-transform:uppercase;letter-spacing:.14em;font-size:13px">J · Logo geometry verification — the final state is the official icon, rendered from the approved vector</div><span style="font-size:12px;color:#54584F">brand/nyja-icon-neon.svg = the knot path of uploads/NYJA_Logo_Icon-12.svg (client-supplied vector, 2026-10-15) alone — no tile, transparent background, knot in #D5FF00 (review 4c: "only the icon, no square"). Overlay: icon at 45%, derived centreline in white, key points in material.</span></div>
+  <div style="display:grid;grid-template-columns:640px minmax(0,1fr);gap:44px;align-items:start">
+    <div style="background:#000;padding:36px 36px 28px;display:flex;flex-direction:column;gap:18px">
+      <div style="position:relative;width:420px;height:420px;margin:0 auto"><img src="brand/nyja-icon-neon.svg" alt="The NYJA icon — the knot alone — from the approved vector" style="position:absolute;left:0;top:0;width:420px;height:420px;opacity:.45"><svg aria-hidden="true" viewBox="0 0 1080 1080" style="position:absolute;left:0;top:0;width:420px;height:420px;overflow:visible"><path d="{{ vArm }}" fill="none" stroke="#fff" stroke-width="3"></path><path d="{{ vKnot }}" fill="none" stroke="#fff" stroke-width="3"></path><sc-for list="{{ vPts }}" as="p" hint-placeholder-count="6"><circle cx="{{ p.x }}" cy="{{ p.y }}" r="9" fill="#D5FF00"></circle><text x="{{ p.lx }}" y="{{ p.ly }}" fill="#fff" style="font-family:'Criteria CF','Gotham',sans-serif;font-size:34px;letter-spacing:.14em">{{ p.k }}</text></sc-for></svg></div>
+      <div style="font-size:12px;line-height:1.5;color:#C4C8BB">Approved vector: uploads/NYJA_Logo_Icon-12.svg, viewBox 1080 × 1080 — the knot path is used verbatim (no redraw, no re-tracing), without the tile. The white line is the centreline the connections morph onto: stem → riser → loop (330°, counter-clockwise) → thread, crossing the riser where the artwork passes in front of it. The connections coincide on this line from 72% and thicken along it to 90% of the icon’s stroke by 92%; the knot is revealed under them from 60% and past them from 80%; at 97% the whole knot is shown.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;font-size:13px;line-height:1.5">
+      <sc-for list="{{ vRows }}" as="r" hint-placeholder-count="8"><div style="display:grid;grid-template-columns:150px minmax(0,1fr);gap:16px;padding:10px 0;border-top:1.5px solid #ECEEE8"><span style="font-family:'Criteria CF','Gotham',sans-serif;text-transform:uppercase;letter-spacing:.06em;font-size:11px;padding-top:3px">{{ r.k }}</span><span>{{ r.v }}</span></div></sc-for>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+</div>
+<div style="font:12px/1.5 system-ui,sans-serif;color:rgba(0,0,0,.55);max-width:{{ f.cw }}px">{{ f.stateLine }}</div>
+</div>
+</sc-for>
+</div>
+<p class="dv-next">Stop point per brief — V1.1 awaits creative review: <a class="dv-oid" href="#29a">29a</a>–<a class="dv-oid" href="#29k">29k</a>. V1 reference: <a class="dv-oid" href="NYJA-ComingSoon-Desktop-v1.dc.html#28b">28b</a>. No other screen was modified.</p>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;motion&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;auto&quot;,&quot;full&quot;,&quot;reduced&quot;,&quot;static&quot;],&quot;default&quot;:&quot;auto&quot;,&quot;tsType&quot;:&quot;'auto'|'full'|'reduced'|'static'&quot;,&quot;section&quot;:&quot;Motion&quot;},&quot;visit&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;first&quot;,&quot;returning&quot;],&quot;default&quot;:&quot;first&quot;,&quot;tsType&quot;:&quot;'first'|'returning'&quot;,&quot;section&quot;:&quot;Intro&quot;},&quot;formState&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;live&quot;,&quot;default&quot;,&quot;hover&quot;,&quot;focus&quot;,&quot;typing&quot;,&quot;invalid&quot;,&quot;submitting&quot;,&quot;success&quot;,&quot;error&quot;],&quot;default&quot;:&quot;live&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Launch notification&quot;}}">
+const CRIT = "'Criteria CF','Gotham',sans-serif";
+const EASE = 'cubic-bezier(.2,0,0,1)';
+const MAT = '#D5FF00'; // NYJA neon — the Y of the approved dark UI logo (brand/logo-dark-ui.png), sampled (213, 255, 0)
+const LAND = '#0F100E', LAND_LIT = '#181A16', EDGE = '#54584F', EDGE_LIT = '#9CA096';
+// The NYJA icon = the knot alone — vector geometry from the approved uploads/NYJA_Logo_Icon-12.svg (1080 × 1080 artboard), rendered as brand/nyja-icon-neon.svg: the knot path only, #D5FF00, no tile, transparent background.
+// Centreline of the knot derived from that path, normalized to the tile: A = loop top (Prishtinë's end) · J stem top · B stem foot · K loop centre (rc centreline radius) · E riser→loop (70°) · X loop→thread (100°) · thread X→T (T = the tile's right edge, where the artwork is cut).
+const YG = { W: 1080, H: 1080, A: [.4167, .2074], J: [.4361, .5167], B: [.3967, .8315], K: [.4167, .3065], rc: .0991, E: [.5078, .3454], X: [.3804, .3987], sw: .1009, gap: .0371,
+  // stem: flat foot (428,898) → vertical to y 702 → bend (r ≈ 214) into the 23° upper stem → cut centre J (471,558); the riser continues on the same 23° line and is tangent to the ring at E
+  stem: [[.3967, .8315], [.3967, .6498], [.3986, .6222], [.4044, .5952], [.4124, .5724], [.4361, .5167]],
+  // thread: leaves the ring tangentially at X, straight along the lower edge, then the mid-line of the two edge arcs (r 818 / 926) to the artboard cut at (1080, 553.5)
+  thread: [[.3804, .3987], [.4676, .4343], [.5370, .4620], [.6157, .4898], [.7130, .5130], [.7731, .5213], [.8333, .5250], [.9074, .5231], [.9593, .5181], [1.0, .5125]] };
+// Capitals (GeoNames city centres) and the Y end each one travels to: Prishtinë → arm top, Shkup → thread end, Tiranë → stem foot.
+const CAPS = [
+  { code: 'XK', label: 'PRISHTINË', coord: '42.67° N · 21.17° E', name: 'Prishtinë', country: 'Kosovë', lon: 21.16688, lat: 42.67272, end: 'A', side: 'right' },
+  { code: 'MK', label: 'SHKUP', coord: '42.00° N · 21.43° E', name: 'Shkup', country: 'Maqedonia e Veriut', lon: 21.43141, lat: 41.99646, end: 'T', side: 'right' },
+  { code: 'AL', label: 'TIRANË', coord: '41.33° N · 19.82° E', name: 'Tiranë', country: 'Shqipëri', lon: 19.81889, lat: 41.3275, end: 'B', side: 'right' }
+];
+const EDGES = [[0, 1], [1, 2], [2, 0]];
+const CLABELS = [{ code: 'XK', label: 'KOSOVË', lon: 20.75, lat: 42.85 }, { code: 'AL', label: 'SHQIPËRI', lon: 20.12, lat: 40.42 }, { code: 'MK', label: 'MAQEDONIA E VERIUT', lon: 21.78, lat: 41.52 }];
+const ORDER = { XK: 0, AL: 1, MK: 2 };
+// Canvases. k = Mercator scale (px per radian), (mx,my) = map box origin, ybox = where the Y glyph lands, track = scroll length of the transformation.
+const DOT = '#33362F', DOT_LIT = '#6E7268', DOT_BG = '#17191A', DOT_BG_LIT = '#2E312B', DOT_BG_CORE = '#4A4E46';
+// Device glyphs on a 12-unit box (phone · laptop · headphones · watch · controller · speaker · camera · earbud) — 1px strokes at glyph size.
+const DEVICES = [
+  ['M5 1.5h6a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-11a1 1 0 0 1 1-1z', 'M7 12.5h2'],
+  ['M3 3.5h10v6.5H3z', 'M1 12.5h14', 'M6.5 12.5h3'],
+  ['M8 2a4 4 0 0 1 4 4v4a4 4 0 0 1-8 0V6a4 4 0 0 1 4-4z', 'M8 2v4.5', 'M4 7h8'],
+  ['M2 10V8a6 6 0 0 1 12 0v2', 'M2 9h2.5v4.5H2z', 'M11.5 9H14v4.5h-2.5z'],
+  ['M5 2h6l1 7H4z', 'M3.5 9h9v2h-9z', 'M8 11v2.5', 'M5 14.5h6', 'M3.5 6.5H2', 'M12.5 6.5H14'],
+  ['M4 1.5h8v13H4z', 'M6 4h4', 'M6 6h4', 'M9 11.5h.01'],
+  ['M2 5h7a3 3 0 0 1 0 6H7l-2 4', 'M9 5a3 3 0 0 1 0 6', 'M2 5v6'],
+  ['M6 14.5h4', 'M8 14.5V9', 'M8 9l4-7', 'M4.5 14.5a3.5 2 0 0 1 7 0'],
+  ['M1.5 3h13v8h-13z', 'M5.5 13.5h5', 'M8 11v2.5'],
+  ['M5 4.5h6v7H5z', 'M6 4.5V1.5h4v3', 'M6 11.5v3h4v-3', 'M11 7h1'],
+  ['M2.5 3h11a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z', 'M14.5 8h.01'],
+  ['M4 5.5a2 2 0 1 1 0 .01', 'M12 5.5a2 2 0 1 1 0 .01', 'M3.5 7.5l-1 5', 'M12.5 7.5l1 5'],
+  ['M4.5 1.5h7v13h-7z', 'M8 10.5a2 2 0 1 0 0-.01', 'M8 4.5h.01'],
+  ['M1.5 5h3l1.5-2h4l1.5 2h3v8h-13z', 'M8 11.5a2.5 2.5 0 1 0 0-.01'],
+  ['M1.5 5h13v6h-13z', 'M4 7.5h.01', 'M6.5 7.5h.01', 'M9 7.5h.01', 'M11.5 7.5h.01', 'M5 9.5h6'],
+  ['M6 6h4v4H6z', 'M6 6L2.5 2.5', 'M10 6l3.5-3.5', 'M6 10l-3.5 3.5', 'M10 10l3.5 3.5', 'M2.5 2.5a1.5 1.5 0 1 0 0-.01', 'M13.5 2.5a1.5 1.5 0 1 0 0-.01', 'M2.5 13.5a1.5 1.5 0 1 0 0-.01', 'M13.5 13.5a1.5 1.5 0 1 0 0-.01']
+];
+// Canvases. k = Mercator scale (px per radian), (mx,my) = map box origin, (ox,oy) = map centre = tilt / perspective origin, tilt = plane angle at the geographic state, P = perspective,
+// pitch / dot = land dot matrix, ybox = where the Y glyph lands, track = scroll length of the transformation.
+const DESK = { key: 'd', W: 1440, H: 900, k: 7400, mx: 819, my: 7, ox: 1060, oy: 318, tilt: 52, P: 1400, pitch: 6, dot: 1, ybox: { x: 880, y: 100, w: 420 }, track: 600, bend: -12, halo: 110, torch: 200, vanW: 44, townLabels: 'all', knot: { x: 140, y: 56 }, clabels: true, lab: 11, clab: 10, hit: 90 };
+const MOB = { key: 'm', W: 390, H: 844, k: 4300, mx: 55, my: 45, ox: 195, oy: 226, tilt: 48, P: 900, pitch: 5, dot: .9, ybox: { x: 45, y: 72, w: 300 }, track: 400, bend: -8, halo: 70, torch: 130, vanW: 30, townLabels: 'current', clabels: false, lab: 10, clab: 9, hit: 60 };
+const N = 96, RAD = Math.PI / 180;
+// Connections are arcs lifted above the map plane (height ARC × chord), flat again by ARC_END of the track — before the morph; each has a ground trace on the land at TRACE.
+const ARC = .26, ARC_END = .45, TRACE = .22;
+const merc = lat => Math.log(Math.tan(Math.PI / 4 + lat * RAD / 2));
+const clamp = v => Math.max(0, Math.min(1, v));
+const smooth = f => f * f * (3 - 2 * f);
+const mid = (a, b) => ({ x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 });
+const ctrl = (A, B, k) => { const m = mid(A, B); let dx = B.x - A.x, dy = B.y - A.y; const L = Math.hypot(dx, dy) || 1; dx /= L; dy /= L; return { x: m.x - dy * k, y: m.y + dx * k }; };
+const quadPts = (s, c, e, n) => { const o = []; for (let i = 0; i < n; i++) { const t = i / (n - 1), u = 1 - t; o.push({ x: u * u * s.x + 2 * u * t * c.x + t * t * e.x, y: u * u * s.y + 2 * u * t * c.y + t * t * e.y }); } return o; };
+const polyLen = p => { let L = 0; for (let i = 1; i < p.length; i++) L += Math.hypot(p[i].x - p[i - 1].x, p[i].y - p[i - 1].y); return L; };
+const STRAND = .9; // final strand width as a fraction of the icon's stroke
+const geoE = f => smooth(clamp(f / .72)); // the three connections are exactly on the centreline from 72%; the strand thickens after that
+const resample = (poly, n) => { const L = [0]; for (let i = 1; i < poly.length; i++) L.push(L[i - 1] + Math.hypot(poly[i].x - poly[i - 1].x, poly[i].y - poly[i - 1].y)); const tot = L[L.length - 1] || 1; const o = []; let j = 0; for (let i = 0; i < n; i++) { const s = tot * i / (n - 1); while (j < L.length - 2 && L[j + 1] < s) j++; const a = poly[j], b = poly[j + 1] || a, seg = (L[j + 1] - L[j]) || 1, t = clamp((s - L[j]) / seg); o.push({ x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t }); } return o; };
+const dOf = pts => pts.map((p, i) => (i ? 'L' : 'M') + p.x.toFixed(1) + ',' + p.y.toFixed(1)).join('');
+const lerpPts = (a, b, e) => a.map((p, i) => ({ x: p.x + (b[i].x - p.x) * e, y: p.y + (b[i].y - p.y) * e }));
+const tr = (m, full, red) => m === 'full' ? full : m === 'reduced' ? (red || 'none') : 'none';
+const PH = ['dark', 'map', 'caps', 'tour', 'links', 'ready'];
+const ge = (p, k) => PH.indexOf(p) >= PH.indexOf(k);
+const TIMES = { first: [[400, 'map'], [1500, 'caps'], [2000, 'tour']], returning: [[60, 'links'], [600, 'ready']] }; // links + ready follow the end of the tour (tick → tourDone)
+const TOUR_MS = 24000, EMF = .04; // tour length · emphasis decay of a city name after the van arrives (fraction of the tour)
+// The NYJA van's route (review 9): Kosovo in the client's order, then Albania, then North Macedonia — soft lines, current grammar; capitals reuse the CAPS nodes.
+const STOPS = [
+  { n: 'Prishtinë', cap: 0 }, { n: 'Gjilan', lon: 21.46923, lat: 42.4635, side: 'r' }, { n: 'Ferizaj', lon: 21.15528, lat: 42.37056, side: 'l' }, { n: 'Prizren', lon: 20.73972, lat: 42.21389, side: 'b' }, { n: 'Gjakovë', lon: 20.43083, lat: 42.38028, side: 'l' }, { n: 'Pejë', lon: 20.28842, lat: 42.65934, side: 'l' }, { n: 'Mitrovicë', lon: 20.86667, lat: 42.88333, side: 'a' },
+  { n: 'Kukës', lon: 20.42189, lat: 42.07694, side: 'l' }, { n: 'Shkodër', lon: 19.51258, lat: 42.06828, side: 'l' }, { n: 'Durrës', lon: 19.45469, lat: 41.32355, side: 'l' }, { n: 'Tiranë', cap: 2 }, { n: 'Vlorë', lon: 19.48318, lat: 40.4686, side: 'l' }, { n: 'Korçë', lon: 20.78083, lat: 40.61861, side: 'b' }, { n: 'Pogradec', lon: 20.6525, lat: 40.9025, side: 'l' },
+  { n: 'Strugë', lon: 20.67778, lat: 41.1775, side: 'a' }, { n: 'Ohër', lon: 20.80194, lat: 41.11722, side: 'b' }, { n: 'Manastir', lon: 21.33474, lat: 41.03143, side: 'b' }, { n: 'Prilep', lon: 21.55504, lat: 41.34514, side: 'r' }, { n: 'Veles', lon: 21.77556, lat: 41.71556, side: 'r' }, { n: 'Kumanovë', lon: 21.71444, lat: 42.13222, side: 'r' }, { n: 'Shkup', cap: 1 }, { n: 'Tetovë', lon: 20.97155, lat: 42.00972, side: 'a' }, { n: 'Gostivar', lon: 20.90819, lat: 41.79611, side: 'l' }
+];
+// The Screen 08 van (nyja-scene.jsx silhouette, nose left, 880 × 390 local units) as a sticker: neon body, black glass, black wheels with a neon rim.
+const KNOT_D = 'M1036.27,504.11a818.49,818.49,0,0,1-371.06-32.39c-12.63-4.21-25.39-8.75-37.89-13.54-1.75-.65-3.57-1.36-5.31-2.07l-40.82-15.94v-.07l15.68-36.73,3.11-7.32a161.42,161.42,0,0,0-.91-129.62c-17.81-40.36-52.47-70.93-93.41-87.26l-.91-.26c-80.45-31.81-173.22,7.58-206.26,87.45l-1,2.66a161.65,161.65,0,0,0,2.39,129.69c14.77,32.65,40.69,58.76,72.1,75.79A151.08,151.08,0,0,0,393,484.41l16.06,6.29,26.56,10.43,102.29,40.1,41.46,16.26,2.59,1c11.6,4.53,23.26,8.87,35.11,12.82a925.64,925.64,0,0,0,434.68,41.66l28.24-4.08v-111ZM498.21,354.73l-3.69,8.48L478.78,400l-40.56-15.93-9.84-3.89a52.37,52.37,0,0,1-24.94-20.34,54.74,54.74,0,0,1-7.39-18.27,55.42,55.42,0,0,1,3.56-31.87l.52-1.55a49.78,49.78,0,0,1,46-30.64,45.06,45.06,0,0,1,17.81,3.5l5.83,2.2a52.84,52.84,0,0,1,30.9,33C504.69,328.81,503.26,342.55,498.21,354.73ZM419.83,537.86l-24.68,57.85a269.2,269.2,0,0,0-21.64,106.11V898H483.38V701.82a159.28,159.28,0,0,1,12.95-63l25.91-60.76Z'; // the official icon path (uploads/NYJA_Logo_Icon-12.svg, 1080-unit artboard), used verbatim
+const VAN_BODY = 'M880 30 Q880 0 850 0 L300 0 C250 0 220 10 200 35 L105 150 L40 160 Q0 165 0 195 L0 295 Q0 322 28 322 L95 322 A70 70 0 0 1 235 322 L635 322 A70 70 0 0 1 775 322 L880 322 Z';
+const PHASES = [
+  ['0 – 400 ms', 'dark', 'Errësira — black, visual silence. Kalo hyrjen → is available from the first frame; Esc also skips.'],
+  ['400 ms', 'map', 'Gjeografia — the three borders draw as 1px lines (1200ms, Kosovo · Albania · North Macedonia 150ms apart); country names fade in.'],
+  ['1500 ms', 'caps', 'Kryeqytetet — Prishtinë, Shkup, Tiranë appear at their coordinates (400ms, 120ms apart) with their labels.'],
+  ['2000 ms', 'tour', 'Turi — the NYJA van leaves Prishtinë and visits 23 cities in ≈24s (Gjilan → Ferizaj → Prizren → Gjakovë → Pejë → Mitrovicë → Kukës → Shkodër → Durrës → Tiranë → Vlorë → Korçë → Pogradec → Strugë → Ohër → Manastir → Prilep → Veles → Kumanovë → Shkup → Tetovë → Gostivar); each name lights as it arrives; the trail stays as the network.'],
+  ['≈ 26 s', 'links', 'Lidhja — three connections draw between the capitals (520ms, 160ms apart): Prishtinë – Shkup · Shkup – Tiranë · Tiranë – Prishtinë.'],
+  ['≈ 27 s', 'ready', 'Gati — the cue appears. From here the scroll position owns the transformation (600px on desktop, 400 on mobile).']
+];
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+class Component extends DCLogic {
+  state = { tourDone: {}, badgeFail: false, motion: null, visit: null, formState: null, ph: {}, hot: {}, sel: {}, form: {}, geoReady: false };
+  nets = {}; timers = {}; formT = {}; gcache = {};
+  componentDidMount() {
+    try { this.rmq = matchMedia('(prefers-reduced-motion: reduce)'); this.rmq.addEventListener('change', () => this.forceUpdate()); } catch (e) {}
+    try { this.seen = localStorage.getItem('nyja-cs-intro') === 'seen'; } catch (e) { this.seen = false; }
+    fetch('geo/west-balkans-ne10m.json').then(r => r.json()).then(j => { this.data = j; this.prep(DESK); this.prep(MOB); this.setState({ geoReady: true }); }).catch(e => console.warn('geo data', e));
+    this.raf = requestAnimationFrame(this.tick);
+    (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(() => setTimeout(() => this.play('29a'), 500));
+  }
+  componentWillUnmount() { cancelAnimationFrame(this.raf); [this.timers, this.formT].forEach(o => Object.values(o).forEach(l => [].concat(l).forEach(clearTimeout))); }
+  componentDidUpdate(prev) { ['motion', 'visit', 'formState'].forEach(k => { if (prev[k] !== this.props[k]) this.setState({ [k]: null }); }); }
+  motion() { const b = this.state.motion || this.props.motion || 'auto'; return b === 'auto' ? (this.rmq && this.rmq.matches ? 'reduced' : 'full') : b; }
+  visit() { return this.state.visit || this.props.visit || (this.seen ? 'returning' : 'first'); }
+  // Projection + all geometry for one canvas: Mercator (conformal — shapes stay true), scale k, the data bbox's top-left at (mx,my).
+  prep(G) {
+    const rings = [].concat(...this.data.countries.map(c => c.rings));
+    let lon0 = 180, lat1 = -90; rings.forEach(r => r.forEach(p => { if (p[0] < lon0) lon0 = p[0]; if (p[1] > lat1) lat1 = p[1]; }));
+    const proj = (lon, lat) => ({ x: G.mx + (lon - lon0) * RAD * G.k, y: G.my + (merc(lat1) - merc(lat)) * G.k });
+    const borders = this.data.countries.slice().sort((a, b) => ORDER[a.code] - ORDER[b.code]).map(c => ({ code: c.code, d: c.rings.map(r => dOf(r.map(p => proj(p[0], p[1]))) + 'Z').join('') }));
+    const caps = CAPS.map(c => proj(c.lon, c.lat));
+    const clabels = CLABELS.map(c => Object.assign({ label: c.label }, proj(c.lon, c.lat)));
+    const bx = G.ybox.x, by = G.ybox.y, bw = G.ybox.w, bh = bw * YG.H / YG.W, P = a => ({ x: bx + a[0] * bw, y: by + a[1] * bh });
+    const yA = P(YG.A), yJ = P(YG.J), yB = P(YG.B), yK = P(YG.K), yE = P(YG.E), yX = P(YG.X), rc = YG.rc * bw, thread = YG.thread.map(P);
+    const aE = Math.atan2(yE.y - yK.y, yE.x - yK.x), aX = Math.atan2(yX.y - yK.y, yX.x - yK.x) - 2 * Math.PI;
+    const ringRev = []; for (let i = 0; i <= 72; i++) { const a = aX + (aE - aX) * i / 72; ringRev.push({ x: yK.x + rc * Math.cos(a), y: yK.y + rc * Math.sin(a) }); }
+    const rev = a => a.slice().reverse();
+    const topI = Math.round((-Math.PI / 2 - aX) / (aE - aX) * 72), ringXP = ringRev.slice(0, topI + 1), ringPE = ringRev.slice(topI), yP = ringRev[topI];
+    const yEnd = { A: yP, B: yB, T: thread[thread.length - 1] };
+    const wF = STRAND * YG.sw * bw, back = (p, q, d) => { const L = Math.hypot(q.x - p.x, q.y - p.y) || 1; return { x: p.x + (q.x - p.x) * d / L, y: p.y + (q.y - p.y) * d / L }; };
+    const stem = YG.stem.map(P); stem[0] = back(stem[0], stem[1], wF / 2);
+    const thr = thread.slice(); thr[thr.length - 1] = back(thr[thr.length - 1], thr[thr.length - 2], wF / 2);
+    // Prishtinë–Shkup: loop top → X → thread · Shkup–Tiranë: thread back → the whole loop → riser → stem · Tiranë–Prishtinë: stem → riser → E → loop top. Strand ends sit half a width inside the flat terminals.
+    const p0 = rev(ringXP).concat(thr.slice(1)), p1 = rev(thr).concat(ringRev.slice(1), rev(stem)), p2 = stem.concat([yE], rev(ringPE));
+    const eY = [resample(p0, N), resample(p1, N), resample(p2, N)];
+    const len = [polyLen(p0), polyLen(p1), polyLen(p2)], sStem = polyLen(stem);
+    const eGeo = EDGES.map(([a, b]) => quadPts(caps[a], ctrl(caps[a], caps[b], G.bend), caps[b], N));
+    const arcH = eGeo.map(p => ARC * Math.hypot(p[N - 1].x - p[0].x, p[N - 1].y - p[0].y)), traceD = eGeo.map(dOf);
+    // The van's route: one soft bend per leg (same grammar as the connections), arc-length table, and a schedule — leg time ∝ 0.35 + length / mean, a short dwell at every stop.
+    const SP = STOPS.map(st => st.cap != null ? caps[st.cap] : proj(st.lon, st.lat)); let rp = [SP[0]]; const si = [0], legs = [];
+    for (let i = 0; i < SP.length - 1; i++) { const a = SP[i], b = SP[i + 1], L = Math.hypot(b.x - a.x, b.y - a.y); rp = rp.concat(quadPts(a, ctrl(a, b, -.09 * L), b, 18).slice(1)); si.push(rp.length - 1); legs.push(L); }
+    const cum = [0]; for (let i = 1; i < rp.length; i++) cum.push(cum[i - 1] + Math.hypot(rp[i].x - rp[i - 1].x, rp[i].y - rp[i - 1].y));
+    const meanL = legs.reduce((a, b) => a + b, 0) / legs.length, DW = .34, lw = legs.map(L => .35 + L / meanL), tot = lw.reduce((a, b) => a + b, 0) + DW * SP.length;
+    let tt = 0, tj = 0; const stops = SP.map((p, i) => { const tA = tt / tot; tt += DW; const tD = tt / tot; if (i < lw.length) tt += lw[i]; const st = STOPS[i]; return { p, tA, tD, i: si[i], cap: st.cap, town: st.cap == null ? tj++ : null, label: st.n.toUpperCase(), side: st.side }; });
+    const route = { pts: rp, cum, len: cum[cum.length - 1], d: dOf(rp), stops, towns: stops.filter(x => x.cap == null) };
+    const yKnot = { d: 'M' + yK.x.toFixed(1) + ',' + yK.y.toFixed(1) + ' L' + yE.x.toFixed(1) + ',' + yE.y.toFixed(1) };
+    // Mask skeleton = the same centreline the connections morph onto; the official pixels are revealed outward from it.
+    const loc = p => ({ x: p.x - bx, y: p.y - by });
+    // Butt-ended so the flat foot and the artboard cut are revealed as soon as the strand reaches them; the arm overlaps into the ring past E (no wedge at the tangent).
+    const skel = { arm: dOf(YG.stem.map(P).concat([yE, ringRev[69], ringRev[66]]).map(loc)), knot: dOf(ringRev.slice().reverse().concat(thread.slice(1)).map(loc)), sw: YG.sw * bw, box: { x: bx, y: by, w: bw, h: bh } };
+    this.gcache[G.key] = { proj, borders, caps, clabels, eY, eGeo, yEnd: CAPS.map(c => yEnd[c.end]), yK, yJ, rc, bh, skel, len, sStem, gapPx: YG.gap * bw, arcH, traceD, route, identD: G.knot ? 'M' + yK.x + ',' + (yK.y - rc) + ' C' + yK.x + ',' + (yK.y - 160) + ' ' + (G.knot.x + 40) + ',' + (G.knot.y + 120) + ' ' + G.knot.x + ',' + G.knot.y : null };
+  }
+  setPh(id, ph) { this.setState(s => ({ ph: Object.assign({}, s.ph, { [id]: ph }) })); }
+  play(id, visit) {
+    (this.timers[id] || []).forEach(clearTimeout); this.timers[id] = [];
+    const at = (ms, ph) => this.timers[id].push(setTimeout(() => this.setPh(id, ph), ms));
+    this.setPh(id, 'dark');
+    const el = this.frames && this.frames[id]; if (el) el.scrollTo({ top: 0, behavior: 'auto' });
+    if (this.motion() !== 'full') { at(60, 'ready'); return; }
+    TIMES[visit || this.visit()].forEach(x => at(x[0], x[1]));
+    this.timers[id].push(setTimeout(() => { try { localStorage.setItem('nyja-cs-intro', 'seen'); } catch (e) {} }, 1500));
+  }
+  skip(id) { (this.timers[id] || []).forEach(clearTimeout); this.setPh(id, 'ready'); try { localStorage.setItem('nyja-cs-intro', 'seen'); } catch (e) {} }
+  scrollTo(id, top) { const el = this.frames && this.frames[id]; if (el) el.scrollTo({ top, behavior: this.motion() === 'full' ? 'smooth' : 'auto' }); }
+  setForm(id, patch) { this.setState(s => ({ form: Object.assign({}, s.form, { [id]: Object.assign({ status: 'idle', email: '', error: null }, s.form[id], patch) }) })); }
+  submit(id, email) {
+    if (!EMAIL_RE.test(email)) { this.setForm(id, { error: 'Shkruaj një email të vlefshëm, p.sh. emri@domain.com' }); return; }
+    this.setForm(id, { status: 'busy', error: null }); clearTimeout(this.formT[id]);
+    this.formT[id] = setTimeout(() => this.setForm(id, { status: /gabim/i.test(email) ? 'fail' : 'done' }), 900);
+  }
+  // Current positions of the three capitals for a network at progress fk.
+  capPos(n) { const g = this.gcache[n.G.key]; if (!g) return null; const e = geoE(n.fk); return g.caps.map((c, i) => ({ x: c.x + (g.yEnd[i].x - c.x) * e, y: c.y + (g.yEnd[i].y - c.y) * e })); }
+  // The map plane: tilted toward the viewer at the geographic state, flat by 80% of the track; the pointer tilts it a little while the map is still a map.
+  tiltOf(n) { const G = n.G, f = n.fk, k = 1 - clamp(f / .3); return { ax: G.tilt * (1 - smooth(clamp(f / .8))) + (n.py || 0) * 3 * k, ay: (n.px || 0) * 6 * k }; }
+  tiltCss(n) { const t = this.tiltOf(n); return 'rotateX(' + t.ax.toFixed(2) + 'deg) rotateY(' + t.ay.toFixed(2) + 'deg)'; }
+  // Projection of a point of the plane to stage coordinates — the same maths the browser applies (rotateX · rotateY about (ox,oy), perspective P at (ox,oy)). Capitals and names are HTML placed with it, so they stay upright.
+  proj3(G, p, t, z) { z = z || 0; const a = t.ax * RAD, b = t.ay * RAD, dx = p.x - G.ox, dy = p.y - G.oy; const x2 = dx * Math.cos(b) + z * Math.sin(b), zr = z * Math.cos(b) - dx * Math.sin(b), y2 = dy * Math.cos(a) - zr * Math.sin(a), z2 = dy * Math.sin(a) + zr * Math.cos(a); const sc = G.P / (G.P - z2); return { x: G.ox + x2 * sc, y: G.oy + y2 * sc }; }
+  // Where the van is at tour time t (0–1): dwelling at a stop or easing along a leg; position by arc length on the route.
+  vanAt(g, t) {
+    const Rt = g.route, S = Rt.stops, last = S.length - 1; let j = 0; while (j < last && t >= S[j + 1].tA) j++;
+    let dist, moving = false; if (j >= last || t <= S[j].tD) dist = Rt.cum[S[j].i]; else { const u = smooth(clamp((t - S[j].tD) / (S[j + 1].tA - S[j].tD))); dist = Rt.cum[S[j].i] + u * (Rt.cum[S[j + 1].i] - Rt.cum[S[j].i]); moving = true; }
+    let lo = 0, hi = Rt.cum.length - 1; while (hi - lo > 1) { const mid = (lo + hi) >> 1; if (Rt.cum[mid] <= dist) lo = mid; else hi = mid; }
+    const a = Rt.pts[lo], b = Rt.pts[hi], seg = (Rt.cum[hi] - Rt.cum[lo]) || 1, u = clamp((dist - Rt.cum[lo]) / seg);
+    return { x: a.x + (b.x - a.x) * u, y: a.y + (b.y - a.y) * u, dist, dx: b.x - a.x, dy: b.y - a.y, moving };
+  }
+  // Scrolled back to the top after an interrupted tour: the intro resumes from the van's departure.
+  restartTour(n) { if (n.mobile) { this.setState(st => ({ tourDone: Object.assign({}, st.tourDone, { [n.id]: false }) })); return; } (this.timers[n.id] || []).forEach(clearTimeout); this.timers[n.id] = []; this.setPh(n.id, 'tour'); }
+  tourDone(n) { if (n.mobile) { this.setState(st => ({ tourDone: Object.assign({}, st.tourDone, { [n.id]: true }) })); return; } this.setPh(n.id, 'links'); (this.timers[n.id] = this.timers[n.id] || []).push(setTimeout(() => this.setPh(n.id, 'ready'), 900)); }
+  // A connection at progress f: the morph polyline (plane coordinates) lifted as an arc (z = height · sin πt, height → 0 by ARC_END), projected to the stage with the current tilt.
+  edgePts(n, g, i, f, e, tl) { const lift = g.arcH[i] * (1 - smooth(clamp(f / ARC_END))); return lerpPts(g.eGeo[i], g.eY[i], e).map((p, k) => this.proj3(n.G, p, tl, lift * Math.sin(Math.PI * k / (N - 1)))); }
+  // The connections thicken from 1px to the icon's own stroke between 55% (junction formed) and 92%, so the knot arrives as a stroke, not as a wire that is swapped for a thick icon.
+  lineW(g, f) { return 1 + (STRAND * g.skel.sw - 1) * smooth(clamp((f - .68) / .24)); }
+  // Over-under at the junction: from 76% the riser strands retract behind the thread (dash trim with round caps), opening the artwork's gap between the stem cut and the thread's lower edge.
+  dashFor(g, i, f) { if (i === 0 || f < .72) return '100'; const p = smooth(clamp((f - .76) / .16)); if (p <= 0) return '100'; const w = this.lineW(g, f), L = g.len[i], full = g.gapPx + w, hid = p * full; const start = i === 2 ? g.sStem + g.gapPx + w / 2 - hid : L - g.sStem - g.gapPx - w / 2; return (start / L * 100).toFixed(3) + ' ' + (hid / L * 100).toFixed(3) + ' 1000'; }
+  // Reveal mask width: never narrower than the lines (the icon sits under them in the same neon); from 80% it widens past the stroke to 1.5 × by 97%, then the mask is total (the rect).
+  maskW(g, f) { const rv = f < .82 ? 0 : 1 + (1.5 * g.skel.sw - 1) * smooth(clamp((f - .82) / .15)); return Math.max(this.lineW(g, f), rv); }
+  // CSS mask for the symbol <img>: the centreline stroked white at width w (alpha mask); total once the reveal is complete.
+  maskUrl(g, w, total) { const b = g.skel.box; const svg = "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 " + b.w.toFixed(2) + " " + b.h.toFixed(2) + "'>" + (total ? "<rect x='-40' y='-40' width='" + (b.w + 80).toFixed(1) + "' height='" + (b.h + 80).toFixed(1) + "' fill='white'/>" : "<path d='" + g.skel.arm + "' fill='none' stroke='white' stroke-width='" + w.toFixed(2) + "' stroke-linecap='butt' stroke-linejoin='round'/><path d='" + g.skel.knot + "' fill='none' stroke='white' stroke-width='" + w.toFixed(2) + "' stroke-linecap='butt' stroke-linejoin='round'/>") + "</svg>"; return 'url("data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg) + '")'; }
+  place(n) {
+    const g = this.gcache[n.G.key]; if (!g) return;
+    const f = n.fk, e = geoE(f), G = n.G, tl = this.tiltOf(n);
+    if (n.plane) n.plane.style.transform = this.tiltCss(n);
+    const borderOp = clamp(1 - f / .45), clOp = clamp(1 - f / .3), capLab = clamp(1 - (f - .1) / .3), lineFade = clamp(1 - (f - .97) / .03), nodeFade = clamp(1 - (f - .55) / .12), lw = this.lineW(g, f), solid = clamp((f - .68) / .15);
+    const pos = this.capPos(n), lit = i => n.hot === i || n.sel === i;
+    n.scr = pos.map(p => this.proj3(G, p, tl));
+    const endOp = (.5 + .5 * smooth(clamp((f - .2) / .3))).toFixed(3);
+    EDGES.forEach(([a, b], i) => { const pp = this.edgePts(n, g, i, f, e, tl), d = dOf(pp), r = n.edges[i], q = n.pulses[i], gr = n.grads[i]; if (gr) { gr.setAttribute('x1', pp[0].x.toFixed(1)); gr.setAttribute('y1', pp[0].y.toFixed(1)); gr.setAttribute('x2', pp[N - 1].x.toFixed(1)); gr.setAttribute('y2', pp[N - 1].y.toFixed(1)); } (n.gstops[i] || []).forEach(st => st.setAttribute('stop-opacity', endOp)); if (r) { r.setAttribute('d', d); r.setAttribute('stroke-width', lw.toFixed(2)); r.style.strokeDasharray = this.dashFor(g, i, f); if (f > .72) r.style.strokeDashoffset = 0; r.setAttribute('stroke-opacity', ((lit(a) || lit(b) ? 1 : .65 + .35 * solid) * lineFade).toFixed(3)); } if (q) { q.setAttribute('d', d); q.setAttribute('stroke-opacity', (.9 * nodeFade).toFixed(3)); } });
+    CAPS.forEach((c, i) => { const r = n.caps[i]; if (!r) return; const p = n.scr[i]; if (r.b) { r.b.style.transform = 'translate(' + (p.x - g.caps[i].x).toFixed(1) + 'px,' + (p.y - g.caps[i].y).toFixed(1) + 'px)'; r.b.style.opacity = nodeFade.toFixed(3); r.b.style.visibility = nodeFade > .02 ? 'visible' : 'hidden'; } if (r.t) r.t.style.opacity = capLab.toFixed(3); if (r.k) r.k.style.opacity = capLab.toFixed(3); });
+    n.halos.forEach((c, i) => { if (c) { c.setAttribute('cx', pos[i].x.toFixed(1)); c.setAttribute('cy', pos[i].y.toFixed(1)); } });
+    if (n.haloG && f > 0) n.haloG.style.opacity = borderOp.toFixed(3);
+    n.traces.forEach(t => { if (t && f > 0) t.style.opacity = (TRACE * (1 - smooth(clamp(f / ARC_END)))).toFixed(3); });
+    const t = n.tour == null ? 1 : n.tour;
+    if (g.route) {
+      const v = this.vanAt(g, t);
+      if (n.trail) { n.trail.style.strokeDashoffset = (100 - 100 * v.dist / g.route.len).toFixed(3); const after = n.live ? (ge(n.ph, 'links') ? 1 : 0) : (t >= 1 ? 1 : 0); n.trail.style.opacity = (borderOp * (1 - after)).toFixed(3); n.trail.style.transition = n.cut ? 'none' : 'opacity 900ms linear'; }
+      if (n.van) { const q = this.proj3(G, v, tl), sc = G.vanW / 880; if (v.moving && Math.abs(v.dx) > .4 * Math.hypot(v.dx, v.dy)) n.vanDir = v.dx > 0 ? -1 : 1; const dir = n.vanDir || -1; n.van.setAttribute('transform', 'translate(' + q.x.toFixed(1) + ',' + q.y.toFixed(1) + ') scale(' + (sc * dir).toFixed(4) + ',' + sc.toFixed(4) + ') translate(-440,-392)');  n.van.style.opacity = (t > 0 && t < 1 ? clamp(t / .01) * clamp((1 - t) / .015) : 0).toFixed(3); }
+      g.route.stops.forEach(st => { const em = (t >= st.tA && t < 1) ? 1 - smooth(clamp((t - st.tA) / EMF)) : 0, ap = clamp((t - st.tA + .012) / .012);
+        if (st.cap != null) { const r = n.caps[st.cap]; if (r && r.t) r.t.style.color = (lit(st.cap) || em > .5) ? '#fff' : '#C4C8BB'; return; }
+        const w = n.towns[st.town]; if (!w || !w.w) return; const q = this.proj3(G, st.p, tl); w.w.style.transform = 'translate(' + (q.x - st.p.x).toFixed(1) + 'px,' + (q.y - st.p.y).toFixed(1) + 'px)'; const stay = n.live ? (ge(n.ph, 'links') ? 0 : 1) : (t >= 1 ? 0 : 1); w.w.style.opacity = (ap * borderOp * stay).toFixed(3); w.w.style.transition = n.cut ? 'none' : 'opacity 900ms linear';
+        if (w.d) w.d.style.transform = 'scale(' + (1 + .8 * em).toFixed(3) + ')'; if (w.t) { w.t.style.color = em > .5 ? '#fff' : '#9CA096'; w.t.style.transform = 'scale(' + (1 + .25 * em).toFixed(3) + ')'; if (G.townLabels === 'current') w.t.style.opacity = em.toFixed(3); } });
+    }
+    const litCode = n.hot != null ? CAPS[n.hot].code : n.sel != null ? CAPS[n.sel].code : null;
+    n.borders.forEach((b, i) => { if (!b) return; b.style.opacity = borderOp.toFixed(3); const on = g.borders[i].code === litCode; b.setAttribute('fill', on ? LAND_LIT : LAND); b.setAttribute('stroke', on ? EDGE_LIT : EDGE); });
+    n.dots.forEach((d, i) => { if (!d) return; d.style.opacity = borderOp.toFixed(3); d.setAttribute('fill', 'url(#' + (g.borders[i].code === litCode ? 'dotsl-' : 'dots-') + n.id + ')'); });
+    n.clabels.forEach((t, i) => { if (!t) return; const q = this.proj3(G, g.clabels[i], tl); t.style.transform = 'translate(' + (q.x - g.clabels[i].x).toFixed(1) + 'px,' + (q.y - g.clabels[i].y).toFixed(1) + 'px)'; t.style.opacity = clOp.toFixed(3); });
+    if (n.yimg) { const vis = f >= .6; n.yimg.style.opacity = vis ? 1 : 0; const key = vis ? (f >= .97 ? 'all' : this.maskW(g, f).toFixed(2)) : 'none'; if (key !== n.maskKey) { n.maskKey = key; if (vis) { const u = this.maskUrl(g, this.maskW(g, f), f >= .97); n.yimg.style.webkitMaskImage = u; n.yimg.style.maskImage = u; } } }
+    if (n.cue) { const o = clamp(1 - f / .25); n.cue.style.opacity = o.toFixed(3); n.cue.style.visibility = o > .02 ? 'visible' : 'hidden'; }
+    if (n.dot) n.dot.style.color = f > .95 ? MAT : '';
+    if (n.knot) n.knot.style.visibility = f > .9 ? 'visible' : 'hidden';
+    if (n.ident) { if (f >= .98 && !n.identOn) { n.identOn = true; const el = n.ident; el.style.animation = 'none'; void el.getBoundingClientRect(); el.style.animation = n.m === 'full' ? 'cs-ident 2400ms ' + EASE + ' forwards' : 'none'; el.style.opacity = n.m === 'full' ? '' : (n.still ? '.6' : '0'); } else if (f < .9 && n.identOn) { n.identOn = false; n.ident.style.animation = 'none'; n.ident.style.opacity = '0'; } }
+  }
+  tick = now => {
+    for (const id in this.nets) {
+      const n = this.nets[id];
+      if (n.scroll) { if (n.snap) n.fk = n.m === 'static' ? 1 : (n.form >= .5 ? 1 : 0); else { n.fk += (n.form - n.fk) * .22; if (Math.abs(n.form - n.fk) < .0015) n.fk = n.form; } } else n.fk = n.form;
+      if (n.torch && n.m === 'full') {
+        if (n.ptr) { if (n.lx == null) { n.lx = n.ptr.x; n.ly = n.ptr.y; n.vx = 0; n.vy = 0; } const k = .06, c = .62; n.vx = (n.vx + (n.ptr.x - n.lx) * k) * c; n.vy = (n.vy + (n.ptr.y - n.ly) * k) * c; n.lx += n.vx; n.ly += n.vy;
+          const sp = Math.hypot(n.vx, n.vy), br = 1 + Math.min(.35, sp * .02), rr = n.G.torch * (1 + .025 * Math.sin(now / 1100)) * br, ex = n.lx.toFixed(1), ey = n.ly.toFixed(1);
+          n.torch.setAttribute('cx', ex); n.torch.setAttribute('cy', ey); n.torch.setAttribute('r', rr.toFixed(1)); if (n.torchC) { n.torchC.setAttribute('cx', ex); n.torchC.setAttribute('cy', ey); n.torchC.setAttribute('r', (rr * .38).toFixed(1)); }
+          n.torchC && n.torchC.setAttribute('r', (rr * .42).toFixed(1)); }
+        else { n.lx = null; }
+        if (n.torchG) { const want = n.ptr ? 1 : 0; if (want !== n.torchOn) { n.torchOn = want; n.torchG.style.transition = want ? 'opacity 500ms ' + EASE : 'opacity 900ms ' + EASE; n.torchG.style.opacity = want; } } }
+      let par = false;
+      if (n.scroll && n.m === 'full') { const px = n.px + (n.tx - n.px) * .08, py = n.py + (n.ty - n.py) * .08; if (Math.abs(px - n.px) > .0004 || Math.abs(py - n.py) > .0004) { n.px = px; n.py = py; par = true; } }
+      if (n.live) { if (n.m !== 'full') n.tour = 1; else if (n.ph === 'tour') { if (n.form > .002) { n.tour = 1; n.tourT0 = null; n.cut = true; n.tourEnd = true; this.tourDone(n); } else { if (!n.tourT0) n.tourT0 = now; n.tour = clamp((now - n.tourT0) / TOUR_MS); if (n.tour >= 1 && !n.tourEnd) { n.tourEnd = true; this.tourDone(n); } } } else { n.tour = ge(n.ph, 'links') ? 1 : 0; n.tourT0 = null; n.tourEnd = false; if (n.cut && n.form <= .002 && n.fk <= .002) { n.cut = false; this.restartTour(n); } } }
+      if (n.fk !== n.lastFk || n.dirty || par || n.tour !== n.lastTour) { this.place(n); n.lastFk = n.fk; n.lastTour = n.tour; n.dirty = false; }
+    }
+    this.raf = requestAnimationFrame(this.tick);
+  };
+  // The network SVG on the tilted map plane — dot-matrix land, borders, three connections with flow pulses, the thread continuation and the connection to the wordmark.
+  // Built here so the scroll-driven morph survives re-renders; capitals and country names are HTML (template) placed by proj3 so they stay upright.
+  net(id, o) {
+    const h = React.createElement, m = o.m, on = o.on, G = o.G, g = this.gcache[G.key];
+    const reg = this.nets[id] || (this.nets[id] = { id, edges: [], pulses: [], caps: [], borders: [], dots: [], clabels: [], traces: [], grads: [], gstops: [], halos: [], towns: [], tour: 0, fk: o.fk, form: o.fk, lastFk: -1, px: 0, py: 0, tx: 0, ty: 0 });
+    reg.G = G; reg.m = m; reg.scroll = !!o.scroll; reg.snap = m !== 'full' || !!o.frozen; reg.still = !!o.frozen; reg.hot = o.hot; reg.sel = o.sel; reg.dirty = true; reg.ph = o.ph; reg.mobile = !!o.mobile; if (o.tour != null) { reg.live = false; reg.tour = o.tour; } else reg.live = true;
+    if (!o.scroll) reg.form = o.fk;
+    const kids = [], ovKids = [];
+    if (g) {
+      const e = geoE(reg.fk), tl = this.tiltOf(reg), litCode = o.hot != null ? CAPS[o.hot].code : o.sel != null ? CAPS[o.sel].code : null;
+      // Land fill = a matrix of tiny device glyphs (review 12 — the dots become tech icons): one pattern cell holds 8 glyphs on a P × P grid, 1px strokes.
+      // cell P = 3.6 × pitch (21.6px desktop), glyph 10px (desktop) / 8px (mobile) on a 16-unit box, 0.75px strokes: light enough to read as a texture, sharp enough to read as devices up close.
+      const P = G.pitch * 3.6, GL = G.pitch * 1.65, pat = (pid, col) => h('pattern', { key: pid, id: pid, patternUnits: 'userSpaceOnUse', width: P * 4, height: P * 4, shapeRendering: 'geometricPrecision' }, DEVICES.map((d, k) => h('g', { key: k, transform: 'translate(' + ((k % 4) * P + (P - GL) / 2).toFixed(2) + ',' + (Math.floor(k / 4) * P + (P - GL) / 2).toFixed(2) + ') scale(' + (GL / 16).toFixed(4) + ')', fill: 'none', stroke: col, strokeWidth: .5, strokeLinecap: 'round', strokeLinejoin: 'round', vectorEffect: 'non-scaling-stroke' }, d.map((dd, q) => h('path', { key: q, d: dd, vectorEffect: 'non-scaling-stroke' })))));
+      kids.push(h('defs', { key: 'defs' }, pat('dots-' + id, DOT), pat('dotsl-' + id, DOT_LIT), pat('dotsbg-' + id, DOT_BG), pat('dotsbgl-' + id, DOT_BG_LIT), pat('dotsbgc-' + id, DOT_BG_CORE),
+        // lamp falloff (inverse-square-ish: 1 → .55 → .22 → .06 → 0) and a tight core
+        h('radialGradient', { id: 'torch-' + id }, [1, .82, .62, .44, .29, .18, .1, .05, .02, 0].map((o, k) => h('stop', { key: k, offset: (k / 9).toFixed(3), stopColor: '#fff', stopOpacity: o }))),
+        h('radialGradient', { id: 'torchc-' + id }, [1, .78, .52, .3, .14, .05, 0].map((o, k) => h('stop', { key: k, offset: (k / 6).toFixed(3), stopColor: '#fff', stopOpacity: o }))),
+        h('mask', { id: 'tm-' + id, maskUnits: 'userSpaceOnUse', x: 0, y: 0, width: G.W, height: G.H }, h('circle', { cx: -1000, cy: -1000, r: G.torch, fill: 'url(#torch-' + id + ')', ref: el => { reg.torch = el; } })),
+        h('mask', { id: 'tmc-' + id, maskUnits: 'userSpaceOnUse', x: 0, y: 0, width: G.W, height: G.H }, h('circle', { cx: -1000, cy: -1000, r: G.torch * .38, fill: 'url(#torchc-' + id + ')', ref: el => { reg.torchC = el; } })),
+        h('radialGradient', { id: 'halo-' + id }, h('stop', { offset: '0', stopColor: '#fff', stopOpacity: 1 }), h('stop', { offset: '1', stopColor: '#fff', stopOpacity: 0 })), h('mask', { id: 'hm-' + id, maskUnits: 'userSpaceOnUse', x: 0, y: 0, width: G.W, height: G.H }, CAPS.map((c, i) => h('circle', { key: i, cx: g.caps[i].x, cy: g.caps[i].y, r: G.halo, fill: 'url(#halo-' + id + ')', ref: el => { reg.halos[i] = el; } })))));
+      g.borders.forEach((b, i) => { const lit = b.code === litCode; kids.push(h('path', { key: 'b' + b.code, 'data-country': b.code, d: b.d, fill: lit ? LAND_LIT : LAND, fillOpacity: on('map') ? 1 : 0, stroke: lit ? EDGE_LIT : EDGE, strokeWidth: 2, strokeLinejoin: 'round', pathLength: 100, ref: el => { reg.borders[i] = el; }, style: { pointerEvents: reg.scroll ? 'auto' : 'none', strokeDasharray: 100, strokeDashoffset: on('map') ? 0 : 100, transition: tr(m, 'stroke-dashoffset 1200ms ' + EASE + ' ' + (150 * i) + 'ms, fill-opacity 900ms linear ' + (600 + 150 * i) + 'ms, fill 240ms linear, stroke 240ms linear', 'fill-opacity 200ms linear, fill 200ms linear, stroke 200ms linear') } })); });
+      g.borders.forEach((b, i) => kids.push(h('path', { key: 'd' + b.code, d: b.d, fill: 'url(#' + (b.code === litCode ? 'dotsl-' : 'dots-') + id + ')', fillOpacity: on('map') ? 1 : 0, ref: el => { reg.dots[i] = el; }, style: { pointerEvents: 'none', transition: tr(m, 'fill-opacity 900ms linear ' + (800 + 150 * i) + 'ms', 'fill-opacity 200ms linear') } })));
+      // The van's trail: the whole route at 35%, revealed behind the van by arc length (pathLength 100 ↔ the cum table); it stays as the network and fades with the land on scroll.
+      kids.push(h('path', { key: 'trail', d: g.route.d, fill: 'none', stroke: MAT, strokeWidth: 1, strokeOpacity: .35, strokeLinecap: 'round', strokeLinejoin: 'round', pathLength: 100, ref: el => { reg.trail = el; }, style: { strokeDasharray: 100, strokeDashoffset: 100 } }));
+      // The matrix lights around each capital (brighter dots through a radial mask that follows the node) — no blur, no glow.
+      kids.push(h('g', { key: 'halo', mask: 'url(#hm-' + id + ')', ref: el => { reg.haloG = el; }, style: { opacity: on('caps') ? 1 : 0, transition: tr(m, 'opacity 900ms linear 200ms', 'opacity 200ms linear') } }, g.borders.map(b => h('path', { key: 'h' + b.code, d: b.d, fill: 'url(#dotsl-' + id + ')' }))));
+      // Ground traces: the arcs' footprints on the land, drawn with them and gone once the arcs have settled.
+      const quick = reg.cut ? 'none' : null;
+      EDGES.forEach((ed, i) => kids.push(h('path', { key: 'tr' + i, d: g.traceD[i], fill: 'none', stroke: MAT, strokeWidth: 1, pathLength: 100, ref: el => { reg.traces[i] = el; }, style: { opacity: TRACE, strokeDasharray: 100, strokeDashoffset: on('links') ? 0 : 100, transition: quick || tr(m, 'stroke-dashoffset 520ms ' + EASE + ' ' + (160 * i) + 'ms') } })));
+      // Apex-bright gradient along each arc (end stops brighten to uniform as the arcs settle).
+      ovKids.push(h('defs', { key: 'd' }, EDGES.map((ed, i) => { const pp = this.edgePts(reg, g, i, reg.fk, e, tl); return h('linearGradient', { key: i, id: 'ag' + i + '-' + id, gradientUnits: 'userSpaceOnUse', x1: pp[0].x, y1: pp[0].y, x2: pp[N - 1].x, y2: pp[N - 1].y, ref: el => { reg.grads[i] = el; } }, h('stop', { offset: '0', stopColor: MAT, stopOpacity: .5, ref: el => { reg.gstops[i] = reg.gstops[i] || []; reg.gstops[i][0] = el; } }), h('stop', { offset: '.5', stopColor: MAT, stopOpacity: 1 }), h('stop', { offset: '1', stopColor: MAT, stopOpacity: .5, ref: el => { reg.gstops[i] = reg.gstops[i] || []; reg.gstops[i][1] = el; } })); })));
+      EDGES.forEach(([a, b], i) => ovKids.push(h('path', { key: 'e' + i, d: dOf(this.edgePts(reg, g, i, reg.fk, e, tl)), fill: 'none', stroke: 'url(#ag' + i + '-' + id + ')', strokeWidth: this.lineW(g, reg.fk), strokeOpacity: .65, strokeLinecap: 'round', strokeLinejoin: 'round', pathLength: 100, ref: el => { reg.edges[i] = el; }, style: { strokeDasharray: this.dashFor(g, i, reg.fk), strokeDashoffset: on('links') ? 0 : 100, transition: quick || tr(m, 'stroke-dashoffset 520ms ' + EASE + ' ' + (160 * i) + 'ms') } })));
+      if (m === 'full' || o.frozen) EDGES.forEach((ed, i) => ovKids.push(h('path', { key: 'p' + i, d: dOf(this.edgePts(reg, g, i, reg.fk, e, tl)), fill: 'none', stroke: MAT, strokeWidth: 2, strokeLinecap: 'round', pathLength: 100, strokeDasharray: '3 97', strokeDashoffset: o.frozen ? 36 + 22 * i : 100, strokeOpacity: on('links') ? .9 : 0, ref: el => { reg.pulses[i] = el; }, style: { animation: (m === 'full' && !o.frozen) ? 'cs-flow 4.8s linear ' + (1.6 * i) + 's infinite' : 'none', transition: quick || 'stroke-opacity 400ms linear 600ms' } })));
+      // The van, Screen 08 livery at sticker size: black body with a neon edge, the official knot large on the side panel with its thread running to the rear, dark glass, neon-rimmed wheels. Clip + knot sit in <defs> (a clipPath inside a transformed group would not apply).
+      ovKids.push(h('defs', { key: 'vdefs' }, h('clipPath', { id: 'vc-' + id }, h('path', { d: VAN_BODY }))));
+      ovKids.push(h('g', { key: 'van', ref: el => { reg.van = el; }, style: { opacity: 0 } },
+        h('g', { clipPath: 'url(#vc-' + id + ')' },
+          h('rect', { x: 0, y: 0, width: 880, height: 390, fill: '#000' }),
+          h('path', { d: VAN_BODY, fill: 'none', stroke: MAT, strokeWidth: 16 }),
+          // the knot: icon artboard scaled to 0.42 (stem foot ≈ y 340), its thread continued to the rear edge at the artwork's own stroke
+          h('g', null, h('path', { d: 'M815 210 L900 210', fill: 'none', stroke: MAT, strokeWidth: 42, strokeLinecap: 'butt' }), h('g', { transform: 'translate(400,-5) scale(.385)' }, h('path', { d: KNOT_D, fill: MAT }))),
+          h('polygon', { points: '110,150 206,44 232,40 148,150', fill: '#3A3D36' }), h('polygon', { points: '172,148 248,44 336,44 336,148', fill: '#3A3D36' }),
+          h('rect', { x: 0, y: 262, width: 880, height: 60, fill: '#1A1A1A' }),
+          h('rect', { x: 0, y: 176, width: 18, height: 54, rx: 5, fill: '#fff' })),
+        h('circle', { cx: 165, cy: 334, r: 50, fill: '#000', stroke: MAT, strokeWidth: 18 }), h('circle', { cx: 165, cy: 334, r: 16, fill: MAT }),
+        h('circle', { cx: 705, cy: 334, r: 50, fill: '#000', stroke: MAT, strokeWidth: 18 }), h('circle', { cx: 705, cy: 334, r: 16, fill: MAT })));
+      if (g.identD) ovKids.push(h('path', { key: 'id', d: g.identD, fill: 'none', stroke: MAT, strokeWidth: 1, pathLength: 100, ref: el => { reg.ident = el; }, style: { strokeDasharray: 100, strokeDashoffset: 100, opacity: 0 } }));
+    }
+    const svg = h('svg', { 'aria-hidden': 'true', width: G.W, height: G.H, viewBox: '0 0 ' + G.W + ' ' + G.H, style: { position: 'absolute', left: 0, top: 0, overflow: 'visible', pointerEvents: 'none', display: 'block' } }, kids);
+    // The connections live in a stage-space overlay (not in the tilted plane): their points are projected per frame with the plane's tilt and their own elevation.
+    const ov = h('svg', { 'aria-hidden': 'true', width: G.W, height: G.H, viewBox: '0 0 ' + G.W + ' ' + G.H, style: { position: 'absolute', left: 0, top: 0, overflow: 'visible', pointerEvents: 'none', display: 'block' } }, ovKids);
+    // Page ground: the device matrix over the whole stage, almost invisible — it only reads up close.
+    const bg = g ? h('svg', { 'aria-hidden': 'true', width: G.W, height: G.H, viewBox: '0 0 ' + G.W + ' ' + G.H, style: { position: 'absolute', left: 0, top: 0, pointerEvents: 'none', display: 'block', filter: 'blur(.6px)', opacity: on('map') ? 1 : 0, transition: tr(m, 'opacity 1200ms linear', 'opacity 200ms linear') } }, h('rect', { x: 0, y: 0, width: G.W, height: G.H, fill: 'url(#dotsbg-' + id + ')' }), h('g', { ref: el => { reg.torchG = el; }, style: { opacity: 0, transition: 'opacity 500ms ' + EASE } },
+        h('rect', { x: 0, y: 0, width: G.W, height: G.H, fill: 'url(#dotsbgl-' + id + ')', mask: 'url(#tm-' + id + ')' }),
+        h('rect', { x: 0, y: 0, width: G.W, height: G.H, fill: 'url(#dotsbgc-' + id + ')', mask: 'url(#tmc-' + id + ')' }))) : null;
+    return h(React.Fragment, null, bg, h('div', { ref: el => { reg.plane = el; }, style: { position: 'absolute', left: 0, top: 0, width: G.W + 'px', height: G.H + 'px', transformOrigin: G.ox + 'px ' + G.oy + 'px 0px', transform: this.tiltCss(reg), transition: tr(m, 'none', 'transform 200ms linear'), pointerEvents: 'none', willChange: 'transform' } }, svg), ov);
+  }
+  frame(c) {
+    const st = this.state, id = c.id, h = React.createElement, player = c.kind === 'player', G = DESK, g = this.gcache.d;
+    const m = player ? this.motion() : 'static', full = m === 'full';
+    const p = player ? (st.ph[id] || 'dark') : (c.p || 'ready');
+    const on = k => player ? (!full || ge(p, k)) : ge(p, k);
+    const onNet = k => (k === 'links' && c.noLinks) ? false : on(k);
+    const ready = on('ready') && !c.noLinks;
+    const hot = player ? (st.hot[id] == null ? null : st.hot[id]) : (c.hot == null ? null : c.hot);
+    const sel = player ? (st.sel[id] == null ? null : st.sel[id]) : (c.sel == null ? null : c.sel);
+    const bare = c.kind === 'crop';
+    const rv = (o, d, keep) => { const on2 = o && (keep || !bare); return { op: on2 ? 1 : 0, tf: on2 ? 'none' : 'translateY(12px)', t: tr(m, 'opacity 560ms ' + EASE + ' ' + d + 'ms, transform 560ms ' + EASE + ' ' + d + 'ms', 'opacity 200ms linear') }; };
+    const forced = c.form || (player && (st.formState || this.props.formState || 'live') !== 'live' ? this.forcedForm(st.formState || this.props.formState) : null);
+    const live = forced || st.form[id] || { status: 'idle', email: '', error: null };
+    const scale = c.scale || 1, cw = Math.round((c.w || 1440) * scale), ch = Math.round((c.h || 900) * scale);
+    const reg = () => this.nets[id];
+    const setHot = v => { if ((st.hot[id] == null ? null : st.hot[id]) !== v) this.setState(s => ({ hot: Object.assign({}, s.hot, { [id]: v }) })); };
+    const tourVal = player ? null : (c.tourStop != null && g ? Math.min(1, g.route.stops[c.tourStop].tA + .003) : (c.tour != null ? c.tour : (ge(p, 'links') ? 1 : 0)));
+    const network = this.net(id, { G, m, on: onNet, hot, sel, fk: player ? 0 : (c.fk || 0), scroll: player, frozen: !player, tour: tourVal, ph: p });
+    const scrollCue = this.cueNode(full);
+    return {
+      scrollCue,
+      id, label: c.label, brk: !!c.brk, isFrame: true, cw, w: cw, h: ch, ox: -(c.ox || 0) * scale, oy: -(c.oy || 0) * scale, scale, force: forced && forced.force || '',
+      ovy: player ? 'auto' : 'hidden', trackH: player ? 900 + G.track : 900,
+      screenLabel: 'Screen 28 — Coming Soon v1.1 · ' + c.tag, setRef: el => { if (el) this.frames = Object.assign(this.frames || {}, { [id]: el }); },
+      stateLine: 'nyja.com (pre-launch) — V1.1 · board ' + c.tag + (player ? ' · motion: ' + m + ' · visit: ' + this.visit() + ' · phase: ' + p + ' · form: ' + live.status : ' · still · progress ' + Math.round((c.fk || 0) * 100) + '%') + ' · material #D5FF00 (logo neon) · map: Natural Earth 10m / Mercator k ' + G.k,
+      isPlayer: player, phases: PHASES.map(x => ({ t: x[0], d: x[2], col: p === x[1] ? '#2a78d6' : ge(p, x[1]) ? '#1a1a1a' : 'rgba(0,0,0,.35)' })), replay: () => this.play(id, 'first'),
+      specs: c.specs || [], hasSpecs: !!(c.specs && c.specs.length),
+      network, yb: G.ybox,
+      setYRef: el => { const n = reg(); if (n && el) n.yimg = el; }, setCueRef: el => { const n = reg(); if (n && el) n.cue = el; }, setKnotRef: el => { const n = reg(); if (n && el) n.knot = el; }, setDotRef: el => { const n = reg(); if (n && el) n.dot = el; },
+      onScroll: player ? e => { const n = reg(); if (n) n.form = clamp(e.currentTarget.scrollTop / G.track); } : undefined,
+      onKey: player ? e => { if (e.key !== 'Escape') return; if (!ready) this.skip(id); else this.scrollTo(id, 0); } : undefined,
+      onMove: player && full ? e => { const n = reg(); if (!n) return; const r = e.currentTarget.getBoundingClientRect(), sc = r.width / 1440 || 1, x = (e.clientX - r.left) / sc, y = (e.clientY - r.top) / sc; n.tx = clamp(x / 1440) * 2 - 1; n.ty = clamp(y / 900) * 2 - 1; n.ptr = { x, y }; const pos = n.scr || this.capPos(n); if (!pos || n.fk > .6) { setHot(null); return; } let best = null, bd = G.hit; pos.forEach((q, i) => { const d = Math.hypot(q.x - x, q.y - y); if (d < bd) { bd = d; best = i; } }); if (best == null) { const el = document.elementFromPoint(e.clientX, e.clientY); const code = el && el.getAttribute && el.getAttribute('data-country'); if (code) best = CAPS.findIndex(k => k.code === code); if (best < 0) best = null; } setHot(best); } : undefined,
+      onLeave: player ? () => { const n = reg(); if (n) { n.tx = 0; n.ty = 0; n.ptr = null; } setHot(null); } : undefined,
+      showSkip: player && full && !ge(p, 'ready'), skip: () => this.skip(id),
+      beacon: h('span', { 'aria-hidden': 'true', style: { width: 8, height: 8, borderRadius: '50%', background: MAT, display: 'inline-block', flex: 'none', animation: full ? 'cs-breathe 6s ease-in-out infinite' : 'none' } }),
+      r0: rv(on('map'), 0, true), r1: rv(on('caps'), 0), r3: rv(on('links'), 200), r4: rv(on('map'), 300, true), r5: rv(ready, 0),
+      netOp: on('caps') ? 1 : 0, tNet: tr(m, 'opacity 400ms linear', 'opacity 200ms linear'),
+      towns: this.townVals(g, reg),
+      caps: CAPS.map((k, i) => { const lit = hot === i || sel === i, L = k.side === 'left'; return { aria: k.name + ', ' + k.country + (sel === i ? ' — e zgjedhur' : ''), pressed: sel === i ? 'true' : 'false', bx: (g ? g.caps[i].x : -100) - 22, by: (g ? g.caps[i].y : -100) - 22, ring: c.focus === i ? '2px solid var(--mat)' : 'none', name: k.name, label: k.label, coord: k.coord, showCoord: !!G.clabels, lx: L ? 'auto' : '38px', rx: L ? '38px' : 'auto', ta: L ? 'right' : 'left', labColor: lit ? '#fff' : '#C4C8BB', coordColor: lit ? '#9CA096' : '#73776D', fill: sel === i ? 'var(--mat)' : '#000', tf: lit ? 'scale(1.5)' : 'scale(1)', ringOp: lit ? .45 : 0,
+        setRef: el => { const n = reg(); if (n && el) { n.caps[i] = n.caps[i] || {}; n.caps[i].b = el; } }, setLabel: el => { const n = reg(); if (n && el) { n.caps[i] = n.caps[i] || {}; n.caps[i].t = el; } }, setCoord: el => { const n = reg(); if (n && el) { n.caps[i] = n.caps[i] || {}; n.caps[i].k = el; } },
+        pick: player ? () => this.setState(s2 => ({ sel: Object.assign({}, s2.sel, { [id]: s2.sel[id] === i ? null : i }) })) : undefined, enter: player ? () => setHot(i) : undefined, leave: player ? () => setHot(null) : undefined }; }),
+      clabels: g ? g.clabels.map((k, i) => ({ x: k.x, y: k.y, label: k.label, setRef: el => { const n = reg(); if (n && el) n.clabels[i] = el; } })) : [], clOp: on('map') ? 1 : 0, tCl: tr(m, 'opacity 400ms linear 900ms', 'opacity 200ms linear'),
+      tie: player ? () => this.scrollTo(id, G.track) : undefined,
+      knot: { x: (g ? g.yK.x : -100) - 22, y: (g ? g.yK.y : -100) - 22 }, knotAria: 'NYJA — lidhja është formuar. Shtyp për ta hapur përsëri.', release: player ? () => this.scrollTo(id, 0) : undefined,
+      badgesOk: !st.badgeFail, badgesFallback: st.badgeFail, badgeFail: () => { if (!this.state.badgeFail) this.setState({ badgeFail: true }); },
+      formTitleId: 'cs-title-' + id, emailId: 'cs-email-' + id, privacyId: 'cs-privacy-' + id,
+      formIdle: live.status === 'idle' || live.status === 'busy', formDone: live.status === 'done', formFail: live.status === 'fail',
+      email: live.email, emailError: live.error || undefined, invalid: live.error ? 'true' : 'false', busy: live.status === 'busy',
+      ctaLabel: live.status === 'busy' ? 'Po dërgohet…' : 'Më njofto',
+      onEmail: player && !forced ? e => this.setForm(id, { email: e.target.value, error: null }) : undefined,
+      submit: player && !forced ? e => { e.preventDefault(); this.submit(id, (st.form[id] || {}).email || ''); } : e => e.preventDefault(),
+      retry: player && !forced ? () => this.setForm(id, { status: 'idle' }) : undefined
+    };
+  }
+  // Mobile 390 × 844 — pinned stage; the first 400px of scroll drive the transformation; the form sits one swipe below.
+  mframe(c) {
+    const st = this.state, id = c.id, m = this.motion(), G = MOB, g = this.gcache.m;
+    const sel = st.sel[id] == null ? null : st.sel[id], hot = st.hot[id] == null ? null : st.hot[id];
+    const setHot = v => { if ((st.hot[id] == null ? null : st.hot[id]) !== v) this.setState(s => ({ hot: Object.assign({}, s.hot, { [id]: v }) })); };
+    const done = !!st.tourDone[id] || !!c.scrolled || m !== 'full';
+    const network = this.net(id, { G, m, on: k => (k === 'links' || k === 'ready') ? done : true, hot, sel, fk: c.scrolled ? 1 : 0, scroll: true, tour: (c.scrolled || m !== 'full') ? 1 : null, ph: done ? 'links' : 'tour', mobile: true });
+    const reg = () => this.nets[id];
+    return {
+      scrollCue: this.cueNode(m === 'full'),
+      id, label: c.label, brk: !!c.brk, isFrame: false, isMobile: true, cw: 390, w: 390,
+      stateLine: 'nyja.com (pre-launch) — V1.1 · board ' + c.tag + ' · mobile 390 × 844 · the transformation runs over the first ' + G.track + 'px of scroll · motion: ' + m + (c.scrolled ? ' · shown scrolled (brand state)' : ' · shown at scroll 0 (geographic state)') + ' · map k ' + G.k,
+      screenLabel: 'Screen 28 — Coming Soon v1.1 · ' + c.tag + ' · mobile',
+      setRef: el => { if (!el) return; this.frames = Object.assign(this.frames || {}, { [id]: el }); if (c.scrolled && !el.dataset.init) { el.dataset.init = '1'; el.scrollTop = G.track; } },
+      onScroll: e => { const n = reg(); if (n) n.form = clamp(e.currentTarget.scrollTop / G.track); },
+      onMove: e => { const n = reg(); if (!n) return; const r = e.currentTarget.getBoundingClientRect(), sc = r.width / 390 || 1; n.ptr = { x: (e.clientX - r.left) / sc, y: (e.clientY - r.top) / sc }; }, onLeave: () => { const n = reg(); if (n) n.ptr = null; },
+      network, yb: G.ybox,
+      setYRef: el => { const n = reg(); if (n && el) n.yimg = el; }, setCueRef: el => { const n = reg(); if (n && el) n.cue = el; }, setKnotRef: el => { const n = reg(); if (n && el) n.knot = el; }, setDotRef: el => { const n = reg(); if (n && el) n.dot = el; },
+      towns: this.townVals(g, reg),
+      caps: CAPS.map((k, i) => { const lit = hot === i || sel === i, L = k.side === 'left'; return { aria: k.name + ', ' + k.country + (sel === i ? ' — e zgjedhur' : ''), pressed: sel === i ? 'true' : 'false', bx: (g ? g.caps[i].x : -100) - 22, by: (g ? g.caps[i].y : -100) - 22, ring: 'none', name: k.name, label: k.label, coord: k.coord, showCoord: false, lx: L ? 'auto' : '38px', rx: L ? '38px' : 'auto', ta: L ? 'right' : 'left', labColor: lit ? '#fff' : '#C4C8BB', coordColor: '#73776D', fill: sel === i ? 'var(--mat)' : '#000', tf: lit ? 'scale(1.5)' : 'scale(1)', ringOp: lit ? .45 : 0,
+        setRef: el => { const n = reg(); if (n && el) { n.caps[i] = n.caps[i] || {}; n.caps[i].b = el; } }, setLabel: el => { const n = reg(); if (n && el) { n.caps[i] = n.caps[i] || {}; n.caps[i].t = el; } }, setCoord: () => {},
+        pick: () => this.setState(s2 => ({ sel: Object.assign({}, s2.sel, { [id]: s2.sel[id] === i ? null : i }) })), enter: () => setHot(i), leave: () => setHot(null) }; }),
+      knot: { x: (g ? g.yK.x : -100) - 22, y: (g ? g.yK.y : -100) - 22 }, knotAria: 'NYJA — lidhja është formuar. Shtyp për ta hapur përsëri.', release: () => this.scrollTo(id, 0), tie: () => this.scrollTo(id, G.track),
+      badgesOk: !st.badgeFail, badgesFallback: st.badgeFail, badgeFail: () => { if (!this.state.badgeFail) this.setState({ badgeFail: true }); },
+      formTitleId: 'cs-title-' + id, emailId: 'cs-email-' + id, privacyId: 'cs-privacy-' + id
+    };
+  }
+  // The scroll cue: a 26 × 44 pill with the neon node rising from the bottom (1.8s loop) — built here so the loop survives re-renders. Still (node at mid-height) when motion is not full.
+  cueNode(full) {
+    const h = React.createElement;
+    return h('span', { 'aria-hidden': 'true', style: { position: 'relative', display: 'block', width: '26px', height: '44px', borderRadius: '13px', border: '1.5px solid ' + EDGE, boxSizing: 'border-box', flex: 'none', transition: 'border-color 240ms linear' } },
+      h('span', { style: { position: 'absolute', left: '8.5px', top: full ? '27px' : '17px', width: '6px', height: '6px', borderRadius: '50%', background: MAT, animation: full ? 'cs-scroll 1.8s ' + EASE + ' infinite' : 'none' } }));
+  }
+  townVals(g, regf) {
+    if (!g) return [];
+    return g.route.towns.map((st, j) => { const sd = st.side, cen = sd === 'a' || sd === 'b'; const set = k => el => { const n = regf(); if (n && el) { n.towns[j] = n.towns[j] || {}; n.towns[j][k] = el; } };
+      return { label: st.label, x: st.p.x, y: st.p.y, lx: sd === 'r' ? '9px' : cen ? '-70px' : 'auto', rx: sd === 'l' ? '9px' : cen ? '-70px' : 'auto', ta: sd === 'r' ? 'left' : sd === 'l' ? 'right' : 'center', ty: sd === 'a' ? '-19px' : sd === 'b' ? '6px' : '-6px', to: sd === 'r' ? 'left center' : sd === 'l' ? 'right center' : 'center', setRef: set('w'), setDot: set('d'), setText: set('t') }; });
+  }
+  forcedForm(k) {
+    const em = 'arben.hoxha@domain.com';
+    return { default: { status: 'idle', email: '' }, hover: { status: 'idle', email: '', force: 'hover' }, focus: { status: 'idle', email: '', force: 'focus' }, typing: { status: 'idle', email: 'arben.hoxha@dom', force: 'focus' },
+      invalid: { status: 'idle', email: 'arben.hoxha@domain', error: 'Shkruaj një email të vlefshëm, p.sh. emri@domain.com' }, submitting: { status: 'busy', email: em }, success: { status: 'done', email: em }, error: { status: 'fail', email: em } }[k] || null;
+  }
+  renderVals() { return this.vals(); }
+  vals() {
+    const st = this.state, mb = st.motion || this.props.motion || 'auto', g = this.gcache.d;
+    const chip = (label, on, act) => ({ label, act, on: on ? 'true' : 'false', bg: on ? '#000' : '#fff', color: on ? '#fff' : '#1a1a1a', border: on ? '#000' : 'rgba(0,0,0,.18)' });
+    const setM = v => () => this.setState({ motion: v });
+    const presets = [
+      chip('Luaje hyrjen · vizitë e parë', false, () => this.play('29a', 'first')), chip('Hyrja e shkurtër · vizitor i kthyer', false, () => this.play('29a', 'returning')), chip('Kalo hyrjen', false, () => this.skip('29a')),
+      chip('Lidh → fundi i scroll-it', false, () => this.scrollTo('29a', DESK.track)), chip('Hap → fillimi', false, () => this.scrollTo('29a', 0)), chip('Forma · rifillo', false, () => this.setForm('29a', { status: 'idle', email: '', error: null })),
+      chip('Motion · auto', mb === 'auto', setM('auto')), chip('Motion · full', mb === 'full', setM('full')), chip('Motion · reduced', mb === 'reduced', setM('reduced')), chip('Motion · static', mb === 'static', setM('static'))
+    ];
+    const still = (id, tag, label, extra) => this.frame(Object.assign({ id, tag, kind: 'still', scale: .5, label }, extra));
+    const crop = (id, tag, label, extra) => this.frame(Object.assign({ id, tag, kind: 'crop', w: 800, h: 520, ox: 600, oy: 60, scale: .8, label }, extra));
+    const ref = (id, tag, extra) => Object.assign({ id, isFrame: false, cw: 1440, w: 1440, stateLine: 'Board ' + tag + ' · reference · material #D5FF00 = the Y of the approved logo · #99CC00 stays in the Club' }, extra);
+    const txt = (id, tag, label, title, intro, cols, extra) => ref(id, tag, Object.assign({ label, isText: true, title, intro, ncol: cols.length, cols: cols.map(c => Object.assign({ kw: 120 }, c)) }, extra));
+    const px = i => g ? '(' + Math.round(g.caps[i].x) + ', ' + Math.round(g.caps[i].y) + ')' : '(…)';
+    const items = [
+      this.frame({ id: '29a', tag: 'LIVE', kind: 'player', brk: true, specs: this.heroSpecs(), label: '29a · LIVE desktop 1440 × 900 — the intro auto-plays once (borders → capitals → the NYJA van tours 23 cities in 24s, names lighting as it arrives → connections → cue; Kalo hyrjen skips); then SCROLL INSIDE THE FRAME: 600px of scroll turn the three capital connections into the official NYJA icon. Hover a capital; Esc skips the intro or releases the knot; the form validates and simulates (type “gabim” in the address for the error path)' }),
+      crop('29b2', 'A2', 'A2 · The tour in Kosovo — the van arriving in Prizren (stop 4 of 23): the name lights white, Gjilan · Ferizaj already visited and muted, the trail laid behind the van', { p: 'tour', tourStop: 3, w: 560, h: 420, ox: 790, oy: 30, scale: 1.1 }),
+      crop('29b3', 'A3', 'A3 · The tour in North Macedonia — arriving in Shkup (stop 21): Albania and the southern loop behind the van; the capital label lights like every other city', { p: 'tour', tourStop: 20, w: 560, h: 420, ox: 790, oy: 160, scale: 1.1 }),
+      still('29b', 'A', 'A · Accurate geographic opening — Kosovo, Albania and North Macedonia from Natural Earth 1:10m in one Mercator projection (north up, no per-country scaling), the plane tilted 52° toward the viewer (perspective 1400), land as a 6px dot matrix (#54584F) over #0F100E with 1px #3A3D36 edges; Prishtinë, Shkup and Tiranë at their GeoNames coordinates, upright labels with the coordinates beneath — the frame before the connections draw', { p: 'ready', noLinks: true, brk: true }),
+      crop('29c', 'B', 'B · Three capital nodes — 4px hollow nodes in material at the projected coordinates, labels Criteria 11 / .14em (PRISHTINË · SHKUP · TIRANË) with coordinates Gotham 9 beneath, country names 10 / .14em in #73776D; Prishtinë in its hover / focus state: node ×1.5 inside an 11px ring, label white, both of its connections at 100%, Kosovo lifted (#181A16, edge #73776D, dots #9CA096)', { w: 620, h: 470, ox: 740, oy: 110, scale: 1.1, hot: 0 }),
+      still('29d', 'C', 'C · Capital connection network — three arcs lifted above the map plane (height 26% of the chord, brightest at the apex), drawn from the node centres with their ground traces on the land (Prishtinë – Shkup · Shkup – Tiranë · Tiranë – Prishtinë); the matrix lights around each capital; three 2px flow pulses travel the connections (3% dash, 4.8s loop, 1.6s apart); the scroll cue bottom-centre: a 26 × 44 pill in which the neon node rises (1.8s loop) over LËVIZ PËR TË LIDHUR', {}),
+      crop('29e1', 'D1', 'D1 · Transformation at 30% of the scroll — outlines and country names are gone, capital labels fading; each connection bends toward the future junction while the capitals start to travel', { fk: .3, brk: true }),
+      crop('29e2', 'D2', 'D2 · 55% — the three connections meet in ONE point (the junction): the triangle has become a star; the loop begins to open above it; the lines start to thicken from 68%, once they coincide (72%)', { fk: .55 }),
+      crop('29e3', 'D3', 'D3 · 80% — one strand: the three connections are coincident on the centreline and half-way to their weight; the over-under at the junction is opening (the riser retracts behind the thread)', { fk: .8 }),
+      crop('29e4', 'D4', 'D4 · 92% — the strand has its full weight (90% of the icon’s stroke, inside the silhouette; flat foot and flat thread end already revealed) and the icon’s own edges emerge around it; the gap is open', { fk: .92 }),
+      crop('29f', 'E', 'E · Exact NYJA icon — 100%: the official icon (brand/nyja-icon-neon.svg — the knot path of the approved NYJA_Logo_Icon-12.svg, no tile) revealed outward from the connections; vector, nothing redrawn, no crossfade', { w: 520, h: 520, ox: 830, oy: 50, scale: .8, fk: 1 }),
+      still('29g', 'F', 'F · Final brand reveal — the icon settled, the period of LIDHET. in material, one connection from the knot to the wordmark; logo, statement, official store badges, form and footer exactly as V1', { fk: 1, brk: true }),
+      this.mframe({ id: '29h1', tag: 'G1', label: 'G1 · Mobile 390 × 844 — LIVE: scroll inside the frame. The pinned stage shows the three countries and capitals (labels beside the nodes, no country names at this width); the van tours the route first (24s, labels only for the current city), then the first 400px tie the connections into the official icon; the form arrives one swipe below. Tap a capital to pin it; tap the knot to release' }),
+      this.mframe({ id: '29h2', tag: 'G2', scrolled: true, label: 'G2 · Mobile — scrolled 400px: the brand state on the pinned stage, the cue gone, the period in material; nothing overflows or clips' }),
+      still('29i1', 'H1', 'H1 · Static fallback (motion · static) — the final brand composition: the official symbol, statement, message, form, footer; no map, no cue, no scroll effect', { fk: 1, scale: .4, brk: true }),
+      txt('29i2', 'H2', 'H2 · Reduced motion and static — what changes, what stays', 'Reduced motion · static fallback', 'Tweak motion · auto follows prefers-reduced-motion. Nothing is conveyed only through movement: labels, nodes and the statement are present at rest in every mode.', this.reducedSpec(), { cw: 816, w: 816 }),
+      txt('29j', 'I', 'I · Geographic data provenance — source, projection, coordinates, checks', 'Geographic data provenance', 'Nothing in the map is drawn by hand. Boundaries come from Natural Earth; capitals from GeoNames; one projection for all three countries.', this.provenance(px), { brk: true }),
+      ref('29k', 'J', { isVerify: true, brk: true, label: 'J · Logo geometry verification — the measured centreline over the official asset, the method, the deviation, and the request for the vector master' })
+    ];
+    const PX = a => ({ x: a[0] * YG.W, y: a[1] * YG.H });
+    const A = PX(YG.A), J = PX(YG.J), B = PX(YG.B), K = PX(YG.K), E = PX(YG.E), X = PX(YG.X), rc = YG.rc * YG.W;
+    const aE = Math.atan2(E.y - K.y, E.x - K.x), aX = Math.atan2(X.y - K.y, X.x - K.x) - 2 * Math.PI;
+    const ring = []; for (let i = 0; i <= 90; i++) { const a = aE + (aX - aE) * i / 90; ring.push({ x: K.x + rc * Math.cos(a), y: K.y + rc * Math.sin(a) }); }
+    const vArm = dOf(YG.stem.map(PX)), vKnot = dOf([J, E].concat(ring, YG.thread.slice(1).map(PX)));
+    const vPts = [['P', A, -16, -30], ['J', J, 30, 40], ['B', B, 30, -20], ['K', K, -16, -140], ['E', E, 40, 10], ['X', X, -90, 60], ['T', YG.thread[YG.thread.length - 1], -40, 70]].map(([k, p, dx, dy]) => { const q = p.x == null ? PX(p) : p; return { k, x: q.x.toFixed(1), y: q.y.toFixed(1), lx: (q.x + dx).toFixed(1), ly: (q.y + dy).toFixed(1) }; });
+    return { presets, items, vArm, vKnot, vPts, vRows: this.verifyRows() };
+  }
+  heroSpecs() {
+    return [
+      { k: 'The tour', v: 'Review 9: the Screen 08 van, as a 44px sticker in the Screen 08 livery (black body, neon edge, the official knot (its own vector path) on the side panel with the thread running to the rear, dark glass, wheels with neon rims — the livery travels with the body, so the thread always trails; always upright, facing its direction of travel), leaves Prishtinë and drives Gjilan → Ferizaj → Prizren → Gjakovë → Pejë → Mitrovicë → Kukës → Shkodër → Durrës → Tiranë → Vlorë → Korçë → Pogradec → Strugë → Ohër → Manastir → Prilep → Veles → Kumanovë → Shkup → Tetovë → Gostivar in 24s — leg time ∝ distance, eased into every stop with a short dwell. Each city appears as the van reaches it (5px node + Criteria 8 label); on arrival the label turns white and grows 25% for ≈800ms, then settles muted (#9CA096) — the capitals’ own labels light the same way. The three capital connections (and their pulses) are not shown while the van drives; they draw when the tour ends, and the van’s own trail fades away as they appear. Scrolling during the tour stops it: the van disappears, the whole trail and the three connections appear at once and the scroll owns the stage; back at the top, the tour starts again from Prishtinë. Mobile: same route at 30px. The trail (1px at 35%) is laid behind the van by arc length and stays as the network; on scroll it fades with the land (0–45%) while the three capital connections become the knot. Labels on mobile only for the current city.' },
+      { k: 'Composition · 1440 × 900', v: 'Logo top-left (72, 48) at 44px — the only neon on the page lives inside it. COMING SOON top-right with its breathing node. The map plane — 483 × 622 at (819, 7) before the tilt, pivoting on (1060, 318): Kosovo, Albania, North Macedonia in Mercator at 7400 px/rad; tilted 52° it fills the right column (≈ 790–1350 × 160–550). The official icon (the knot, 1080-unit artboard at 420 px, no tile) lands at (880, 100) — the capitals travel ≈ 150–420px. GJITHÇKA / LIDHET. Criteria 128 / .92 bottom-left, message 17 / 1.5, form bottom-right, footer at 860. Nothing is centred.' },
+      { k: 'Material', v: '#D5FF00 — NYJA neon, exactly the Y of the approved logo (review decision; #99CC00 stays in the Club) = connections, capital nodes, the final symbol, the scroll-cue node, focus ring, the period during the brand state. Land #0F100E with 1px #3A3D36 edges (hovered country #181A16 / #73776D), country names #73776D, capital labels #C4C8BB → white on hover with Gotham 9 coordinates beneath. Connections 1px at 65% (100% when their capital is hovered, focused or pinned). No glow, no gradient.' },
+      { k: 'Connections', v: 'Review 8 (“the lines between the cities: more beautiful, more professional”): the three connections are ARCS lifted above the map plane — height 26% of the chord (≈ 76 / 62 / 32 px on desktop), the stroke brightest at the apex (gradient 50 → 100 → 50%), each with its ground trace on the land at 22%; the flow pulses travel the arcs. The arcs are projected per frame with the plane’s tilt (true 3D over the tilted map, parallax under the pointer) and settle onto the land in the first 45% of the scroll — before the plane is flat and before the morph begins, so the knot forms from lines that are already on the ground. The matrix brightens around each capital through a radial mask that follows the node (no blur, no glow). Still 1px, still 65%, still three lines: the grammar is unchanged, the space is new.' },
+      { k: 'Map plane', v: '2.5D: the whole map is one plane tilted 52° toward the viewer (CSS perspective 1400px at the map centre; mobile 48° / 900px) that answers the pointer by ±6° / ±3° while the map is a map, and rises to face you — flat by 80% of the track — as the connections become the Y. Land = dot matrix (6px pitch, 1px dots #54584F; mobile 5px) over #0F100E with 1px edges; the hovered country lifts and its dots brighten. Three 2px flow pulses (3% of the path, 4.8s loop) travel the connections and fade with them. Capitals and country names are HTML placed by the same projection, so type stays upright; a rigid transform — the geography itself is never altered.' },
+      { k: 'Transformation', v: 'Scroll 0 → 600px maps to progress 0 → 1 with an eased follow (22% per frame). 0 – 45%: outlines fade; 0 – 30%: country names; 10 – 40%: capital labels. The three connections are 96-point polylines interpolated point-for-point from their geographic curve to their part of the Y (each connection = one stroke of the letter plus the way back to the junction), so the triangle pinches into a star, then the knot unfolds. 0 – 72%: the connections travel point for point onto the icon’s centreline (read off the vector: stem, 23° riser tangent to the ring, ring, thread) and are exactly coincident from 72%. 68 – 92%: they thicken from 1 px to 90% of the icon’s stroke (round caps, opacity 65 → 100%); 76 – 92%: the riser strands retract behind the thread so the knot’s over-under opens as in the artwork — the knot arrives as a strand, never as thin wires swapped for a thick icon; the icon sits under them in the same neon from 60%, masked to the strand width. 80 – 97%: the mask widens past the strand to 1.5 × the stroke, so the icon’s own edges and terminals emerge; from 97% the mask is total. Reaching 98% lights the period and draws the connection to the wordmark (2.4s, once per arrival).' },
+      { k: 'Reduced · static', v: 'Reduced: the intro is one 200ms fade; the scroll snaps between the geographic and the brand state at 50% of the track; hover / focus / pin still change colour. Static: progress is fixed at 1 — the final brand composition, no map, no cue. Esc releases the knot (scroll to 0) or skips the intro.' }
+    ];
+  }
+  reducedSpec() {
+    return [
+      { title: 'Reduced motion (prefers-reduced-motion or Tweak)', kw: 110, rows: [
+        { k: 'Intro', v: 'One 200ms fade of the complete geographic state (tilted plane, dots, borders, names, capitals, connections, cue). No drawing, no stagger, no flow pulses, no pointer tilt.' },
+        { k: 'Scroll', v: 'The stage is still pinned and the track is still 600 / 400px, but progress snaps: below 50% the tilted geographic state, above it the flat brand state (200ms). No in-between frames, no eased follow.' },
+        { k: 'Interaction', v: 'Hover, focus and pin still change colour in 200ms (node fill, label, connection opacity). The cue and the knot button behave the same; smooth scrolling is off.' },
+        { k: 'Brand state', v: 'The official symbol is shown complete (mask total), the period in material, the connection to the wordmark at rest (no draw animation). The scroll-cue node does not travel; it rests mid-height in its pill.' }
+      ] },
+      { title: 'Static fallback (Tweak motion · static)', kw: 110, rows: [
+        { k: 'What is shown', v: 'The final brand composition — board H1: logo, the official symbol, GJITHÇKA LIDHET., message, COMING SOON, form, footer. Progress is fixed at 1; the map is not rendered and the cue is hidden.' },
+        { k: 'Scroll', v: 'The frame still scrolls (the form is reachable on mobile) but the stage does not change.' },
+        { k: 'Use', v: 'Print, screenshots, low-power devices, and the reading of the page for anyone who should not see motion at all. Everything the brief calls the brand reveal is present without a single transition.' },
+        { k: 'Form', v: 'Identical in every mode: default · hover · focus · typing · invalid · submitting · success · error, all simulated and labelled.' }
+      ] }
+    ];
+  }
+  provenance(px) {
+    return [
+      { title: 'Boundary data', kw: 112, rows: [
+        { k: 'Source', v: 'Natural Earth 1:10m Cultural Vectors, Admin 0 – Countries (public domain), as packaged in world-atlas@2.0.2 countries-10m.json on cdn.jsdelivr.net.' },
+        { k: 'Access', v: 'Fetched 2026-10-15 with geo/extract.html (pinned, hash-verified topojson-client 3.1.0; topojson.feature decoding). Re-run the page to refresh.' },
+        { k: 'Features', v: 'Kosovo (Natural Earth name “Kosovo”, no ISO numeric id in this build, 112 vertices) · Albania (008, 224 vertices) · North Macedonia (Natural Earth 4.1 name “Macedonia”, 807, 131 vertices).' },
+        { k: 'Simplification', v: 'Douglas–Peucker, tolerance 0.006° ≈ 0.7px at the desktop map scale; coordinates rounded to 4 decimals (≈ 11 m). Shapes are not altered beyond that; no ring was moved or scaled on its own.' },
+        { k: 'Storage', v: 'geo/west-balkans-ne10m.json — WGS 84 lon/lat, loaded by the page at runtime from the project. The page has no CDN dependency.' },
+        { k: 'Licence', v: 'Natural Earth is public domain; no attribution is required. GeoNames data is CC BY 4.0 — credited here.' }
+      ] },
+      { title: 'Projection', kw: 112, rows: [
+        { k: 'Type', v: 'Mercator — conformal, so the countries keep their true shapes; one projection for all three, north up, no rotation.' },
+        { k: 'Formula', v: 'x = (λ − λ₀) · k · π/180 · y = (ln tan(π/4 + φ₁/2) − ln tan(π/4 + φ/2)) · k, with λ₀ = 19.2728°E and φ₁ = 43.2636°N (the data bbox corner) placed at the map origin.' },
+        { k: 'Scale', v: 'Desktop k = 7400 px/rad → 129 px per degree of longitude, ≈ 172 px per degree of latitude at 41.5° (≈ 0.65 km per px). Mobile k = 4300 (≈ 1.11 km per px).' },
+        { k: 'Map box', v: 'Desktop origin (819, 7), 483 × 622 px, centred on the plane’s pivot (1060, 318). Mobile origin (55, 45), 280 × 361 px, pivot (195, 226). Both derived from the same data bbox: 19.27–23.01°E, 39.64–43.26°N.' },
+        { k: 'Area distortion', v: 'Mercator scale varies by ≈ 6% between the south of Albania (39.6°) and the north of Kosovo (43.3°) — below the threshold of recognition at this size and identical for all three countries.' },
+        { k: 'Presentation', v: 'The projected map is shown on a plane tilted 52° toward the viewer (CSS perspective). This is a single rigid transform of the whole drawing — positions, borders and capitals keep their projected relationship; the plane is flat again before the brand state.' }
+      ] },
+      { title: 'Capitals · checks', kw: 112, rows: [
+        { k: 'Prishtinë', v: '42.67272 N, 21.16688 E — GeoNames 787657 → desktop px ' + px(0) + '. Travels to the arm top of the Y.' },
+        { k: 'Shkup', v: '41.99646 N, 21.43141 E — GeoNames 785842 → desktop px ' + px(1) + '. Travels to the end of the symbol’s last thread segment.' },
+        { k: 'Tiranë', v: '41.32750 N, 19.81889 E — GeoNames 3183875 → desktop px ' + px(2) + '. Travels to the stem foot.' },
+        { k: 'Connections', v: 'Built from these exact node centres; the three nodes are 4px hollow circles at the projected points, nothing is placed by eye.' },
+        { k: 'Sanity', v: 'Shkup lies 78 km SSE of Prishtinë, Tiranë 186 km SW (projected 123 px and 294 px on desktop before the tilt — the ratio 2.4 matches). Recognisable features: Albania’s Adriatic / Ionian coast with the Vlorë bay, Kosovo’s Prokletije notch in the north-west, North Macedonia’s Ohrid–Prespa corner in the south-west.' }
+      ] }
+    ];
+  }
+  verifyRows() {
+    return [
+      { k: 'The icon', v: 'Review decisions (2026-10-15): the end state is the logo ICON — the knot — not the letter Y, and the knot alone: no tile, no square, transparent background. Source: uploads/NYJA_Logo_Icon-12.svg, the approved vector. Its knot path is used verbatim; nothing is redrawn, approximated or re-traced.' },
+      { k: 'Colour', v: 'The knot is #D5FF00 — the same neon as the connections and the Y of the wordmark top-left — straight on the black canvas, like the neon-on-black colourway of the icon. No tile, no edge, no glow.' },
+      { k: 'Centreline · method', v: 'Derived from the vector path, not from pixels. Loop: outer arcs r 161.4 / 161.65 about (451.5, 331) / (447.7, 331), inner hole r ≈ 53 → K (450, 331), centreline r 107, stroke 108.5 (the foot measures 110). Stem: flat foot centred (428.4, 898), vertical to y 701.8, bend r ≈ 214 into the 23° upper stem, cut centre J (471, 558). Riser: the same 23° line, tangent to the ring at E (548, 373). Thread: leaves the ring tangentially at X (411, 431) along the straight lower edge, then the mid-line of the two edge arcs (r 818 / 926) to the artboard cut (1080, 553.5); it crosses the riser at (508, 470), leaving the artwork’s 40-unit gap between the stem cut and its lower edge.' },
+      { k: 'Mapping', v: 'Prishtinë → the top of the loop · Shkup → the thread end at the artboard edge · Tiranë → the stem foot. Prishtinë–Shkup becomes loop-top → thread; Tiranë–Prishtinë becomes stem → riser → loop; Shkup–Tiranë retraces the whole strand — every connection ends on the knot, every stroke of the knot is covered.' },
+      { k: 'Reveal, not a swap', v: 'No crossfade and no second image: from 86% the icon is revealed through a mask growing outward from that same centreline (1 px → 1.5 × the stroke, round caps), while the lines themselves — already coincident since 72% — thicken to 90% of that stroke (68 – 92%), kept inside the silhouette (strand ends half a width inside the flat foot and the artboard cut; the mask is butt-ended there so the flat terminals show at once). The over-under opens 76 – 92% by retracting the riser strands behind the thread. There is no moment where thin wires become a thick icon and no pop at the end: at 97% the mask is total and only then do the lines fade. Every pixel seen is the vector’s.' },
+      { k: 'Position · scale', v: 'Desktop: the 1080-unit artboard at 420 px, at (880, 100) — the knot occupies the area the map held; original proportions, no crop (the thread ends where the artwork ends). Mobile 390 × 844: artboard at 300 px, at (45, 72), fully inside the viewport, above the statement.' },
+      { k: 'Vector status', v: 'The icon vector is now in the project, so the earlier request is closed for the icon. The wordmark (brand/logo-dark-ui.png, top-left) remains a raster; its vector is still welcome for sharpness at large sizes but is not needed for this transformation.' },
+      { k: 'Not claimed', v: 'A vector identity between the 1 px schematic and the knot outline — the schematic is a centreline, the knot a 110-unit stroke with its own terminals. The claim is that the final frame IS the official icon, drawn from its own path.' }
+    ];
+  }
+}
+</script>
+</body>
+</html>
