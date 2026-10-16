@@ -1,5 +1,6 @@
 // The animated network — a vanilla-DOM port of the approved design's net() / place() / tick / phase machine
-// (NYJA-ComingSoon-Desktop-v1.1.dc.html, lines 279–431 and the pointer handling of frame().onMove / mframe().onMove).
+// (NYJA-ComingSoon-Desktop-v1.1.dc.html, lines 279–443: play / skip 279–288, touchLamp 301–310, place 336–368, tick 369–388, net 389–443,
+// and the pointer handling of frame().onMove / onLeave (476–477) and mframe().onMove / onLeave (515)).
 // One registry object (`n`, the prototype's `reg`) holds every DOM ref and all per-frame state; what React re-rendered on a
 // phase change is re-applied by applyPhase(). Animation time is the rAF timestamp, as in the prototype — never Date.now().
 import {
@@ -41,6 +42,8 @@ interface Reg {
   // per-frame state
   ph: Phase; fk: number; form: number; tour: number; tourT0: number | null; tourEnd: boolean; cut: boolean;
   px: number; py: number; tx: number; ty: number; ptr: Pt | null; lx: number | null; ly: number | null; vx: number; vy: number; torchOn: number | null; vanDir: number;
+  /** A finger is on the stage (touchLamp): a pointer leave must not put the lamp out; lift = the 1200ms hold after the finger lifts. */
+  touch: boolean; lift: ReturnType<typeof setTimeout> | undefined;
   maskKey: string | null; identOn: boolean; lastFk: number; lastTour: number; dirty: boolean; hot: number | null; sel: number | null; scr: Pt[] | null;
 }
 
@@ -57,6 +60,8 @@ export class Stage implements StageApi {
   private timers: ReturnType<typeof setTimeout>[] = [];
   private raf = 0;
   private dead = false;
+  /** Removes the touch listeners of touchLamp (destroy). */
+  private untouch: (() => void) | null = null;
 
   constructor(o: StageOptions) {
     this.G = o.G; this.g = o.g; this.m = o.motion; this.mobile = o.mobile; this.hooks = o.hooks; this.tourMs = o.tourMs ?? TOUR_MS;
@@ -68,10 +73,11 @@ export class Stage implements StageApi {
       caps: [], towns: [], clabels: [], yimg: null, cue: null, knot: null, dot: null,
       // Desktop: 'dark' until play(). Mobile: no timers — with full motion the tour simply starts (phase 'tour'); otherwise the finished state ('links', tour 1) from the first frame.
       ph: this.mobile ? (this.m === 'full' ? 'tour' : 'links') : 'dark', fk: 0, form: 0, tour: this.mobile && this.m !== 'full' ? 1 : 0, tourT0: null, tourEnd: false, cut: false,
-      px: 0, py: 0, tx: 0, ty: 0, ptr: null, lx: null, ly: null, vx: 0, vy: 0, torchOn: null, vanDir: 0,
+      px: 0, py: 0, tx: 0, ty: 0, ptr: null, lx: null, ly: null, vx: 0, vy: 0, torchOn: null, vanDir: 0, touch: false, lift: undefined,
       maskKey: null, identOn: false, lastFk: -1, lastTour: -1, dirty: true, hot: null, sel: null, scr: null,
     };
     this.net(o.stage, o.ground);
+    this.touchLamp(o.stage);
     this.applyPhase();
     this.raf = requestAnimationFrame(this.tick);
   }
@@ -330,7 +336,7 @@ export class Stage implements StageApi {
 
   bind(b: StageBindings) { const n = this.n; n.caps = b.caps; n.towns = b.towns; n.clabels = b.clabels; n.cue = b.cue; n.knot = b.knot; n.yimg = b.yimg; n.dot = b.dot; n.maskKey = null; n.dirty = true; }
 
-  /** Desktop (full motion only — the page listens only then): parallax target, lamp pointer, and the hover hit-test — the nearest projected capital within G.hit, else the country under the pointer (data-country) — while the map is still a map (fk ≤ .6). Mobile: the lamp pointer only. */
+  /** Mouse / pen only — the page drops touch pointers (the finger is touchLamp's). Desktop (full motion only — the page listens only then): parallax target, lamp pointer, and the hover hit-test — the nearest projected capital within G.hit, else the country under the pointer (data-country) — while the map is still a map (fk ≤ .6). Mobile: the lamp pointer only. */
   pointerMove(x: number, y: number, clientX: number, clientY: number) {
     const n = this.n, G = this.G;
     if (this.mobile) { n.ptr = { x, y }; return; }
@@ -342,9 +348,26 @@ export class Stage implements StageApi {
     if (best == null) { const el = document.elementFromPoint(clientX, clientY); const code = el && el.getAttribute('data-country'); if (code) best = CAPS.findIndex(k => k.code === code); if (best != null && best < 0) best = null; }
     this.setHot(best);
   }
-  pointerLeave() { const n = this.n; if (this.mobile) { n.ptr = null; return; } n.tx = 0; n.ty = 0; n.ptr = null; this.setHot(null); }
+  /** The mouse / pen left the stage (frame().onLeave 477 / mframe().onLeave 515): the lamp goes out — unless a finger holds it (touchLamp); desktop also levels the plane and clears the hover. */
+  pointerLeave() { const n = this.n; if (this.mobile) { if (!n.touch) n.ptr = null; return; } if (!n.touch) { n.tx = 0; n.ty = 0; n.ptr = null; } this.setHot(null); }
   setHot(i: number | null) { const n = this.n; if (n.hot === i) return; n.hot = i; n.dirty = true; this.hooks.onHot(i); }
   togglePick(i: number) { const n = this.n; n.sel = n.sel === i ? null : i; n.dirty = true; this.hooks.onSel(n.sel); }
+
+  /**
+   * The finger lamp (prototype touchLamp, lines 301–310 — both canvases, review of 2026-10-16): native passive touch listeners on the stage. Unlike pointer
+   * events they keep firing while the frame scrolls (a pan fires pointercancel the moment it starts, which would put the light out — so the page ignores
+   * touch pointers altogether). The light follows the finger, holds 1200ms after it lifts, then fades (900ms, in the rAF loop); on the desktop canvas the
+   * finger also drives the plane tilt. Full motion only in effect: tick() renders the lamp and the parallax only then.
+   */
+  private touchLamp(el: HTMLElement) {
+    const n = this.n, G = this.G, tilt = !this.mobile;
+    const at = (t: Touch): Pt => { const r = el.getBoundingClientRect(), sc = r.width / G.W || 1; return { x: (t.clientX - r.left) / sc, y: (t.clientY - r.top) / sc }; };
+    const on = (e: TouchEvent) => { const t = e.touches[0]; if (!t) return; clearTimeout(n.lift); const p = at(t); n.ptr = p; n.touch = true; if (tilt) { n.tx = clamp(p.x / G.W) * 2 - 1; n.ty = clamp(p.y / G.H) * 2 - 1; } };
+    const off = (e: TouchEvent) => { if (e.touches.length) return; clearTimeout(n.lift); n.lift = setTimeout(() => { n.ptr = null; n.touch = false; if (tilt) { n.tx = 0; n.ty = 0; } }, 1200); };
+    const opts: AddEventListenerOptions = { passive: true };
+    el.addEventListener('touchstart', on, opts); el.addEventListener('touchmove', on, opts); el.addEventListener('touchend', off, opts); el.addEventListener('touchcancel', off, opts);
+    this.untouch = () => { el.removeEventListener('touchstart', on); el.removeEventListener('touchmove', on); el.removeEventListener('touchend', off); el.removeEventListener('touchcancel', off); };
+  }
 
   /** Extend the page ground by (padX, padY) design px so the texture continues under the letterbox: the SVG, its rects and the two lamp masks grow around the same origin (the patterns are userSpaceOnUse, so the matrix tiles on without a seam). */
   setPad(padX: number, padY: number) {
@@ -356,7 +379,7 @@ export class Stage implements StageApi {
   }
 
   destroy() {
-    this.dead = true; cancelAnimationFrame(this.raf); this.clearTimers();
+    this.dead = true; cancelAnimationFrame(this.raf); this.clearTimers(); clearTimeout(this.n.lift); if (this.untouch) { this.untouch(); this.untouch = null; }
     const n = this.n; if (n.bg) n.bg.remove(); if (n.plane) n.plane.remove(); if (n.ov) n.ov.remove(); n.bg = null; n.plane = null; n.ov = null;
   }
 }

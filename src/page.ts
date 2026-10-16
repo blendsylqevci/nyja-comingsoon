@@ -1,5 +1,5 @@
 // The HTML composition — a 1:1 port of the approved design's desktop template (NYJA-ComingSoon-Desktop-v1.1.dc.html lines 36–72, the live player 29a)
-// and mobile template (lines 82–104, 29h1), the view-models frame() / mframe() (432–512), cueNode() (514–518) and townVals() (519–523),
+// and mobile template (lines 82–104, 29h1), the view-models frame() / mframe() (444–526), cueNode() (528–532) and townVals() (533–537),
 // plus scale-to-fit around the fixed-size stage. The Stage (./stage) owns the SVG network and writes positions / opacities every frame;
 // this file owns everything that is HTML: the reveals, the capital interaction styles, the cue / knot / skip / replay buttons, badges, form, footer.
 import { CAPS, EASE, MAT, PH, type Canvas, type Phase } from './config';
@@ -29,7 +29,7 @@ export function mountPage(root: HTMLElement, G: Canvas, g: Geometry | null, opts
   const full = motion === 'full';
   const W = G.W, H = G.H;
   const endpoint = subscribeUrl();
-  const ids = { title: 'cs-title-' + G.key, email: 'cs-email-' + G.key, privacy: 'cs-privacy-' + G.key }; // line 477
+  const ids = { title: 'cs-title-' + G.key, email: 'cs-email-' + G.key, privacy: 'cs-privacy-' + G.key }; // line 490
   let s = 1;
   let hot: number | null = null, sel: number | null = null;
 
@@ -43,18 +43,18 @@ export function mountPage(root: HTMLElement, G: Canvas, g: Geometry | null, opts
   const stageEl = h('div', { class: 'cs-stage', style: 'perspective:' + G.P + 'px;perspective-origin:' + G.ox + 'px ' + G.oy + 'px' });
   scaled.append(ground, stageEl); fit.append(scaled); track.append(fit); frame.append(track);
   const scrollTo = (top: number, behavior: 'smooth' | 'auto') => frame.scrollTo({ top: top * s, behavior });
-  const tie = () => scrollTo(G.track, full ? 'smooth' : 'auto');   // the cue: to the brand state (line 474 / 508)
-  const release = () => scrollTo(0, full ? 'smooth' : 'auto');     // the knot / Esc: back to the geography (line 475)
+  const tie = () => scrollTo(G.track, full ? 'smooth' : 'auto');   // the cue: to the brand state (line 487 / 522)
+  const release = () => scrollTo(0, full ? 'smooth' : 'auto');     // the knot / Esc: back to the geography (line 488)
 
   // ---- HTML composition: built first, appended to the stage AFTER the Stage's SVGs ----
   // the official icon, revealed by the Stage through a CSS mask (line 43 / 86)
   const yimg = h('img', { class: 'cs-yimg', src: '/brand/nyja-icon-neon.svg', alt: '', 'aria-hidden': 'true', style: 'left:' + G.ybox.x + 'px;top:' + G.ybox.y + 'px;width:' + G.ybox.w + 'px' });
   if (!g) yimg.style.opacity = '1'; // no map to morph from: the icon whole, at rest (the static composition of board H1)
   const logo = h('a', { href: '#', class: 'cs-logo', 'aria-label': 'NYJA' }, h('img', { src: '/brand/logo-dark-ui.png', alt: 'NYJA' }));
-  // COMING SOON with its beacon — breathing only in full motion on desktop (line 466); the mobile node is still (line 88)
+  // COMING SOON with its beacon — breathing only in full motion on desktop (line 479); the mobile node is still (line 88)
   const beacon = h('span', { class: 'cs-beacon', 'aria-hidden': 'true', style: full && !mobile ? 'animation:cs-breathe 6s ease-in-out infinite' : null });
   const soon = h('div', { class: 'cs-soon' }, beacon, h('span', null, 'Coming soon'));
-  // Kalo hyrjen → (line 45): desktop only, shown while motion is full and the intro is not yet 'ready' (line 465)
+  // Kalo hyrjen → (line 45): desktop only, shown while motion is full and the intro is not yet 'ready' (line 478)
   let skip: HTMLButtonElement | null = null;
   if (!mobile) {
     const arrow = svg('svg', { width: '14', height: '14', viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', 'stroke-width': '1.5', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' });
@@ -68,7 +68,7 @@ export function mountPage(root: HTMLElement, G: Canvas, g: Geometry | null, opts
     clInner.push(t);
     clOuter.push(h('span', { class: 'cs-cl', 'aria-hidden': 'true', style: 'left:' + c.x + 'px;top:' + c.y + 'px' }, t));
   }
-  // the three capitals (line 48 / 89, view-model line 470 / 505): 44×44 block at caps − 22, ring, node, hit button, label (+ coordinates on desktop)
+  // the three capitals (line 48 / 89, view-model line 483 / 519): 44×44 block at caps − 22, ring, node, hit button, label (+ coordinates on desktop)
   const caps: CapEls[] = g ? CAPS.map((k, i) => {
     const p = g.caps[i], L = k.side === 'left';
     const side = 'left:' + (L ? 'auto' : '38px') + ';right:' + (L ? '38px' : 'auto') + ';text-align:' + (L ? 'right' : 'left');
@@ -82,7 +82,7 @@ export function mountPage(root: HTMLElement, G: Canvas, g: Geometry | null, opts
     const block = h('div', { class: 'cs-cap', style: 'left:' + (p.x - 22) + 'px;top:' + (p.y - 22) + 'px' }, inner);
     return { block, inner, ring, node, btn, lab, coord };
   }) : [];
-  // the tour's towns (line 49 / 90, townVals() 519–523): 0×0 wrapper at the town, 5px dot, label placed by side — r/l beside, a/b centred above/below
+  // the tour's towns (line 49 / 90, townVals() 533–537): 0×0 wrapper at the town, 5px dot, label placed by side — r/l beside, a/b centred above/below
   const towns: TownRefs[] = g ? g.route.towns.map(st => {
     const sd = st.side, cen = sd === 'a' || sd === 'b';
     const d = h('span', { class: 'cs-town-dot' });
@@ -95,7 +95,7 @@ export function mountPage(root: HTMLElement, G: Canvas, g: Geometry | null, opts
     const w = h('span', { class: 'cs-town', 'aria-hidden': 'true', style: 'left:' + st.p.x + 'px;top:' + st.p.y + 'px' }, d, t);
     return { w, d, t };
   }) : [];
-  // the scroll cue (line 50 / 94, cueNode() 514–518): the pill with the rising node — still at mid-height when motion is not full.
+  // the scroll cue (line 50 / 94, cueNode() 528–532): the pill with the rising node — still at mid-height when motion is not full.
   // The wrapper carries the r5 reveal; the Stage owns the button's opacity / visibility from the scroll.
   const cueNode = h('span', { class: 'cs-cue-node', style: full ? 'top:27px;animation:cs-scroll 1.8s ' + EASE + ' infinite' : 'top:17px' });
   const cueBtn = h('button', { type: 'button', class: 'cs-cue', 'aria-label': 'Lëviz poshtë për të lidhur' },
@@ -128,7 +128,7 @@ export function mountPage(root: HTMLElement, G: Canvas, g: Geometry | null, opts
     frame.append(belowBox);
   }
 
-  // ---- Reveals (frame() line 442 / 467): rv(on, d) → opacity, translateY(12px) and a 560ms transition (reduced: 200ms fade; static: none) ----
+  // ---- Reveals (frame() line 454 / 480): rv(on, d) → opacity, translateY(12px) and a 560ms transition (reduced: 200ms fade; static: none) ----
   const rvT = (d: number) => tr(motion, 'opacity 560ms ' + EASE + ' ' + d + 'ms, transform 560ms ' + EASE + ' ' + d + 'ms', 'opacity 200ms linear');
   const reveals: Reveal[] = mobile ? [] : [
     { el: logo, k: 'map', d: 0, tf: false },                            // r0
@@ -140,21 +140,21 @@ export function mountPage(root: HTMLElement, G: Canvas, g: Geometry | null, opts
     { el: cueWrap, k: 'ready', d: 0, tf: false },                       // r5
   ];
   for (const r of reveals) r.el.style.transition = rvT(r.d);
-  // netOp — the capital blocks' inner wrapper (line 468) · clOp — the country names (line 473); transitions fixed per motion mode
+  // netOp — the capital blocks' inner wrapper (line 481) · clOp — the country names (line 486); transitions fixed per motion mode
   if (!mobile) {
     const tNet = tr(motion, 'opacity 400ms linear', 'opacity 200ms linear'), tCl = tr(motion, 'opacity 400ms linear 900ms', 'opacity 200ms linear');
     for (const c of caps) c.inner.style.transition = tNet;
     for (const t of clInner) t.style.transition = tCl;
   }
   function applyPhase(ph: Phase) {
-    if (mobile) return; // mframe() has no reveals: everything is present from the first frame (line 492)
-    const on = (k: Phase) => !full || ge(ph, k); // line 436
+    if (mobile) return; // mframe() has no reveals: everything is present from the first frame (line 505)
+    const on = (k: Phase) => !full || ge(ph, k); // line 448
     for (const r of reveals) { const o = on(r.k); r.el.style.opacity = o ? '1' : '0'; if (r.tf) r.el.style.transform = o ? 'none' : 'translateY(12px)'; }
     const netOp = on('caps') ? '1' : '0'; for (const c of caps) c.inner.style.opacity = netOp;
     const clOp = on('map') ? '1' : '0'; for (const t of clInner) t.style.opacity = clOp;
-    if (skip) skip.style.display = full && !ge(ph, 'ready') ? '' : 'none'; // showSkip, line 465
+    if (skip) skip.style.display = full && !ge(ph, 'ready') ? '' : 'none'; // showSkip, line 478
   }
-  // hover / focus / pin (line 470 / 505): node ×1.5 inside the 45% ring when lit, filled with material when pinned; coordinates brighten; aria state
+  // hover / focus / pin (line 483 / 519): node ×1.5 inside the 45% ring when lit, filled with material when pinned; coordinates brighten; aria state
   function applyHotSel() {
     caps.forEach((c, i) => {
       const lit = hot === i || sel === i, pinned = sel === i;
@@ -179,9 +179,9 @@ export function mountPage(root: HTMLElement, G: Canvas, g: Geometry | null, opts
   stage.bind({ caps: caps.map(c => ({ b: c.block, t: c.lab, k: c.coord })), towns, clabels: clOuter, cue: cueBtn, knot: knotBtn, yimg, dot });
   const form = mountForm(stateHost, { id: ids.email, layout: mobile ? 'stack' : 'row', endpoint, privacyId: ids.privacy });
 
-  // ---- Events (frame() 461–465 / 472, mframe() 500–501 / 507) ----
+  // ---- Events (frame() 473–478 / 485, mframe() 513–515 / 521) ----
   if (skip) skip.addEventListener('click', () => stage.skip());
-  replay.addEventListener('click', () => stage.play('first')); // line 457
+  replay.addEventListener('click', () => stage.play('first')); // line 469
   cueBtn.addEventListener('click', tie);
   knotBtn?.addEventListener('click', release);
   caps.forEach((c, i) => {
@@ -189,19 +189,19 @@ export function mountPage(root: HTMLElement, G: Canvas, g: Geometry | null, opts
     c.btn.addEventListener('focus', () => stage.setHot(i));
     c.btn.addEventListener('blur', () => stage.setHot(null));
   });
-  // pointer → stage design px (the stage box is scaled by s); desktop only in full motion, mobile also on pointerdown (the lamp)
-  const onMove = (e: PointerEvent) => { const r = stageEl.getBoundingClientRect(), sc = r.width / W || 1; stage.pointerMove((e.clientX - r.left) / sc, (e.clientY - r.top) / sc, e.clientX, e.clientY); };
-  const onLeave = () => stage.pointerLeave();
+  // pointer → stage design px (the stage box is scaled by s); desktop only in full motion (frame().onMove, line 476), mobile always (mframe().onMove, 515).
+  // Touch pointers are dropped (review of 2026-10-16): a pan fires pointercancel at once, so the finger lamp is the Stage's own passive touch listeners (touchLamp).
+  const onMove = (e: PointerEvent) => { if (e.pointerType === 'touch') return; const r = stageEl.getBoundingClientRect(), sc = r.width / W || 1; stage.pointerMove((e.clientX - r.left) / sc, (e.clientY - r.top) / sc, e.clientX, e.clientY); };
+  const onLeave = (e: PointerEvent) => { if (e.pointerType === 'touch') return; stage.pointerLeave(); };
   if (mobile || full) stageEl.addEventListener('pointermove', onMove);
   stageEl.addEventListener('pointerleave', onLeave);
-  if (mobile) { stageEl.addEventListener('pointerdown', onMove); stageEl.addEventListener('pointerup', onLeave); stageEl.addEventListener('pointercancel', onLeave); }
-  // Esc: skips the intro while it plays, otherwise releases the knot (line 462). `ready` is the view-model's gate of line 438 (on('ready') = !full || phase ≥ 'ready'):
+  // Esc: skips the intro while it plays, otherwise releases the knot (line 474). `ready` is the view-model's gate of line 450 (on('ready') = !full || phase ≥ 'ready'):
   // with motion reduced / static it is always true, so Esc only ever releases to the top and never writes the intro's 'seen' flag.
   const ready = () => !full || stage.ready();
   const onKey = (e: KeyboardEvent) => { if (e.key !== 'Escape') return; if (!mobile && !ready()) stage.skip(); else release(); };
   window.addEventListener('keydown', onKey);
   // scroll → progress in design px (the stage clamps by its track). The position is kept in design px so a resize restores it (layout):
-  // the prototype's frames are fixed-size (line 461 / 500), so progress can never move without the user scrolling.
+  // the prototype's frames are fixed-size (line 473 / 513), so progress can never move without the user scrolling.
   let designTop = 0;
   frame.addEventListener('scroll', () => { designTop = frame.scrollTop / s; stage.setScroll(designTop); }, { passive: true });
 

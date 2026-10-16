@@ -61,7 +61,7 @@ body{color:#fff;font-family:"Gotham",sans-serif;letter-spacing:.01em}
 .cs-frame a{color:inherit;text-decoration:none}
 /* frame rules of line 19 — the hover rule outranks .ny-input:disabled (0,3,0 vs 0,2,0), so the busy field hovers too, as in the prototype */
 .cs-frame a:focus-visible,.cs-frame button:focus-visible{outline:2px solid #D5FF00;outline-offset:4px}
-/* the capital hit buttons carry the prototype's inline `outline:{{ s.ring }}` (line 48) = none in the live player (line 470: c.focus is never set), which beats the frame ring above —
+/* the capital hit buttons carry the prototype's inline `outline:{{ s.ring }}` (line 48) = none in the live player (line 483: c.focus is never set), which beats the frame ring above —
    keyboard focus on a capital is shown by the lit state (focus → setHot: ring .45, node ×1.5, label #fff), not by the neon outline */
 .cs-frame .cs-cap-btn:focus-visible{outline:none}
 .cs-frame .ny-input:hover{border-color:#C4C8BB}
@@ -108,7 +108,7 @@ body{color:#fff;font-family:"Gotham",sans-serif;letter-spacing:.01em}
 .cs-town{position:absolute;width:0;height:0;pointer-events:none;opacity:0}
 .cs-town-dot{position:absolute;left:-2.5px;top:-2.5px;width:5px;height:5px;border-radius:50%;background:var(--mat);transition:transform 240ms cubic-bezier(.2,0,0,1)}
 .cs-town-t{position:absolute;white-space:nowrap;font-family:'Criteria CF','Gotham',sans-serif;text-transform:uppercase;letter-spacing:.14em;font-size:8px;line-height:12px;color:#9CA096;transition:color 240ms linear,transform 240ms cubic-bezier(.2,0,0,1)}
-/* scroll cue (line 50 / 94, cueNode 516–517): bottom-centre; the 26×44 pill with the 6px rising node */
+/* scroll cue (line 50 / 94, cueNode 530–531): bottom-centre; the 26×44 pill with the 6px rising node */
 .cs-cue-wrap{position:absolute;transform:translateX(-50%)}
 .cs-frame--d .cs-cue-wrap{left:720px;top:768px}
 .cs-frame--m .cs-cue-wrap{left:50%;top:728px}

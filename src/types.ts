@@ -55,7 +55,7 @@ export interface StageHooks {
 }
 export interface StageOptions {
   G: Canvas; g: Geometry;
-  /** The clipped stage box (W × H design px, perspective set by the page). The stage appends the plane + overlay SVGs here as its FIRST children. */
+  /** The clipped stage box (W × H design px, perspective set by the page). The stage appends the plane + overlay SVGs here as its FIRST children and listens to touch on it (the finger lamp). */
   stage: HTMLElement;
   /** Unclipped sibling box the page-ground SVG goes in (same coordinate origin as `stage`). */
   ground: HTMLElement;
@@ -75,7 +75,7 @@ export interface StageApi {
   skip(): void;
   ready(): boolean;
   setScroll(topDesignPx: number): void;
-  /** Pointer in stage design px; client coords for elementFromPoint. */
+  /** Mouse / pen pointer in stage design px (touch pointers are not forwarded — the stage listens to touch itself); client coords for elementFromPoint. */
   pointerMove(x: number, y: number, clientX: number, clientY: number): void;
   pointerLeave(): void;
   setHot(i: number | null): void;

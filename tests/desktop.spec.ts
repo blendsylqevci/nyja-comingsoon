@@ -37,6 +37,17 @@ const icon = (page: Page) => page.locator('.cs-stage img[src$="nyja-icon-neon.sv
 const maskOf = (page: Page) => icon(page).evaluate((el) => { const s = getComputedStyle(el); return s.maskImage || s.webkitMaskImage || el.style.maskImage || el.style.webkitMaskImage; });
 const cue = (page: Page) => page.getByRole('button', { name: 'Lëviz poshtë për të lidhur' });
 const knot = (page: Page) => page.getByRole('button', { name: /^NYJA — lidhja është formuar/ });
+/** A native touch event on the stage at a design-px position (client = the stage's rect + p × its scale) — the finger lamp listens to these, not to pointer events. */
+const touch = (page: Page, type: 'touchstart' | 'touchmove' | 'touchend', x: number, y: number) => page.evaluate(([type, x, y, W]) => {
+  const el = document.querySelector<HTMLElement>('.cs-stage')!, r = el.getBoundingClientRect(), sc = r.width / W;
+  const t = new Touch({ identifier: 1, target: el, clientX: r.left + x * sc, clientY: r.top + y * sc });
+  const touches = type === 'touchend' ? [] : [t];
+  el.dispatchEvent(new TouchEvent(type, { touches, changedTouches: [t], targetTouches: touches, bubbles: true, cancelable: true }));
+}, [type, x, y, DESK.W] as const);
+/** The lamp: the lit copies of the page ground (inline opacity '0' / '1', faded by CSS) and the torch mask's centre in design px. */
+const lamp = (page: Page) => page.evaluate(() => { const g = document.querySelector<SVGGElement>('.cs-ground svg > g')!, c = document.querySelector<SVGCircleElement>('.cs-stage svg mask#tm circle')!; return { on: g.style.opacity, x: parseFloat(c.getAttribute('cx')!), y: parseFloat(c.getAttribute('cy')!) }; });
+/** The map plane's tilt (rotateX · rotateY, written by the stage every frame it changes). */
+const tilt = (page: Page) => page.evaluate(() => { const m = /rotateX\(([-\d.]+)deg\) rotateY\(([-\d.]+)deg\)/.exec(document.querySelector<HTMLElement>('.cs-stage > div')!.style.transform); return { ax: m ? parseFloat(m[1]) : NaN, ay: m ? parseFloat(m[2]) : NaN }; });
 /** Screenshots for human review: test-results/shots/<name>.png */
 const shot = (t: TestInfo, name: string) => t.project.outputDir + '/shots/' + name + '.png';
 
@@ -170,6 +181,23 @@ test.describe('desktop 1440 × 900', () => {
     await expect(btn).toHaveAttribute('aria-label', 'Prishtinë, Kosovë');
   });
 
+  test('touch on the desktop canvas: the finger drives the lamp and the plane tilt, holds 1200 ms after lift, then both settle', async ({ page }) => {
+    await boot(page, 'motion=full&visit=returning&canvas=d');
+    await expect.poll(() => phase(page), { timeout: 10_000 }).toBe('ready');
+    expect((await lamp(page)).on).toBe('0');
+    expect((await tilt(page)).ay).toBeCloseTo(0, 1);
+    await touch(page, 'touchstart', 200, 700); // bottom-left: tx −0.72 → rotateY −4.3° (px eases 8 % per frame), ty +0.56 → rotateX 52° + 1.7°
+    await expect.poll(async () => (await lamp(page)).on).toBe('1');
+    await expect.poll(async () => { const l = await lamp(page); return Math.hypot(l.x - 200, l.y - 700); }, { timeout: 5_000 }).toBeLessThan(2);
+    await expect.poll(async () => (await tilt(page)).ay, { timeout: 5_000 }).toBeLessThan(-3);
+    expect((await tilt(page)).ax).toBeGreaterThan(52.5);
+    await touch(page, 'touchend', 200, 700);
+    await page.waitForTimeout(500);
+    expect((await lamp(page)).on).toBe('1'); // the 1200 ms hold after lift
+    await expect.poll(async () => (await lamp(page)).on, { timeout: 3_000 }).toBe('0');
+    await expect.poll(async () => (await tilt(page)).ay, { timeout: 5_000 }).toBeGreaterThan(-.5); // the plane levels again
+  });
+
   test('form: an invalid address is refused, typing clears the error', async ({ page }) => {
     await boot(page, 'motion=full&visit=returning&canvas=d');
     await expect.poll(() => phase(page), { timeout: 10_000 }).toBe('ready');
@@ -255,13 +283,22 @@ test.describe('desktop 1440 × 900', () => {
     await page.screenshot({ path: shot(testInfo, 'desktop-static') });
   });
 
-  test('store badges: the official images cannot load here, the outline pills take their place', async ({ page }) => {
+  test('store badges: the official artwork where the hosts answer, else the outline pills take the place of both', async ({ page }) => {
     await boot(page, 'motion=static&canvas=d');
     const nav = page.getByRole('navigation', { name: 'Aplikacioni NYJA' });
-    // the swap happens on the images' error event — a blocked host may fail slowly, hence the generous timeout
-    await expect(nav.getByRole('link', { name: 'App Store — së shpejti', exact: true })).toBeVisible({ timeout: 30_000 });
-    await expect(nav.getByRole('link', { name: 'Google Play — së shpejti', exact: true })).toBeVisible();
-    await expect(nav.locator('img')).toHaveCount(0);
+    // Either outcome passes, by network: the CI sandbox cannot reach Apple / Google (the swap happens on the images' error event — a blocked host may fail slowly,
+    // hence the generous timeout); a developer's machine loads the stores' own artwork, and then both images must be there and no pill.
+    const settled = () => nav.evaluate((el) => { const imgs = Array.from(el.querySelectorAll('img')); if (!imgs.length) return 'pills'; return imgs.every((i) => i.complete && i.naturalWidth > 0) ? 'official' : 'pending'; });
+    await expect.poll(settled, { timeout: 30_000 }).not.toBe('pending');
+    if (await settled() === 'official') {
+      await expect(nav.getByRole('link', { name: 'Download on the App Store — së shpejti', exact: true })).toBeVisible();
+      await expect(nav.getByRole('link', { name: 'Get it on Google Play — së shpejti', exact: true })).toBeVisible();
+      await expect(nav.locator('img')).toHaveCount(2);
+    } else {
+      await expect(nav.getByRole('link', { name: 'App Store — së shpejti', exact: true })).toBeVisible();
+      await expect(nav.getByRole('link', { name: 'Google Play — së shpejti', exact: true })).toBeVisible();
+      await expect(nav.locator('img')).toHaveCount(0);
+    }
   });
 
   test('the flow pulses rest at alpha .9 (the links gate) and fade .9 · nodeFade on scroll — one .9, never two', async ({ page }) => {

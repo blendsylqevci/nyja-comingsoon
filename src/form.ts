@@ -38,7 +38,7 @@ export function mountForm(host: HTMLElement, opts: FormOptions): FormApi {
   let timer: number | undefined, alive = true, seq = 0;
   let input: HTMLInputElement | null = null, button: HTMLButtonElement | null = null, field: HTMLElement | null = null, errEl: HTMLElement | null = null;
 
-  // invalid: aria-invalid + .ny-input--error on the input and the DS error line under it; typing clears it (frame() line 481).
+  // invalid: aria-invalid + .ny-input--error on the input and the DS error line under it; typing clears it (frame() line 494).
   const setError = (msg: string | null) => {
     error = msg;
     if (!input || !field) return;
@@ -47,7 +47,7 @@ export function mountForm(host: HTMLElement, opts: FormOptions): FormApi {
     if (msg) { if (!errEl) { errEl = h('span', { class: 'ny-field__error' }); field.append(errEl); } errEl.textContent = msg; }
     else if (errEl) { errEl.remove(); errEl = null; }
   };
-  // submitting: input + button disabled, the CTA reads "Po dërgohet…" (line 480).
+  // submitting: input + button disabled, the CTA reads "Po dërgohet…" (line 493).
   const setBusy = (busy: boolean) => {
     if (input) input.disabled = busy;
     if (button) { button.disabled = busy; button.textContent = busy ? 'Po dërgohet…' : 'Më njofto'; }
