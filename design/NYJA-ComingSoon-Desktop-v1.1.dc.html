@@ -38,7 +38,7 @@
 <div style="position:relative;width:{{ f.w }}px;height:{{ f.h }}px;overflow:hidden;background:#000">
 <div data-cs-frame="true" data-force="{{ f.force }}" data-screen-label="{{ f.screenLabel }}" ref="{{ f.setRef }}" onScroll="{{ f.onScroll }}" onKeyDown="{{ f.onKey }}" style="--mat:#D5FF00;--focus-ring:#D5FF00;--ink:#fff;--paper:#000;--text-primary:#fff;--text-secondary:#C4C8BB;--text-tertiary:#9CA096;--border:#fff;--gray-50:#121310;--gray-100:#232520;--gray-200:#3A3D36;--gray-300:#54584F;--gray-400:#73776D;--gray-500:#9CA096;--gray-600:#C4C8BB;--gray-700:#DDE0D6;--gray-800:#ECEEE8;--gray-900:#F6F7F4;--danger:oklch(0.74 0.17 28);color-scheme:dark;position:absolute;left:{{ f.ox }}px;top:{{ f.oy }}px;width:1440px;height:900px;transform:scale({{ f.scale }});transform-origin:0 0;background:#000;color:#fff;font-family:'Gotham',sans-serif;letter-spacing:.01em;overflow-y:{{ f.ovy }};overflow-x:hidden;scrollbar-width:none">
 <div style="position:relative;height:{{ f.trackH }}px">
-<div data-screen-label="Stage" onPointerMove="{{ f.onMove }}" onPointerLeave="{{ f.onLeave }}" style="position:sticky;top:0;height:900px;overflow:hidden;perspective:1400px;perspective-origin:1060px 318px">
+<div data-screen-label="Stage" ref="{{ f.setStageRef }}" onPointerMove="{{ f.onMove }}" onPointerLeave="{{ f.onLeave }}" style="position:sticky;top:0;height:900px;overflow:hidden;perspective:1400px;perspective-origin:1060px 318px">
   {{ f.network }}
   <img src="brand/nyja-icon-neon.svg" alt="" aria-hidden="true" ref="{{ f.setYRef }}" style="position:absolute;left:{{ f.yb.x }}px;top:{{ f.yb.y }}px;width:{{ f.yb.w }}px;height:auto;display:block;opacity:0;pointer-events:none;-webkit-mask-size:100% 100%;mask-size:100% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat">
   <a href="#" aria-label="NYJA" data-screen-label="Logo" style="position:absolute;left:72px;top:48px;display:block;opacity:{{ f.r0.op }};transition:{{ f.r0.t }}"><img src="brand/logo-dark-ui.png" alt="NYJA" style="display:block;height:44px"></a>
@@ -81,7 +81,7 @@
 <sc-if value="{{ f.isMobile }}" hint-placeholder-val="{{ false }}">
 <div data-cs-frame="true" data-screen-label="{{ f.screenLabel }}" ref="{{ f.setRef }}" onScroll="{{ f.onScroll }}" style="--mat:#D5FF00;--focus-ring:#D5FF00;--ink:#fff;--paper:#000;--text-primary:#fff;--text-secondary:#C4C8BB;--text-tertiary:#9CA096;--border:#fff;--gray-50:#121310;--gray-100:#232520;--gray-200:#3A3D36;--gray-300:#54584F;--gray-400:#73776D;--gray-500:#9CA096;--gray-600:#C4C8BB;--gray-700:#DDE0D6;--gray-800:#ECEEE8;--gray-900:#F6F7F4;--danger:oklch(0.74 0.17 28);color-scheme:dark;position:relative;width:390px;height:844px;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;background:#000;color:#fff;font-family:'Gotham',sans-serif;letter-spacing:.01em">
   <div style="position:relative;height:1244px">
-    <div data-screen-label="Mobile stage" onPointerMove="{{ f.onMove }}" onPointerDown="{{ f.onMove }}" onPointerUp="{{ f.onLeave }}" onPointerLeave="{{ f.onLeave }}" onPointerCancel="{{ f.onLeave }}" style="position:sticky;top:0;height:844px;overflow:hidden;perspective:900px;perspective-origin:195px 226px">
+    <div data-screen-label="Mobile stage" ref="{{ f.setStageRef }}" onPointerMove="{{ f.onMove }}" onPointerLeave="{{ f.onLeave }}" style="position:sticky;top:0;height:844px;overflow:hidden;perspective:900px;perspective-origin:195px 226px">
       {{ f.network }}
       <img src="brand/nyja-icon-neon.svg" alt="" aria-hidden="true" ref="{{ f.setYRef }}" style="position:absolute;left:{{ f.yb.x }}px;top:{{ f.yb.y }}px;width:{{ f.yb.w }}px;height:auto;display:block;opacity:0;pointer-events:none;-webkit-mask-size:100% 100%;mask-size:100% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat">
       <a href="#" aria-label="NYJA" style="position:absolute;left:24px;top:28px;display:block"><img src="brand/logo-dark-ui.png" alt="NYJA" style="display:block;height:30px"></a>
@@ -296,6 +296,18 @@ class Component extends DCLogic {
   // Current positions of the three capitals for a network at progress fk.
   capPos(n) { const g = this.gcache[n.G.key]; if (!g) return null; const e = geoE(n.fk); return g.caps.map((c, i) => ({ x: c.x + (g.yEnd[i].x - c.x) * e, y: c.y + (g.yEnd[i].y - c.y) * e })); }
   // The map plane: tilted toward the viewer at the geographic state, flat by 80% of the track; the pointer tilts it a little while the map is still a map.
+  // Finger lamp: native passive touch listeners — unlike pointer events they keep firing while the frame scrolls (pointercancel would put the light out
+  // the moment a pan starts). The light follows the finger, holds 1200ms after lift, then fades (900ms, in the rAF loop).
+  touchLamp(id, W, H, tilt) {
+    return el => {
+      if (!el || el.dataset.lamp) return; el.dataset.lamp = '1';
+      const at = t => { const r = el.getBoundingClientRect(), sc = r.width / W || 1; return { x: (t.clientX - r.left) / sc, y: (t.clientY - r.top) / sc }; };
+      const on = e => { const n = this.nets[id], t = e.touches[0]; if (!n || !t) return; clearTimeout(n.lift); const p = at(t); n.ptr = p; n.touch = true; if (tilt) { n.tx = clamp(p.x / W) * 2 - 1; n.ty = clamp(p.y / H) * 2 - 1; } };
+      const off = e => { const n = this.nets[id]; if (!n || e.touches.length) return; clearTimeout(n.lift); n.lift = setTimeout(() => { n.ptr = null; n.touch = false; if (tilt) { n.tx = 0; n.ty = 0; } }, 1200); };
+      el.addEventListener('touchstart', on, { passive: true }); el.addEventListener('touchmove', on, { passive: true });
+      el.addEventListener('touchend', off, { passive: true }); el.addEventListener('touchcancel', off, { passive: true });
+    };
+  }
   tiltOf(n) { const G = n.G, f = n.fk, k = 1 - clamp(f / .3); return { ax: G.tilt * (1 - smooth(clamp(f / .8))) + (n.py || 0) * 3 * k, ay: (n.px || 0) * 6 * k }; }
   tiltCss(n) { const t = this.tiltOf(n); return 'rotateX(' + t.ax.toFixed(2) + 'deg) rotateY(' + t.ay.toFixed(2) + 'deg)'; }
   // Projection of a point of the plane to stage coordinates — the same maths the browser applies (rotateX · rotateY about (ox,oy), perspective P at (ox,oy)). Capitals and names are HTML placed with it, so they stay upright.
@@ -460,8 +472,9 @@ class Component extends DCLogic {
       setYRef: el => { const n = reg(); if (n && el) n.yimg = el; }, setCueRef: el => { const n = reg(); if (n && el) n.cue = el; }, setKnotRef: el => { const n = reg(); if (n && el) n.knot = el; }, setDotRef: el => { const n = reg(); if (n && el) n.dot = el; },
       onScroll: player ? e => { const n = reg(); if (n) n.form = clamp(e.currentTarget.scrollTop / G.track); } : undefined,
       onKey: player ? e => { if (e.key !== 'Escape') return; if (!ready) this.skip(id); else this.scrollTo(id, 0); } : undefined,
-      onMove: player && full ? e => { const n = reg(); if (!n) return; const r = e.currentTarget.getBoundingClientRect(), sc = r.width / 1440 || 1, x = (e.clientX - r.left) / sc, y = (e.clientY - r.top) / sc; n.tx = clamp(x / 1440) * 2 - 1; n.ty = clamp(y / 900) * 2 - 1; n.ptr = { x, y }; const pos = n.scr || this.capPos(n); if (!pos || n.fk > .6) { setHot(null); return; } let best = null, bd = G.hit; pos.forEach((q, i) => { const d = Math.hypot(q.x - x, q.y - y); if (d < bd) { bd = d; best = i; } }); if (best == null) { const el = document.elementFromPoint(e.clientX, e.clientY); const code = el && el.getAttribute && el.getAttribute('data-country'); if (code) best = CAPS.findIndex(k => k.code === code); if (best < 0) best = null; } setHot(best); } : undefined,
-      onLeave: player ? () => { const n = reg(); if (n) { n.tx = 0; n.ty = 0; n.ptr = null; } setHot(null); } : undefined,
+      setStageRef: player ? this.touchLamp(id, 1440, 900, true) : undefined,
+      onMove: player && full ? e => { if (e.pointerType === 'touch') return; const n = reg(); if (!n) return; const r = e.currentTarget.getBoundingClientRect(), sc = r.width / 1440 || 1, x = (e.clientX - r.left) / sc, y = (e.clientY - r.top) / sc; n.tx = clamp(x / 1440) * 2 - 1; n.ty = clamp(y / 900) * 2 - 1; n.ptr = { x, y }; const pos = n.scr || this.capPos(n); if (!pos || n.fk > .6) { setHot(null); return; } let best = null, bd = G.hit; pos.forEach((q, i) => { const d = Math.hypot(q.x - x, q.y - y); if (d < bd) { bd = d; best = i; } }); if (best == null) { const el = document.elementFromPoint(e.clientX, e.clientY); const code = el && el.getAttribute && el.getAttribute('data-country'); if (code) best = CAPS.findIndex(k => k.code === code); if (best < 0) best = null; } setHot(best); } : undefined,
+      onLeave: player ? e => { if (e && e.pointerType === 'touch') return; const n = reg(); if (n && !n.touch) { n.tx = 0; n.ty = 0; n.ptr = null; } setHot(null); } : undefined,
       showSkip: player && full && !ge(p, 'ready'), skip: () => this.skip(id),
       beacon: h('span', { 'aria-hidden': 'true', style: { width: 8, height: 8, borderRadius: '50%', background: MAT, display: 'inline-block', flex: 'none', animation: full ? 'cs-breathe 6s ease-in-out infinite' : 'none' } }),
       r0: rv(on('map'), 0, true), r1: rv(on('caps'), 0), r3: rv(on('links'), 200), r4: rv(on('map'), 300, true), r5: rv(ready, 0),
@@ -498,7 +511,8 @@ class Component extends DCLogic {
       screenLabel: 'Screen 28 — Coming Soon v1.1 · ' + c.tag + ' · mobile',
       setRef: el => { if (!el) return; this.frames = Object.assign(this.frames || {}, { [id]: el }); if (c.scrolled && !el.dataset.init) { el.dataset.init = '1'; el.scrollTop = G.track; } },
       onScroll: e => { const n = reg(); if (n) n.form = clamp(e.currentTarget.scrollTop / G.track); },
-      onMove: e => { const n = reg(); if (!n) return; const r = e.currentTarget.getBoundingClientRect(), sc = r.width / 390 || 1; n.ptr = { x: (e.clientX - r.left) / sc, y: (e.clientY - r.top) / sc }; }, onLeave: () => { const n = reg(); if (n) n.ptr = null; },
+      setStageRef: this.touchLamp(id, 390, 844, false),
+      onMove: e => { if (e.pointerType === 'touch') return; const n = reg(); if (!n) return; const r = e.currentTarget.getBoundingClientRect(), sc = r.width / 390 || 1; n.ptr = { x: (e.clientX - r.left) / sc, y: (e.clientY - r.top) / sc }; }, onLeave: e => { if (e && e.pointerType === 'touch') return; const n = reg(); if (n && !n.touch) n.ptr = null; },
       network, yb: G.ybox,
       setYRef: el => { const n = reg(); if (n && el) n.yimg = el; }, setCueRef: el => { const n = reg(); if (n && el) n.cue = el; }, setKnotRef: el => { const n = reg(); if (n && el) n.knot = el; }, setDotRef: el => { const n = reg(); if (n && el) n.dot = el; },
       towns: this.townVals(g, reg),
