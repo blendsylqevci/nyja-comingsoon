@@ -17,14 +17,24 @@ import { EMAIL_SQ } from './email_sq.ts';
 /** The page's own rule (src/config.ts EMAIL_RE). */
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 /**
- * Words the owner will not have in an address (Blend, 2026-10-16). Matched against the address's letter-only tokens with diacritics folded
- * (ç → c, ë → e), as whole tokens — so shqipe, Karuçi, digital, Karim pass — and, for the long compounds (6+ letters), as a token's prefix,
- * so a suffix glued on (karipidhiks) does not get through. Such an address is simply "invalid" to the page.
+ * Words the owner will not have in an address (Blend, 2026-10-16, extended the same day). Matched against the address's letter-only tokens
+ * (local part and domain, digits and separators split, diacritics folded: ç → c, ë → e):
+ *  - a word of 4+ letters anywhere inside a token — blendmuti, taqinonen1, karipidhiks are all out;
+ *  - the three very short stems (qi, mut, dig) when a token is, starts or ends with them — qifamilen, blendmut — but not inside ordinary words
+ *    (shqipe, arqile, Aqif): STRICT_SHORT = true makes them match anywhere, at the price of most Albanian names with "qi";
+ *  - ALLOWED: whole tokens that carry a stem by accident and stay allowed (Karim, Karina, Qiriqi, digital).
+ * Such an address is simply "invalid" to the page. To change the list: edit here, re-deploy.
  */
-const BLOCKED = ['karipidhi', 'pidhikari', 'kari', 'pidhi', 'piqkakari', 'karipiqka', 'piqka', 'pidhnone', 'taqinonen', 'qi', 'mut', 'hamakarin', 'karuc', 'dig'];
-const BLOCKED_LONG = BLOCKED.filter((w) => w.length >= 6);
+const BLOCKED = [
+  'karipidhi', 'pidhikari', 'kari', 'pidhi', 'piqkakari', 'karipiqka', 'piqka', 'pidhnone', 'taqinonen', 'qi', 'mut', 'hamakarin', 'karuc', 'dig',
+  'taqi', 'taqimotren', 'taqigrun', 'qigrun', 'qimotren', 'taqifamilen', 'qifamilen', 'muti',
+];
+const STRICT_SHORT = false;
+const ALLOWED = ['qiriqi', 'qiriazi', 'digital', 'mutlu', 'karim', 'karima', 'karimi', 'karina', 'karine'];
+const BLOCKED_SHORT = BLOCKED.filter((w) => w.length <= 3), BLOCKED_WORDS = BLOCKED.filter((w) => w.length >= 4);
 const fold = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
-const blocked = (email: string) => fold(email).split(/[^a-z]+/).some((t) => t.length > 0 && (BLOCKED.includes(t) || BLOCKED_LONG.some((w) => t.startsWith(w))));
+const blocked = (email: string) => fold(email).split(/[^a-z]+/).some((t) => t.length > 0 && !ALLOWED.includes(t) &&
+  (BLOCKED_WORDS.some((w) => t.includes(w)) || BLOCKED_SHORT.some((w) => STRICT_SHORT ? t.includes(w) : t === w || t.startsWith(w) || t.endsWith(w))));
 /** Resend segment "Coming soon" (created 2026-10-16). */
 const SEGMENT_ID = Deno.env.get('RESEND_SEGMENT_ID') ?? '8d999461-daf0-4714-bd43-bdd961e97c96';
 const ORIGINS = (Deno.env.get('ALLOWED_ORIGINS') ?? '*').split(',').map((s) => s.trim()).filter(Boolean);
